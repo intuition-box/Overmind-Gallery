@@ -427,7 +427,7 @@ export default function HomePage() {
         </div>
       </section>
       {/* Footer */}
-      <footer className="border-t border-gray-800/50 px-6 py-3">
+      <footer className="border-t border-gray-800/50 px-6 py-[38px]">
         <div className="container mx-auto text-center py-0 my-0">
           <div className="flex items-center justify-center mb-6">
             <Eye className="w-6 h-6 text-cyan-400 mr-2" />
