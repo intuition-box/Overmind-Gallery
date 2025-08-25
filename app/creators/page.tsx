@@ -10,9 +10,9 @@ import { Search, X, Users, Eye, Menu } from "lucide-react"
 const creators = [
   {
     id: 1,
-    name: "DigitalMystic",
+    name: "Wolfgang",
     avatar: "/cyber-oracle-mask-futuristic-mystical-glowing-eyes.png",
-    bio: "Master of digital grimoires and blockchain sorcery. Weaving ancient wisdom into modern NFT art.",
+    bio: "The Wolf of Web3. A true disciple of The Overmind. Weaving ancient wisdom into modern NFT art.",
     nftCount: 23,
     totalVolume: "45.7 ETH",
     followers: 1247,
