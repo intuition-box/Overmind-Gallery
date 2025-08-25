@@ -439,7 +439,7 @@ export default function CollectionsPage() {
               >
                 <Search className="w-5 h-5" />
               </Button>
-              <Button className="hidden md:flex bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white px-6">
+              <Button className="bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white px-6">
                 Connect Wallet
               </Button>
               <Button
@@ -508,11 +508,6 @@ export default function CollectionsPage() {
                 Creators
               </a>
             </nav>
-            <div className="p-6 border-t border-gray-800/50">
-              <Button className="w-full bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white">
-                Connect Wallet
-              </Button>
-            </div>
           </div>
         </div>
       )}
@@ -664,7 +659,9 @@ export default function CollectionsPage() {
                       <h3 className="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">
                         {collection.name}
                       </h3>
-                      <p className="text-gray-400 text-sm">by {collection.creator}</p>
+                      <p className="text-muted-foreground text-sm">
+                        by {collection.creator} • {collection.itemCount} artifacts
+                      </p>
                     </div>
                   </div>
                 </div>

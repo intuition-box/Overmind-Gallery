@@ -129,7 +129,7 @@ export default function ExplorePage() {
               >
                 <Search className="w-5 h-5" />
               </Button>
-              <Button className="hidden md:flex bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white px-6">
+              <Button className="bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white px-6">
                 Connect Wallet
               </Button>
               <Button
@@ -197,11 +197,6 @@ export default function ExplorePage() {
                 Creators
               </a>
             </nav>
-            <div className="p-6 border-t border-gray-800/50">
-              <Button className="w-full bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white">
-                Connect Wallet
-              </Button>
-            </div>
           </div>
         </div>
       )}
@@ -213,7 +208,7 @@ export default function ExplorePage() {
               <Search className="w-5 h-5 text-cyan-400" />
               <input
                 type="text"
-                placeholder="Search relics..."
+                placeholder="Search artifacts..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="flex-1 bg-transparent text-white placeholder-gray-400 outline-none"
@@ -236,7 +231,7 @@ export default function ExplorePage() {
       <header className="text-center my-0 py-[57px]">
         <div className="container mx-auto px-6">
           <h1 className="font-playfair text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-400 bg-clip-text text-transparent">
-            Explore Sacred Relics
+            Explore Sacred Artifacts
           </h1>
           <p className="text-gray-300 text-lg max-w-2xl mx-auto mb-2">
             Discover the complete collection of digital artifacts, each one a testament to the power of The Overmind.
@@ -278,7 +273,7 @@ export default function ExplorePage() {
                     size="sm"
                     className="bg-primary/20 text-primary border border-primary/30 hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:rune-glow"
                   >
-                    Acquire Relic
+                    Acquire
                   </Button>
                 </div>
               </div>
@@ -288,7 +283,7 @@ export default function ExplorePage() {
 
         {filteredRelics.length === 0 && searchQuery && (
           <div className="text-center py-12">
-            <p className="text-gray-400 text-lg">No relics found matching "{searchQuery}"</p>
+            <p className="text-gray-400 text-lg">No artifacts found matching "{searchQuery}"</p>
             <p className="text-gray-500 text-sm mt-2">Try searching for a different term</p>
           </div>
         )}
@@ -336,7 +331,7 @@ export default function ExplorePage() {
                   </div>
 
                   <Button className="w-full bg-primary/20 text-primary border border-primary/30 hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:rune-glow py-6 text-lg font-semibold">
-                    Acquire Sacred Relic
+                    Acquire Sacred Artifact
                   </Button>
                 </div>
               </div>

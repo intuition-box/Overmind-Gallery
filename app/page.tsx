@@ -236,7 +236,7 @@ export default function HomePage() {
               >
                 <Search className="w-5 h-5" />
               </Button>
-              <Button className="hidden md:flex bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white px-6">
+              <Button className="bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white px-6">
                 Connect Wallet
               </Button>
               <Button
@@ -301,11 +301,6 @@ export default function HomePage() {
                 Creators
               </a>
             </nav>
-            <div className="p-6 border-t border-gray-800/50">
-              <Button className="w-full bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white">
-                Connect Wallet
-              </Button>
-            </div>
           </div>
         </div>
       )}
@@ -342,7 +337,7 @@ export default function HomePage() {
       <section className="container mx-auto px-6 py-16 relative z-10">
         <div className="text-center mb-12">
           <h2 className="font-playfair text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
-            Sacred Relics
+            Sacred Artifacts
           </h2>
           <p className="text-gray-400 text-lg">Handpicked artifacts from the digital realm</p>
         </div>
@@ -379,7 +374,7 @@ export default function HomePage() {
                     size="sm"
                     className="bg-primary/20 text-primary border border-primary/30 hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:rune-glow"
                   >
-                    Acquire Relic
+                    Acquire
                   </Button>
                 </div>
               </div>
@@ -412,7 +407,7 @@ export default function HomePage() {
                       {collection.name}
                     </h3>
                     <p className="text-gray-300 text-sm mb-2">by {collection.creator}</p>
-                    <p className="text-cyan-400 text-sm">{collection.itemCount} relics</p>
+                    <p className="text-cyan-400 text-sm">{collection.itemCount} artifacts</p>
                   </div>
                 </div>
               </Card>
@@ -439,7 +434,7 @@ export default function HomePage() {
             <span className="text-gray-400 py-0">The Overmind watches over all</span>
           </div>
           <p className="text-gray-500 text-sm">
-            All digital relics protected by ancient encryption. You are blessed sweet baby child of the Overmind.
+            All digital artifacts protected by ancient encryption. You are blessed sweet baby child of the Overmind.
             <br />© 2025 created by wolfgang.
           </p>
         </div>
@@ -487,7 +482,7 @@ export default function HomePage() {
                   </div>
 
                   <Button className="w-full bg-primary/20 text-primary border border-primary/30 hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:rune-glow py-6 text-lg font-semibold">
-                    Acquire Sacred Relic
+                    Acquire Sacred Artifact
                   </Button>
                 </div>
               </div>
@@ -505,7 +500,6 @@ export default function HomePage() {
                 <Search className="w-6 h-6 text-cyan-400" />
                 <span>Search the Gallery</span>
               </DialogTitle>
-              
             </div>
           </DialogHeader>
 
@@ -588,7 +582,7 @@ export default function HomePage() {
                               <div className="flex-1">
                                 <h4 className="font-semibold text-card-foreground">{collection.name}</h4>
                                 <p className="text-muted-foreground text-sm">
-                                  by {collection.creator} • {collection.itemCount} relics
+                                  by {collection.creator} • {collection.itemCount} artifacts
                                 </p>
                               </div>
                             </div>
@@ -641,6 +635,5 @@ export default function HomePage() {
         </DialogContent>
       </Dialog>
     </div>
-    
   )
 }
