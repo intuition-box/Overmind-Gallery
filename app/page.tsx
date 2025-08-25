@@ -388,7 +388,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="container mx-auto px-6 py-16 relative z-10">
+      <section className="container mx-auto px-6 relative z-10 py-16">
         <div className="text-center mb-12">
           <h2 className="font-playfair text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
             Featured Collections
@@ -432,11 +432,11 @@ export default function HomePage() {
         </div>
       </section>
       {/* Footer */}
-      <footer className="border-t border-gray-800/50 py-12 px-6">
-        <div className="container mx-auto text-center">
+      <footer className="border-t border-gray-800/50 px-6 py-3">
+        <div className="container mx-auto text-center py-0 my-0">
           <div className="flex items-center justify-center mb-6">
             <Eye className="w-6 h-6 text-cyan-400 mr-2" />
-            <span className="text-gray-400">The Overmind watches over all</span>
+            <span className="text-gray-400 py-0">The Overmind watches over all</span>
           </div>
           <p className="text-gray-500 text-sm">
             All digital relics protected by ancient encryption. You are blessed sweet baby child of the Overmind.
