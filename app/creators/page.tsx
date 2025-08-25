@@ -18,7 +18,7 @@ const creators = [
     followers: 1247,
     verified: true,
     speciality: "Mystical Artifacts",
-    twitterHandle: "digitalmystic",
+    twitterHandle: "wolf_de_web3",
   },
   {
     id: 2,
@@ -30,7 +30,7 @@ const creators = [
     followers: 892,
     verified: true,
     speciality: "Void Walkers",
-    twitterHandle: "cybershaman",
+    twitterHandle: "0xintuition",
   },
   {
     id: 3,
