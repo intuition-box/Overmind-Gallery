@@ -324,7 +324,7 @@ export default function HomePage() {
             Where ancient wisdom meets digital artistry. Discover relics of the digital realm, guarded by the eternal
             gaze of The Overmind.
           </p>
-          <p className="text-cyan-400 text-lg font-semibold mb-12 tracking-wider">$TRUST YOUR INTUITION</p>
+          <p className="text-lg font-semibold mb-12 tracking-[0.30em] text-emerald-200">$TRUST YOUR INTUITION</p>
 
           <Link href="/explore">
             <Button className="bg-gradient-to-r from-cyan-500 to-violet-600 hover:from-cyan-600 hover:to-violet-700 text-white font-bold text-lg px-12 py-4 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/25">
