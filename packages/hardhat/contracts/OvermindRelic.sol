@@ -3,16 +3,13 @@ pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 
 /**
  * @title OvermindRelic
  * @dev Sacred NFT artifacts from the digital realm
  */
 contract OvermindRelic is ERC721URIStorage, Ownable {
-    using Counters for Counters.Counter;
-    
-    Counters.Counter private _tokenIdCounter;
+    uint256 private _tokenIdCounter;
     
     struct Relic {
         string title;
@@ -49,8 +46,8 @@ contract OvermindRelic is ERC721URIStorage, Ownable {
         require(bytes(_tokenURI).length > 0, "Token URI cannot be empty");
         require(_price > 0, "Price must be greater than 0");
         
-        uint256 tokenId = _tokenIdCounter.current();
-        _tokenIdCounter.increment();
+        uint256 tokenId = _tokenIdCounter;
+        _tokenIdCounter++;
         
         _safeMint(msg.sender, tokenId);
         _setTokenURI(tokenId, _tokenURI);
@@ -134,7 +131,7 @@ contract OvermindRelic is ERC721URIStorage, Ownable {
      * @dev Get all relics
      */
     function getAllRelics() public view returns (uint256[] memory) {
-        uint256 totalSupply = _tokenIdCounter.current();
+        uint256 totalSupply = _tokenIdCounter;
         uint256[] memory tokenIds = new uint256[](totalSupply);
         
         for (uint256 i = 0; i < totalSupply; i++) {
@@ -148,7 +145,7 @@ contract OvermindRelic is ERC721URIStorage, Ownable {
      * @dev Get relics for sale
      */
     function getRelicsForSale() public view returns (uint256[] memory) {
-        uint256 totalSupply = _tokenIdCounter.current();
+        uint256 totalSupply = _tokenIdCounter;
         uint256 count = 0;
         
         // Count relics for sale
@@ -190,6 +187,6 @@ contract OvermindRelic is ERC721URIStorage, Ownable {
      * @dev Get current token counter
      */
     function getCurrentTokenId() public view returns (uint256) {
-        return _tokenIdCounter.current();
+        return _tokenIdCounter;
     }
 }
