@@ -243,7 +243,7 @@ export default function HomePage() {
               >
                 <Search className="w-5 h-5" />
               </Button>
-              <Button className="bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white px-6 btn-gradient-cyan">
+              <Button className="bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white px-6">
                 Connect Wallet
               </Button>
               <Button
@@ -334,7 +334,7 @@ export default function HomePage() {
           <p className="text-lg font-semibold mb-12 tracking-[0.30em] text-emerald-200">$TRUST YOUR INTUITION</p>
 
           <Link href="/explore">
-            <Button className="bg-gradient-to-r from-cyan-500 to-violet-600 hover:from-cyan-600 hover:to-violet-700 text-white font-bold text-lg px-12 py-4 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/25 btn-gradient-cyan">
+            <Button className="bg-gradient-to-r from-cyan-500 to-violet-600 hover:from-cyan-600 hover:to-violet-700 text-white font-bold text-lg px-12 py-4 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/25">
               Enter the Gallery
             </Button>
           </Link>
@@ -379,7 +379,7 @@ export default function HomePage() {
                   </Badge>
                   <Button
                     size="sm"
-                    className="bg-primary/20 text-primary border border-primary/30 hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:rune-glow !bg-gradient-to-r !from-cyan-500/20 !to-violet-500/20 !hover:from-cyan-500 !hover:to-violet-500 !hover:text-white"
+                    className="bg-primary/20 text-primary border border-primary/30 hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:rune-glow"
                   >
                     Acquire
                   </Button>
@@ -426,7 +426,7 @@ export default function HomePage() {
           <Link href="/collections">
             <Button
               variant="outline"
-              className="border-cyan-400/30 text-cyan-400 hover:bg-cyan-400/10 hover:border-cyan-400 transition-all duration-300 bg-transparent !border-2 !border-cyan-400/50 !text-cyan-400 !hover:bg-cyan-400/20 !hover:border-cyan-400"
+              className="border-cyan-400/30 text-cyan-400 hover:bg-cyan-400/10 hover:border-cyan-400 transition-all duration-300 bg-transparent"
             >
               View All Collections
             </Button>
@@ -488,7 +488,7 @@ export default function HomePage() {
                     </Badge>
                   </div>
 
-                  <Button className="w-full bg-primary/20 text-primary border border-primary/30 hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:rune-glow py-6 text-lg font-semibold !bg-gradient-to-r !from-cyan-500/20 !to-violet-500/20 !hover:from-cyan-500 !hover:to-violet-500 !hover:text-white">
+                  <Button className="w-full bg-primary/20 text-primary border border-primary/30 hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:rune-glow py-6 text-lg font-semibold">
                     Acquire Sacred Artifact
                   </Button>
                 </div>

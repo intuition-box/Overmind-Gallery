@@ -170,38 +170,12 @@
 
   /* Enhanced button gradient styles to match the Connect button in screenshot */
   .btn-gradient-cyan {
-    background: linear-gradient(135deg, #0891b2 0%, #3b82f6 100%) !important;
+    background: linear-gradient(135deg, #0891b2 0%, #3b82f6 100%);
     transition: all 0.3s ease;
   }
 
   .btn-gradient-cyan:hover {
-    background: linear-gradient(135deg, #0e7490 0%, #2563eb 100%) !important;
+    background: linear-gradient(135deg, #0e7490 0%, #2563eb 100%);
     box-shadow: 0 4px 20px rgba(34, 211, 238, 0.3);
-  }
-
-  /* Added explicit button styling with !important to override browser defaults */
-  .btn-acquire {
-    background: linear-gradient(135deg, rgba(8, 145, 178, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%) !important;
-    border: 1px solid rgba(8, 145, 178, 0.3) !important;
-    color: #0891b2 !important;
-    transition: all 0.3s ease !important;
-  }
-
-  .btn-acquire:hover {
-    background: linear-gradient(135deg, #0891b2 0%, #8b5cf6 100%) !important;
-    color: white !important;
-    box-shadow: 0 0 20px rgba(8, 145, 178, 0.3) !important;
-  }
-
-  .btn-outline-cyan {
-    background: transparent !important;
-    border: 2px solid rgba(34, 211, 238, 0.5) !important;
-    color: #22d3ee !important;
-    transition: all 0.3s ease !important;
-  }
-
-  .btn-outline-cyan:hover {
-    background: rgba(34, 211, 238, 0.2) !important;
-    border-color: #22d3ee !important;
   }
 }
