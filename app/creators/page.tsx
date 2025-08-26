@@ -16,7 +16,7 @@ const creators = [
     avatar: "/cyber-oracle-mask-futuristic-mystical-glowing-eyes.png",
     bio: "The Wolf of Web3. A true disciple of The Overmind. Weaving ancient wisdom into modern NFT art.",
     nftCount: 23,
-    totalVolume: "45.7 ETH",
+    totalVolume: "45.7 TRUST",
     verified: true,
     speciality: "Mystical Artifacts",
     twitterHandle: "wolf_de_web3",
@@ -27,7 +27,7 @@ const creators = [
     avatar: "/ethereal-void-walker-dark-figure-glowing-eyes-myst.png",
     bio: "Guardian of the digital void, channeling ethereal energies into transcendent NFT experiences.",
     nftCount: 18,
-    totalVolume: "32.4 ETH",
+    totalVolume: "32.4 TRUST",
     verified: true,
     speciality: "Void Walkers",
     twitterHandle: "0xintuition",
@@ -38,7 +38,7 @@ const creators = [
     avatar: "/neon-sigil-glowing-cyan-violet-runes-mystical-symb.png",
     bio: "Ancient runesmith crafting powerful sigils that bridge the physical and digital realms.",
     nftCount: 31,
-    totalVolume: "67.2 ETH",
+    totalVolume: "67.2 TRUST",
     verified: true,
     speciality: "Power Sigils",
     twitterHandle: "runeforger",
@@ -49,7 +49,7 @@ const creators = [
     avatar: "/shadow-crystal-dark-mystical-glowing-purple-energy.png",
     bio: "Sculptor of shadow crystals and dark energy manifestations in the blockchain dimension.",
     nftCount: 15,
-    totalVolume: "28.9 ETH",
+    totalVolume: "28.9 TRUST",
     verified: false,
     speciality: "Shadow Crystals",
     twitterHandle: "voidcrafter",
@@ -60,7 +60,7 @@ const creators = [
     avatar: "/cyber-oracle-mask-futuristic-mystical-glowing-eyes.png",
     bio: "Oracle of the digital future, creating prophetic masks that reveal blockchain destinies.",
     nftCount: 27,
-    totalVolume: "51.3 ETH",
+    totalVolume: "51.3 TRUST",
     verified: true,
     speciality: "Oracle Masks",
     twitterHandle: "technomage",
@@ -71,7 +71,7 @@ const creators = [
     avatar: "/digital-phoenix-feather-glowing-cyan-fire-mystical.png",
     bio: "Phoenix keeper and elemental artist, breathing digital fire into legendary NFT creations.",
     nftCount: 19,
-    totalVolume: "38.6 ETH",
+    totalVolume: "38.6 TRUST",
     verified: true,
     speciality: "Elemental Artifacts",
     twitterHandle: "elementalforge",
@@ -82,7 +82,7 @@ const creators = [
     avatar: "/quantum-rune-stone-glowing-violet-ancient-mystical.png",
     bio: "Quantum architect inscribing reality-bending runes into the fabric of the metaverse.",
     nftCount: 22,
-    totalVolume: "44.1 ETH",
+    totalVolume: "44.1 TRUST",
     verified: true,
     speciality: "Quantum Runes",
     twitterHandle: "arcanebuilder",
@@ -93,7 +93,7 @@ const creators = [
     avatar: "/spectral-blade-sword-glowing-code-mystical-weapon.png",
     bio: "Spectral warrior forging code-based weapons that cut through the barriers of digital realms.",
     nftCount: 16,
-    totalVolume: "29.7 ETH",
+    totalVolume: "29.7 TRUST",
     verified: false,
     speciality: "Code Weapons",
     twitterHandle: "ghosthacker",
@@ -130,21 +130,21 @@ const mockArtifacts = [
     id: 1,
     name: "Cyber Oracle Mask",
     creator: "Wolfgang",
-    price: "2.9 ETH",
+    price: "2.9 TRUST",
     image: "/cyber-oracle-mask-futuristic-mystical-glowing-eyes.png",
   },
   {
     id: 2,
     name: "Ethereal Void Walker",
     creator: "CyberShaman",
-    price: "1.8 ETH",
+    price: "1.8 TRUST",
     image: "/ethereal-void-walker-dark-figure-glowing-eyes-myst.png",
   },
   {
     id: 3,
     name: "Neon Power Sigil",
     creator: "RuneForger",
-    price: "3.2 ETH",
+    price: "3.2 TRUST",
     image: "/neon-sigil-glowing-cyan-violet-runes-mystical-symb.png",
   },
 ]
@@ -364,9 +364,7 @@ export default function CreatorsPage() {
                                   </Badge>
                                 )}
                               </div>
-                              <p className="text-muted-foreground text-sm">
-                                {creator.followers} followers • {creator.speciality}
-                              </p>
+                              <p className="text-muted-foreground text-sm">{creator.speciality}</p>
                             </div>
                           </div>
                         </Card>
@@ -504,16 +502,15 @@ export default function CreatorsPage() {
                 <p className="text-muted-foreground text-sm leading-relaxed">{creator.bio}</p>
 
                 {/* Stats */}
-                <div className="grid grid-cols-3 gap-4 pt-4 border-t border-border/20 pr-0 mx-0">
+                <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border/20">
                   <div className="text-center">
                     <p className="text-card-foreground font-semibold">{creator.nftCount}</p>
                     <p className="text-muted-foreground text-xs">Artifacts</p>
                   </div>
-                  <div className="text-center mx-0 px-0">
+                  <div className="text-center">
                     <p className="text-card-foreground font-semibold">{creator.totalVolume}</p>
                     <p className="text-muted-foreground text-xs">Volume</p>
                   </div>
-                  
                 </div>
 
                 {/* Follow Button */}
