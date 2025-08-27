@@ -1,16 +1,14 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import { Search, Eye, User, Folder, Gem, X, Menu } from "lucide-react"
-import Link from "next/link"
-import { RainbowKitCustomConnectButton } from "~~/components/scaffold-eth"
-import { useScaffoldReadContract, useScaffoldEventHistory } from "~~/hooks/scaffold-eth"
-import { formatEther } from "viem"
+import { useState } from "react";
+import Link from "next/link";
+import { Eye, Folder, Gem, Menu, Search, User, X } from "lucide-react";
+import { RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
+import { Badge } from "~~/components/ui/badge";
+import { Button } from "~~/components/ui/button";
+import { Card } from "~~/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "~~/components/ui/dialog";
+import { Input } from "~~/components/ui/input";
 
 // Mock curated NFTs for homepage
 const curatedRelics = [
@@ -46,7 +44,7 @@ const curatedRelics = [
     image: "/shadow-crystal-dark-mystical-glowing-purple-energy.png",
     description: "A crystalline artifact that holds the essence of shadow magic.",
   },
-]
+];
 
 // Mock featured collections
 const featuredCollections = [
@@ -74,7 +72,7 @@ const featuredCollections = [
     image: "/cyberpunk-temple-with-glowing-neon-runes-and-mysti.png",
     description: "Artifacts from the digital temples",
   },
-]
+];
 
 // Mock data for creators and collections to enable comprehensive search
 const mockCreators = [
@@ -113,7 +111,7 @@ const mockCreators = [
     followers: "4.5K",
     verified: true,
   },
-]
+];
 
 const mockCollections = [
   {
@@ -151,35 +149,37 @@ const mockCollections = [
     itemCount: 10,
     image: "/futuristic-temple-with-glowing-oracle-masks-and-di.png",
   },
-]
+];
 
 export default function HomePage() {
-  const [selectedRelic, setSelectedRelic] = useState<(typeof curatedRelics)[0] | null>(null)
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [selectedRelic, setSelectedRelic] = useState<(typeof curatedRelics)[0] | null>(null);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Scaffold-ETH 2 hooks for network logic
 
   const getSearchResults = () => {
-    if (!searchQuery.trim()) return { creators: [], collections: [], relics: [] }
+    if (!searchQuery.trim()) return { creators: [], collections: [], relics: [] };
 
-    const query = searchQuery.toLowerCase()
+    const query = searchQuery.toLowerCase();
 
-    const filteredCreators = mockCreators.filter((creator) => creator.name.toLowerCase().includes(query))
+    const filteredCreators = mockCreators.filter(creator => creator.name.toLowerCase().includes(query));
 
     const filteredCollections = mockCollections.filter(
-      (collection) => collection.name.toLowerCase().includes(query) || collection.creator.toLowerCase().includes(query),
-    )
+      collection => collection.name.toLowerCase().includes(query) || collection.creator.toLowerCase().includes(query),
+    );
 
     const filteredRelics = curatedRelics.filter(
-      (relic) => relic.title.toLowerCase().includes(query) || relic.creator.toLowerCase().includes(query),
-    )
+      relic => relic.title.toLowerCase().includes(query) || relic.creator.toLowerCase().includes(query),
+    );
 
-    return { creators: filteredCreators, collections: filteredCollections, relics: filteredRelics }
-  }
+    return { creators: filteredCreators, collections: filteredCollections, relics: filteredRelics };
+  };
 
-  const searchResults = getSearchResults()
+  const searchResults = getSearchResults();
   const hasResults =
-    searchResults.creators.length > 0 || searchResults.collections.length > 0 || searchResults.relics.length > 0
+    searchResults.creators.length > 0 || searchResults.collections.length > 0 || searchResults.relics.length > 0;
 
   return (
     <div className="min-h-screen bg-background smoky-gradient relative overflow-hidden">
@@ -215,9 +215,9 @@ export default function HomePage() {
 
             {/* Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
-              <a href="/" className="text-cyan-400 font-medium">
+              <Link href="/" className="text-cyan-400 font-medium">
                 Home
-              </a>
+              </Link>
               <a href="/explore" className="text-gray-300 hover:text-cyan-400 transition-colors">
                 Explore
               </a>
@@ -229,7 +229,7 @@ export default function HomePage() {
               </a>
             </nav>
 
-            {/* Search and Connect */}
+            {/* Search, Connect Wallet and Mobile Menu */}
             <div className="flex items-center space-x-4">
               <Button
                 variant="ghost"
@@ -239,7 +239,10 @@ export default function HomePage() {
               >
                 <Search className="w-5 h-5" />
               </Button>
+
+              {/* Connect Wallet Button avec style Overmind */}
               <RainbowKitCustomConnectButton />
+
               <Button
                 variant="ghost"
                 size="sm"
@@ -277,9 +280,9 @@ export default function HomePage() {
               </Button>
             </div>
             <nav className="flex-1 flex flex-col space-y-6 p-6">
-              <a href="/" className="text-cyan-400 font-medium text-xl" onClick={() => setIsMobileMenuOpen(false)}>
+              <Link href="/" className="text-cyan-400 font-medium text-xl" onClick={() => setIsMobileMenuOpen(false)}>
                 Home
-              </a>
+              </Link>
               <a
                 href="/explore"
                 className="text-gray-300 hover:text-cyan-400 transition-colors text-xl"
@@ -344,7 +347,7 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-          {curatedRelics.map((relic) => (
+          {curatedRelics.map(relic => (
             <Card
               key={relic.id}
               className="group obsidian-texture border-border/30 overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:rune-glow"
@@ -393,7 +396,7 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          {featuredCollections.map((collection) => (
+          {featuredCollections.map(collection => (
             <Link key={collection.id} href="/collections">
               <Card className="group obsidian-texture border-border/30 overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:rune-glow">
                 <div className="aspect-[4/3] relative overflow-hidden">
@@ -509,7 +512,7 @@ export default function HomePage() {
               <Input
                 placeholder="Search for creators, collections, or relics..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 className="w-full bg-background/50 border-border/30 text-card-foreground placeholder:text-muted-foreground pl-10 py-3 text-lg"
                 autoFocus
               />
@@ -520,7 +523,7 @@ export default function HomePage() {
               <div className="max-h-96 overflow-y-auto space-y-6">
                 {!hasResults && (
                   <div className="text-center py-8">
-                    <p className="text-muted-foreground text-lg">No results found for "{searchQuery}"</p>
+                    <p className="text-muted-foreground text-lg">No results found for &quot;{searchQuery}&quot;</p>
                   </div>
                 )}
 
@@ -532,7 +535,7 @@ export default function HomePage() {
                       <span>Creators ({searchResults.creators.length})</span>
                     </h3>
                     <div className="grid gap-3">
-                      {searchResults.creators.map((creator) => (
+                      {searchResults.creators.map(creator => (
                         <Link key={creator.id} href="/creators">
                           <Card className="p-4 obsidian-texture border-border/30 hover:rune-glow cursor-pointer transition-all duration-300">
                             <div className="flex items-center space-x-4">
@@ -571,7 +574,7 @@ export default function HomePage() {
                       <span>Collections ({searchResults.collections.length})</span>
                     </h3>
                     <div className="grid gap-3">
-                      {searchResults.collections.map((collection) => (
+                      {searchResults.collections.map(collection => (
                         <Link key={collection.id} href="/collections">
                           <Card className="p-4 obsidian-texture border-border/30 hover:rune-glow cursor-pointer transition-all duration-300">
                             <div className="flex items-center space-x-4">
@@ -602,13 +605,13 @@ export default function HomePage() {
                       <span>Relics ({searchResults.relics.length})</span>
                     </h3>
                     <div className="grid gap-3">
-                      {searchResults.relics.map((relic) => (
+                      {searchResults.relics.map(relic => (
                         <Card
                           key={relic.id}
                           className="p-4 obsidian-texture border-border/30 hover:rune-glow cursor-pointer transition-all duration-300"
                           onClick={() => {
-                            setSelectedRelic(relic)
-                            setIsSearchOpen(false)
+                            setSelectedRelic(relic);
+                            setIsSearchOpen(false);
                           }}
                         >
                           <div className="flex items-center space-x-4">
@@ -636,5 +639,5 @@ export default function HomePage() {
         </DialogContent>
       </Dialog>
     </div>
-  )
+  );
 }

@@ -1,10 +1,11 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Search, X, Users, Eye, Menu } from "lucide-react"
+import { useState } from "react";
+import Link from "next/link";
+import { Eye, Menu, Search, Users, X } from "lucide-react";
+import { Badge } from "~~/components/ui/badge";
+import { Button } from "~~/components/ui/button";
+import { Card } from "~~/components/ui/card";
 
 // Mock creators data
 const creators = [
@@ -104,22 +105,22 @@ const creators = [
     speciality: "Code Weapons",
     twitterHandle: "ghosthacker",
   },
-]
+];
 
 export default function CreatorsPage() {
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const filteredCreators = creators.filter(
-    (creator) =>
+    creator =>
       creator.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       creator.speciality.toLowerCase().includes(searchQuery.toLowerCase()),
-  )
+  );
 
-  const handleFollowClick = (twitterHandle) => {
-    window.open(`https://twitter.com/${twitterHandle}`, "_blank")
-  }
+  const handleFollowClick = (twitterHandle: string) => {
+    window.open(`https://twitter.com/${twitterHandle}`, "_blank");
+  };
 
   return (
     <div className="min-h-screen bg-background smoky-gradient">
@@ -139,9 +140,9 @@ export default function CreatorsPage() {
 
             {/* Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
-              <a href="/" className="text-gray-300 hover:text-cyan-400 transition-colors">
+              <Link href="/" className="text-gray-300 hover:text-cyan-400 transition-colors">
                 Home
-              </a>
+              </Link>
               <a href="/explore" className="text-gray-300 hover:text-cyan-400 transition-colors">
                 Explore
               </a>
@@ -202,13 +203,13 @@ export default function CreatorsPage() {
               </Button>
             </div>
             <nav className="flex-1 flex flex-col space-y-6 p-6">
-              <a
+              <Link
                 href="/"
                 className="text-gray-300 hover:text-cyan-400 transition-colors text-xl"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Home
-              </a>
+              </Link>
               <a
                 href="/explore"
                 className="text-gray-300 hover:text-cyan-400 transition-colors text-xl"
@@ -244,7 +245,7 @@ export default function CreatorsPage() {
                 type="text"
                 placeholder="Search creators..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 className="flex-1 bg-transparent text-white placeholder-gray-400 outline-none"
                 autoFocus
               />
@@ -285,7 +286,7 @@ export default function CreatorsPage() {
       {/* Creators Grid */}
       <main className="container px-6 py-12 my-0 mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {filteredCreators.map((creator) => (
+          {filteredCreators.map(creator => (
             <Card
               key={creator.id}
               className="group obsidian-texture border-border/30 overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:rune-glow"
@@ -350,11 +351,11 @@ export default function CreatorsPage() {
 
         {filteredCreators.length === 0 && searchQuery && (
           <div className="text-center py-12">
-            <p className="text-gray-400 text-lg">No creators found matching "{searchQuery}"</p>
+            <p className="text-gray-400 text-lg">No creators found matching &quot;{searchQuery}&quot;</p>
             <p className="text-gray-500 text-sm mt-2">Try searching for a different term</p>
           </div>
         )}
       </main>
     </div>
-  )
+  );
 }

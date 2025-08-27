@@ -5,10 +5,10 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
- * @title OvermindRelic
- * @dev Sacred NFT artifacts from the digital realm
+ * @title OvermindGallery
+ * @dev Sacred NFT artifacts from The Overmind Gallery
  */
-contract OvermindRelic is ERC721URIStorage, Ownable {
+contract OvermindGallery is ERC721URIStorage, Ownable {
     uint256 private _tokenIdCounter;
     
     struct Relic {
@@ -31,7 +31,7 @@ contract OvermindRelic is ERC721URIStorage, Ownable {
     event RelicPurchased(uint256 indexed tokenId, address indexed buyer, uint256 price);
     event CreatorVerified(address indexed creator);
     
-    constructor() ERC721("OvermindRelic", "RELIC") Ownable(msg.sender) {}
+    constructor() ERC721("OvermindGallery", "GALLERY") Ownable(msg.sender) {}
     
     /**
      * @dev Mint a new sacred relic

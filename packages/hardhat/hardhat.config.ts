@@ -38,7 +38,7 @@ const config: HardhatUserConfig = {
       },
     ],
   },
-  defaultNetwork: "localhost",
+  defaultNetwork: "intuition",
   namedAccounts: {
     deployer: {
       // By default, it will take the first Hardhat account as the deployer
@@ -124,6 +124,10 @@ const config: HardhatUserConfig = {
     },
     celoSepolia: {
       url: "https://forno.celo-sepolia.celo-testnet.org/",
+      accounts: [deployerPrivateKey],
+    },
+    intuition: {
+      url: "https://testnet.rpc.intuition.systems",
       accounts: [deployerPrivateKey],
     },
   },

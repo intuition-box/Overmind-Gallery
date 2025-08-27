@@ -1,38 +1,37 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
-import { Search, X, Eye, Menu } from "lucide-react";
+import { useState } from "react";
+import Link from "next/link";
 import { Web3RelicCard } from "../../components/Web3RelicCard";
-import { RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
-import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import { Eye, Menu, X } from "lucide-react";
 import { formatEther } from "viem";
 import { useAccount } from "wagmi";
+import { RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { Address } from "~~/components/scaffold-eth";
+import { Badge } from "~~/components/ui/badge";
+import { Button } from "~~/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "~~/components/ui/dialog";
+import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 
 export default function ExploreWeb3Page() {
   const [selectedTokenId, setSelectedTokenId] = useState<number | null>(null);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { address: connectedAddress } = useAccount();
 
   // Read all relics from the smart contract
   const { data: relicsForSale } = useScaffoldReadContract({
-    contractName: "OvermindRelic",
+    contractName: "OvermindGallery",
     functionName: "getRelicsForSale",
   });
 
   // Read selected relic data
   const { data: selectedRelicData } = useScaffoldReadContract({
-    contractName: "OvermindRelic",
+    contractName: "OvermindGallery",
     functionName: "relics",
-    args: selectedTokenId !== null ? [BigInt(selectedTokenId)] : undefined,
+    args: selectedTokenId !== null ? ([BigInt(selectedTokenId)] as const) : ([undefined] as const),
   });
 
-  const { writeContractAsync: purchaseRelic } = useScaffoldWriteContract("OvermindRelic");
+  const { writeContractAsync: purchaseRelic } = useScaffoldWriteContract("OvermindGallery");
 
   const handlePurchase = async () => {
     if (!selectedRelicData || selectedTokenId === null || !connectedAddress) return;
@@ -67,9 +66,9 @@ export default function ExploreWeb3Page() {
 
             {/* Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
-              <a href="/" className="text-gray-300 hover:text-cyan-400 transition-colors">
+              <Link href="/" className="text-gray-300 hover:text-cyan-400 transition-colors">
                 Home
-              </a>
+              </Link>
               <a href="/explore-web3" className="text-cyan-400 font-medium">
                 Explore
               </a>
@@ -81,16 +80,8 @@ export default function ExploreWeb3Page() {
               </a>
             </nav>
 
-            {/* Search and Connect */}
+            {/* Connect Wallet */}
             <div className="flex items-center space-x-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsSearchOpen(true)}
-                className="text-gray-300 hover:text-cyan-400 hover:bg-cyan-400/10"
-              >
-                <Search className="w-5 h-5" />
-              </Button>
               <RainbowKitCustomConnectButton />
               <Button
                 variant="ghost"
@@ -121,7 +112,7 @@ export default function ExploreWeb3Page() {
         {/* NFT Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {relicsForSale && relicsForSale.length > 0 ? (
-            relicsForSale.map((tokenId) => (
+            relicsForSale.map(tokenId => (
               <Web3RelicCard
                 key={tokenId.toString()}
                 tokenId={Number(tokenId)}
@@ -181,7 +172,7 @@ export default function ExploreWeb3Page() {
                   </div>
 
                   {selectedRelicData[3] && connectedAddress && (
-                    <Button 
+                    <Button
                       onClick={handlePurchase}
                       className="w-full bg-primary/20 text-primary border border-primary/30 hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:rune-glow py-6 text-lg font-semibold"
                     >
@@ -219,9 +210,13 @@ export default function ExploreWeb3Page() {
               </Button>
             </div>
             <nav className="flex-1 flex flex-col space-y-6 p-6">
-              <a href="/" className="text-gray-300 hover:text-cyan-400 transition-colors text-xl" onClick={() => setIsMobileMenuOpen(false)}>
+              <Link
+                href="/"
+                className="text-gray-300 hover:text-cyan-400 transition-colors text-xl"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
                 Home
-              </a>
+              </Link>
               <a
                 href="/explore-web3"
                 className="text-cyan-400 font-medium text-xl"

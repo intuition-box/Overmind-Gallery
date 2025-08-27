@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "./OvermindRelic.sol";
+import "./OvermindGallery.sol";
 
 /**
- * @title OvermindCollections
- * @dev Manage curated collections of sacred relics
+ * @title OvermindGalleryCollections
+ * @dev Manage curated collections of sacred relics from The Overmind Gallery
  */
-contract OvermindCollections {
+contract OvermindGalleryCollections {
     struct Collection {
         string name;
         string description;
@@ -21,14 +21,14 @@ contract OvermindCollections {
     mapping(address => uint256[]) public creatorCollections;
     
     uint256 public collectionCounter;
-    OvermindRelic public relicContract;
+    OvermindGallery public relicContract;
     
     event CollectionCreated(uint256 indexed collectionId, address indexed creator, string name);
     event RelicAddedToCollection(uint256 indexed collectionId, uint256 indexed tokenId);
     event CollectionUpdated(uint256 indexed collectionId);
     
     constructor(address _relicContract) {
-        relicContract = OvermindRelic(_relicContract);
+        relicContract = OvermindGallery(_relicContract);
     }
     
     /**

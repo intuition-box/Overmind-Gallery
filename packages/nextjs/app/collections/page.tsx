@@ -1,8 +1,30 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Search, Eye, Users, Sparkles, X, Menu } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import Link from "next/link";
+import { Eye, Menu, Search, Sparkles, Users, X } from "lucide-react";
+import { Button } from "~~/components/ui/button";
+
+// Type definitions
+interface NFT {
+  id: number;
+  name: string;
+  price: string;
+  image: string;
+}
+
+interface Collection {
+  id: number;
+  name: string;
+  description: string;
+  creator: string;
+  itemCount: number;
+  floorPrice: string;
+  image: string;
+  banner: string;
+  verified: boolean;
+  nfts: NFT[];
+}
 
 const collections = [
   {
@@ -366,28 +388,28 @@ const collections = [
       },
     ],
   },
-]
+];
 
 export default function CollectionsPage() {
-  const [searchQuery, setSearchQuery] = useState("")
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [selectedCollection, setSelectedCollection] = useState(null)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [selectedCollection, setSelectedCollection] = useState<Collection | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const filteredCollections = collections.filter(
-    (collection) =>
+    collection =>
       collection.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       collection.creator.toLowerCase().includes(searchQuery.toLowerCase()) ||
       collection.description.toLowerCase().includes(searchQuery.toLowerCase()),
-  )
+  );
 
-  const openCollectionModal = (collection) => {
-    setSelectedCollection(collection)
-  }
+  const openCollectionModal = (collection: Collection) => {
+    setSelectedCollection(collection);
+  };
 
   const closeCollectionModal = () => {
-    setSelectedCollection(null)
-  }
+    setSelectedCollection(null);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
@@ -415,9 +437,9 @@ export default function CollectionsPage() {
 
             {/* Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
-              <a href="/" className="text-gray-300 hover:text-cyan-400 transition-colors">
+              <Link href="/" className="text-gray-300 hover:text-cyan-400 transition-colors">
                 Home
-              </a>
+              </Link>
               <a href="/explore" className="text-gray-300 hover:text-cyan-400 transition-colors">
                 Explore
               </a>
@@ -479,13 +501,13 @@ export default function CollectionsPage() {
               </Button>
             </div>
             <nav className="flex-1 flex flex-col space-y-6 p-6">
-              <a
+              <Link
                 href="/"
                 className="text-gray-300 hover:text-cyan-400 transition-colors text-xl"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Home
-              </a>
+              </Link>
               <a
                 href="/explore"
                 className="text-gray-300 hover:text-cyan-400 transition-colors text-xl"
@@ -522,7 +544,7 @@ export default function CollectionsPage() {
                 type="text"
                 placeholder="Search collections..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 className="flex-1 bg-transparent text-white placeholder-gray-400 outline-none"
                 autoFocus
               />
@@ -567,7 +589,7 @@ export default function CollectionsPage() {
             {/* Modal Content */}
             <div className="p-8 overflow-y-auto max-h-[calc(90vh-200px)]">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {selectedCollection.nfts?.map((nft) => (
+                {selectedCollection.nfts?.map(nft => (
                   <div
                     key={nft.id}
                     className="group relative bg-gradient-to-br from-gray-800/50 to-black/50 border border-gray-700/50 rounded-xl overflow-hidden hover:border-cyan-500/50 transition-all duration-500 hover:shadow-xl hover:shadow-cyan-500/20"
@@ -617,13 +639,13 @@ export default function CollectionsPage() {
           </h1>
           <p className="text-gray-300 text-lg max-w-2xl mx-auto">
             Curated assemblages of digital artifacts, each collection a testament to the artistry and vision of The
-            Overmind's chosen creators.
+            Overmind&apos;s chosen creators.
           </p>
         </div>
 
         {/* Collections Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredCollections.map((collection) => (
+          {filteredCollections.map(collection => (
             <div
               key={collection.id}
               className="group relative bg-gradient-to-br from-gray-900/80 to-black/80 border border-gray-800/50 rounded-xl overflow-hidden hover:border-cyan-500/50 transition-all duration-500 hover:shadow-2xl hover:shadow-cyan-500/20 cursor-pointer"
@@ -708,5 +730,5 @@ export default function CollectionsPage() {
         )}
       </main>
     </div>
-  )
+  );
 }

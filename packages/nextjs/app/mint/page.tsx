@@ -1,17 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Eye, Upload } from "lucide-react";
-import { RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
-import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { parseEther } from "viem";
 import { useAccount } from "wagmi";
+import { RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { Address } from "~~/components/scaffold-eth";
-import { useRouter } from "next/navigation";
+import { Badge } from "~~/components/ui/badge";
+import { Button } from "~~/components/ui/button";
+import { Card } from "~~/components/ui/card";
+import { Input } from "~~/components/ui/input";
+import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 
 export default function MintPage() {
   const router = useRouter();
@@ -24,7 +25,7 @@ export default function MintPage() {
   });
   const [isMinting, setIsMinting] = useState(false);
 
-  const { writeContractAsync: mintRelic } = useScaffoldWriteContract("OvermindRelic");
+  const { writeContractAsync: mintRelic } = useScaffoldWriteContract("OvermindGallery");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,15 +38,10 @@ export default function MintPage() {
     try {
       // In a real app, you would upload metadata to IPFS first
       const mockTokenURI = `ipfs://Qm${formData.title.replace(/\s/g, "")}`;
-      
+
       await mintRelic({
         functionName: "mintRelic",
-        args: [
-          formData.title,
-          mockTokenURI,
-          formData.imageUrl,
-          parseEther(formData.price),
-        ],
+        args: [formData.title, mockTokenURI, formData.imageUrl, parseEther(formData.price)],
       });
 
       // Redirect to explore page after successful mint
@@ -75,9 +71,9 @@ export default function MintPage() {
             </div>
 
             <nav className="hidden md:flex items-center space-x-8">
-              <a href="/" className="text-gray-300 hover:text-cyan-400 transition-colors">
+              <Link href="/" className="text-gray-300 hover:text-cyan-400 transition-colors">
                 Home
-              </a>
+              </Link>
               <a href="/explore-web3" className="text-gray-300 hover:text-cyan-400 transition-colors">
                 Explore
               </a>
@@ -108,14 +104,12 @@ export default function MintPage() {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Title */}
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-2 block">
-                Relic Name *
-              </label>
+              <label className="text-sm font-medium text-gray-300 mb-2 block">Relic Name *</label>
               <Input
                 type="text"
                 placeholder="The Eternal Codex"
                 value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                onChange={e => setFormData({ ...formData, title: e.target.value })}
                 className="bg-background/50 border-border/30 text-card-foreground"
                 required
               />
@@ -123,15 +117,13 @@ export default function MintPage() {
 
             {/* Price */}
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-2 block">
-                Price (ETH) *
-              </label>
+              <label className="text-sm font-medium text-gray-300 mb-2 block">Price (ETH) *</label>
               <Input
                 type="number"
                 step="0.001"
                 placeholder="2.5"
                 value={formData.price}
-                onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                onChange={e => setFormData({ ...formData, price: e.target.value })}
                 className="bg-background/50 border-border/30 text-card-foreground"
                 required
               />
@@ -139,14 +131,12 @@ export default function MintPage() {
 
             {/* Image URL */}
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-2 block">
-                Image URL *
-              </label>
+              <label className="text-sm font-medium text-gray-300 mb-2 block">Image URL *</label>
               <Input
                 type="text"
                 placeholder="/mystical-artifact.png or https://..."
                 value={formData.imageUrl}
-                onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                onChange={e => setFormData({ ...formData, imageUrl: e.target.value })}
                 className="bg-background/50 border-border/30 text-card-foreground"
                 required
               />
@@ -157,13 +147,11 @@ export default function MintPage() {
 
             {/* Description */}
             <div>
-              <label className="text-sm font-medium text-gray-300 mb-2 block">
-                Description
-              </label>
+              <label className="text-sm font-medium text-gray-300 mb-2 block">Description</label>
               <textarea
                 placeholder="An ancient artifact containing the wisdom of the digital realm..."
                 value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                onChange={e => setFormData({ ...formData, description: e.target.value })}
                 className="w-full min-h-[120px] px-3 py-2 bg-background/50 border border-border/30 rounded-md text-card-foreground resize-none"
               />
             </div>
@@ -171,16 +159,14 @@ export default function MintPage() {
             {/* Preview */}
             {formData.imageUrl && (
               <div>
-                <label className="text-sm font-medium text-gray-300 mb-2 block">
-                  Preview
-                </label>
+                <label className="text-sm font-medium text-gray-300 mb-2 block">Preview</label>
                 <Card className="obsidian-texture border-border/30 overflow-hidden max-w-xs">
                   <div className="aspect-square relative">
                     <img
                       src={formData.imageUrl}
                       alt={formData.title || "Preview"}
                       className="w-full h-full object-cover"
-                      onError={(e) => {
+                      onError={e => {
                         (e.target as HTMLImageElement).src = "/placeholder.svg";
                       }}
                     />

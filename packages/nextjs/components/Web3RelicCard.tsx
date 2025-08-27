@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
-import { formatEther, parseEther } from "viem";
+import { formatEther } from "viem";
 import { useAccount } from "wagmi";
 import { Address } from "~~/components/scaffold-eth";
+import { Badge } from "~~/components/ui/badge";
+import { Button } from "~~/components/ui/button";
+import { Card } from "~~/components/ui/card";
+import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 
 interface Web3RelicCardProps {
   tokenId: number;
@@ -20,24 +20,18 @@ export const Web3RelicCard = ({ tokenId, onClick }: Web3RelicCardProps) => {
 
   // Read relic data from smart contract
   const { data: relicData } = useScaffoldReadContract({
-    contractName: "OvermindRelic",
+    contractName: "OvermindGallery",
     functionName: "relics",
     args: [BigInt(tokenId)],
   });
 
-  const { data: tokenURI } = useScaffoldReadContract({
-    contractName: "OvermindRelic",
-    functionName: "tokenURI",
-    args: [BigInt(tokenId)],
-  });
-
   const { data: owner } = useScaffoldReadContract({
-    contractName: "OvermindRelic",
+    contractName: "OvermindGallery",
     functionName: "ownerOf",
     args: [BigInt(tokenId)],
   });
 
-  const { writeContractAsync: purchaseRelic } = useScaffoldWriteContract("OvermindRelic");
+  const { writeContractAsync: purchaseRelic } = useScaffoldWriteContract("OvermindGallery");
 
   const handlePurchase = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -84,9 +78,7 @@ export const Web3RelicCard = ({ tokenId, onClick }: Web3RelicCardProps) => {
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        {!isForSale && (
-          <Badge className="absolute top-2 right-2 bg-gray-800/80">Not for sale</Badge>
-        )}
+        {!isForSale && <Badge className="absolute top-2 right-2 bg-gray-800/80">Not for sale</Badge>}
       </div>
 
       <div className="p-6 space-y-4">
@@ -113,9 +105,7 @@ export const Web3RelicCard = ({ tokenId, onClick }: Web3RelicCardProps) => {
               {isPurchasing ? "Acquiring..." : "Acquire"}
             </Button>
           )}
-          {isOwner && (
-            <Badge className="bg-cyan-500/20 text-cyan-400 border-cyan-400/30">Owned</Badge>
-          )}
+          {isOwner && <Badge className="bg-cyan-500/20 text-cyan-400 border-cyan-400/30">Owned</Badge>}
         </div>
       </div>
     </Card>

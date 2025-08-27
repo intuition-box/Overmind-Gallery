@@ -1,11 +1,12 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Badge } from "@/components/ui/badge"
-import { Search, X, Eye, Menu } from "lucide-react"
+import { useState } from "react";
+import Link from "next/link";
+import { Eye, Menu, Search, X } from "lucide-react";
+import { Badge } from "~~/components/ui/badge";
+import { Button } from "~~/components/ui/button";
+import { Card } from "~~/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "~~/components/ui/dialog";
 
 // Mock NFT data
 const nftRelics = [
@@ -73,19 +74,19 @@ const nftRelics = [
     image: "/spectral-blade-sword-glowing-code-mystical-weapon.png",
     description: "A blade forged from pure code, capable of cutting through any firewall.",
   },
-]
+];
 
 export default function ExplorePage() {
-  const [selectedRelic, setSelectedRelic] = useState<(typeof nftRelics)[0] | null>(null)
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [selectedRelic, setSelectedRelic] = useState<(typeof nftRelics)[0] | null>(null);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const filteredRelics = nftRelics.filter(
-    (relic) =>
+    relic =>
       relic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       relic.creator.toLowerCase().includes(searchQuery.toLowerCase()),
-  )
+  );
 
   return (
     <div className="min-h-screen bg-background smoky-gradient">
@@ -105,9 +106,9 @@ export default function ExplorePage() {
 
             {/* Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
-              <a href="/" className="text-gray-300 hover:text-cyan-400 transition-colors">
+              <Link href="/" className="text-gray-300 hover:text-cyan-400 transition-colors">
                 Home
-              </a>
+              </Link>
               <a href="/explore" className="text-cyan-400 font-medium">
                 Explore
               </a>
@@ -168,13 +169,13 @@ export default function ExplorePage() {
               </Button>
             </div>
             <nav className="flex-1 flex flex-col space-y-6 p-6">
-              <a
+              <Link
                 href="/"
                 className="text-gray-300 hover:text-cyan-400 transition-colors text-xl"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Home
-              </a>
+              </Link>
               <a
                 href="/explore"
                 className="text-cyan-400 font-medium text-xl"
@@ -210,7 +211,7 @@ export default function ExplorePage() {
                 type="text"
                 placeholder="Search artifacts..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 className="flex-1 bg-transparent text-white placeholder-gray-400 outline-none"
                 autoFocus
               />
@@ -242,7 +243,7 @@ export default function ExplorePage() {
       {/* NFT Grid */}
       <main className="container px-6 py-12 my-0 mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {filteredRelics.map((relic) => (
+          {filteredRelics.map(relic => (
             <Card
               key={relic.id}
               className="group obsidian-texture border-border/30 overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:rune-glow"
@@ -283,7 +284,7 @@ export default function ExplorePage() {
 
         {filteredRelics.length === 0 && searchQuery && (
           <div className="text-center py-12">
-            <p className="text-gray-400 text-lg">No artifacts found matching "{searchQuery}"</p>
+            <p className="text-gray-400 text-lg">No artifacts found matching &quot;{searchQuery}&quot;</p>
             <p className="text-gray-500 text-sm mt-2">Try searching for a different term</p>
           </div>
         )}
@@ -340,5 +341,5 @@ export default function ExplorePage() {
         </DialogContent>
       </Dialog>
     </div>
-  )
+  );
 }
