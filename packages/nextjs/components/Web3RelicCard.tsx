@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { formatEther } from "viem";
 import { useAccount } from "wagmi";
 import { Address } from "~~/components/scaffold-eth";
@@ -72,10 +73,11 @@ export const Web3RelicCard = ({ tokenId, onClick }: Web3RelicCardProps) => {
       onClick={onClick}
     >
       <div className="aspect-square relative overflow-hidden">
-        <img
+        <Image
           src={imageURI || "/placeholder.svg"}
           alt={title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          fill
+          className="object-cover transition-transform duration-500 group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         {!isForSale && <Badge className="absolute top-2 right-2 bg-gray-800/80">Not for sale</Badge>}

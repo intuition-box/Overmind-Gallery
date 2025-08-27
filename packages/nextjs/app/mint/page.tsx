@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, Upload } from "lucide-react";
@@ -162,10 +163,11 @@ export default function MintPage() {
                 <label className="text-sm font-medium text-gray-300 mb-2 block">Preview</label>
                 <Card className="obsidian-texture border-border/30 overflow-hidden max-w-xs">
                   <div className="aspect-square relative">
-                    <img
+                    <Image
                       src={formData.imageUrl}
                       alt={formData.title || "Preview"}
-                      className="w-full h-full object-cover"
+                      fill
+                      className="object-cover"
                       onError={e => {
                         (e.target as HTMLImageElement).src = "/placeholder.svg";
                       }}

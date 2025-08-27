@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Eye, Menu, Search, X } from "lucide-react";
 import { Badge } from "~~/components/ui/badge";
@@ -250,10 +251,11 @@ export default function ExplorePage() {
               onClick={() => setSelectedRelic(relic)}
             >
               <div className="aspect-square relative overflow-hidden">
-                <img
+                <Image
                   src={relic.image || "/placeholder.svg"}
                   alt={relic.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
@@ -303,10 +305,11 @@ export default function ExplorePage() {
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="aspect-square relative overflow-hidden rounded-lg">
-                  <img
+                  <Image
                     src={selectedRelic.image || "/placeholder.svg"}
                     alt={selectedRelic.title}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
                   />
                 </div>
 

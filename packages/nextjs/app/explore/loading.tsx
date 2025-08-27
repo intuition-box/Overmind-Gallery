@@ -6,5 +6,5 @@ export default function Loading() {
         <p className="text-gray-400">Loading sacred relics...</p>
       </div>
     </div>
-  )
+  );
 }

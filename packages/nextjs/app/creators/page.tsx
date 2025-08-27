@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Eye, Menu, Search, Users, X } from "lucide-react";
 import { Badge } from "~~/components/ui/badge";
@@ -296,10 +297,11 @@ export default function CreatorsPage() {
                 <div className="flex items-center space-x-4">
                   <div className="relative">
                     <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-cyan-400/30">
-                      <img
+                      <Image
                         src={creator.avatar || "/placeholder.svg"}
                         alt={creator.name}
-                        className="w-full h-full object-cover"
+                        fill
+                        className="object-cover"
                       />
                     </div>
                     {creator.verified && (

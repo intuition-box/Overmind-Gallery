@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Eye, Folder, Gem, Menu, Search, User, X } from "lucide-react";
 import { RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
@@ -354,10 +355,11 @@ export default function HomePage() {
               onClick={() => setSelectedRelic(relic)}
             >
               <div className="aspect-square relative overflow-hidden">
-                <img
+                <Image
                   src={relic.image || "/placeholder.svg"}
                   alt={relic.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
@@ -400,10 +402,11 @@ export default function HomePage() {
             <Link key={collection.id} href="/collections">
               <Card className="group obsidian-texture border-border/30 overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:rune-glow">
                 <div className="aspect-[4/3] relative overflow-hidden">
-                  <img
+                  <Image
                     src={collection.image || "/placeholder.svg"}
                     alt={collection.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                   <div className="absolute bottom-4 left-4 right-4">
@@ -457,10 +460,11 @@ export default function HomePage() {
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="aspect-square relative overflow-hidden rounded-lg">
-                  <img
+                  <Image
                     src={selectedRelic.image || "/placeholder.svg"}
                     alt={selectedRelic.title}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
                   />
                 </div>
 
@@ -539,10 +543,12 @@ export default function HomePage() {
                         <Link key={creator.id} href="/creators">
                           <Card className="p-4 obsidian-texture border-border/30 hover:rune-glow cursor-pointer transition-all duration-300">
                             <div className="flex items-center space-x-4">
-                              <img
+                              <Image
                                 src={creator.avatar || "/placeholder.svg"}
                                 alt={creator.name}
-                                className="w-12 h-12 rounded-full object-cover"
+                                width={48}
+                                height={48}
+                                className="rounded-full object-cover"
                               />
                               <div className="flex-1">
                                 <div className="flex items-center space-x-2">
@@ -578,10 +584,12 @@ export default function HomePage() {
                         <Link key={collection.id} href="/collections">
                           <Card className="p-4 obsidian-texture border-border/30 hover:rune-glow cursor-pointer transition-all duration-300">
                             <div className="flex items-center space-x-4">
-                              <img
+                              <Image
                                 src={collection.image || "/placeholder.svg"}
                                 alt={collection.name}
-                                className="w-12 h-12 rounded-lg object-cover"
+                                width={48}
+                                height={48}
+                                className="rounded-lg object-cover"
                               />
                               <div className="flex-1">
                                 <h4 className="font-semibold text-card-foreground">{collection.name}</h4>
@@ -615,10 +623,12 @@ export default function HomePage() {
                           }}
                         >
                           <div className="flex items-center space-x-4">
-                            <img
+                            <Image
                               src={relic.image || "/placeholder.svg"}
                               alt={relic.title}
-                              className="w-12 h-12 rounded-lg object-cover"
+                              width={48}
+                              height={48}
+                              className="rounded-lg object-cover"
                             />
                             <div className="flex-1">
                               <h4 className="font-semibold text-card-foreground">{relic.title}</h4>

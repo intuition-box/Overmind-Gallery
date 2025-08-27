@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Eye, Menu, Search, Sparkles, Users, X } from "lucide-react";
 import { Button } from "~~/components/ui/button";
@@ -596,10 +597,11 @@ export default function CollectionsPage() {
                   >
                     {/* NFT Image */}
                     <div className="relative aspect-square overflow-hidden">
-                      <img
+                      <Image
                         src={nft.image || "/placeholder.svg"}
                         alt={nft.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-700"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     </div>
@@ -653,10 +655,11 @@ export default function CollectionsPage() {
             >
               {/* Collection Banner */}
               <div className="relative h-48 overflow-hidden">
-                <img
+                <Image
                   src={collection.banner || "/placeholder.svg"}
                   alt={collection.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  fill
+                  className="object-cover group-hover:scale-110 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
 
@@ -672,10 +675,12 @@ export default function CollectionsPage() {
               <div className="p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center space-x-3">
-                    <img
+                    <Image
                       src={collection.image || "/placeholder.svg"}
                       alt={collection.name}
-                      className="w-12 h-12 rounded-lg object-cover border border-gray-700"
+                      width={48}
+                      height={48}
+                      className="rounded-lg object-cover border border-gray-700"
                     />
                     <div>
                       <h3 className="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">

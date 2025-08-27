@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Web3RelicCard } from "../../components/Web3RelicCard";
 import { Eye, Menu, X } from "lucide-react";
@@ -141,10 +142,11 @@ export default function ExploreWeb3Page() {
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="aspect-square relative overflow-hidden rounded-lg">
-                  <img
+                  <Image
                     src={selectedRelicData[4] || "/placeholder.svg"}
                     alt={selectedRelicData[0]}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
                   />
                 </div>
 
