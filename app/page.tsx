@@ -6,12 +6,10 @@ import { Card } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { Search, Eye, User, Folder, Gem, X, Menu } from "lucide-react"
+import { Search, Eye, User, Folder, Gem, X } from "lucide-react"
 import Link from "next/link"
-import { ConnectButton } from "@rainbow-me/rainbowkit"
-import { Balance } from "@/components/web3/Balance"
-import { NetworkInfo } from "@/components/web3/NetworkInfo"
 import { RelicCard } from "@/components/web3/RelicCard"
+import { Header } from "@/components/layout/Header"
 
 // Mock curated NFTs for homepage
 const curatedRelics = [
@@ -158,7 +156,6 @@ export default function HomePage() {
   const [selectedRelic, setSelectedRelic] = useState<(typeof curatedRelics)[0] | null>(null)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const getSearchResults = () => {
     if (!searchQuery.trim()) return { creators: [], collections: [], relics: [] }
@@ -199,212 +196,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Header */}
-      <header className="relative z-10 border-b border-gray-800/50 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <div className="flex items-center space-x-3">
-              <div className="relative">
-                <Eye className="w-8 h-8 text-cyan-400" />
-                <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-md"></div>
-              </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
-                The Overmind Gallery
-              </span>
-            </div>
-
-            {/* Navigation */}
-            <nav className="hidden md:flex items-center space-x-8">
-              <a href="/" className="text-cyan-400 font-medium">
-                Home
-              </a>
-              <a href="/explore" className="text-gray-300 hover:text-cyan-400 transition-colors">
-                Explore
-              </a>
-              <a href="/collections" className="text-gray-300 hover:text-cyan-400 transition-colors">
-                Collections
-              </a>
-              <a href="/creators" className="text-gray-300 hover:text-cyan-400 transition-colors">
-                Creators
-              </a>
-            </nav>
-
-            {/* Network Info, Search and Connect */}
-            <div className="flex items-center space-x-4">
-              <div className="hidden md:block">
-                <NetworkInfo />
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsSearchOpen(true)}
-                className="text-gray-300 hover:text-cyan-400 hover:bg-cyan-400/10"
-              >
-                <Search className="w-5 h-5" />
-              </Button>
-              <div className="connect-button-wrapper">
-                <ConnectButton.Custom>
-                  {({
-                    account,
-                    chain,
-                    openAccountModal,
-                    openChainModal,
-                    openConnectModal,
-                    authenticationStatus,
-                    mounted,
-                  }) => {
-                    const ready = mounted && authenticationStatus !== 'loading'
-                    const connected =
-                      ready &&
-                      account &&
-                      chain &&
-                      (!authenticationStatus ||
-                        authenticationStatus === 'authenticated')
-
-                    return (
-                      <div
-                        {...(!ready && {
-                          'aria-hidden': true,
-                          'style': {
-                            opacity: 0,
-                            pointerEvents: 'none',
-                            userSelect: 'none',
-                          },
-                        })}
-                      >
-                        {(() => {
-                          if (!connected) {
-                            return (
-                              <Button 
-                                onClick={openConnectModal}
-                                className="bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white px-6"
-                              >
-                                Connect Wallet
-                              </Button>
-                            )
-                          }
-
-                          if (chain.unsupported) {
-                            return (
-                              <Button 
-                                onClick={openChainModal}
-                                className="bg-red-500 hover:bg-red-600 text-white px-6"
-                              >
-                                Wrong network
-                              </Button>
-                            )
-                          }
-
-                          return (
-                            <div className="flex items-center space-x-2">
-                              <Button
-                                onClick={openChainModal}
-                                variant="outline"
-                                size="sm"
-                                className="border-cyan-400/30 text-cyan-400 hover:bg-cyan-400/10"
-                              >
-                                {chain.hasIcon && (
-                                  <div
-                                    className="w-4 h-4 mr-2 rounded-full overflow-hidden"
-                                    style={{
-                                      background: chain.iconBackground,
-                                    }}
-                                  >
-                                    {chain.iconUrl && (
-                                      <img
-                                        alt={chain.name ?? 'Chain icon'}
-                                        src={chain.iconUrl}
-                                        className="w-4 h-4"
-                                      />
-                                    )}
-                                  </div>
-                                )}
-                                {chain.name}
-                              </Button>
-
-                              <div className="flex flex-col items-end space-y-1">
-                                <Button
-                                  onClick={openAccountModal}
-                                  className="bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white px-4"
-                                >
-                                  {account.displayName}
-                                </Button>
-                                <Balance />
-                              </div>
-                            </div>
-                          )
-                        })()}
-                      </div>
-                    )
-                  }}
-                </ConnectButton.Custom>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsMobileMenuOpen(true)}
-                className="md:hidden text-gray-300 hover:text-cyan-400 hover:bg-cyan-400/10"
-              >
-                <Menu className="w-5 h-5" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Mobile Menu Overlay */}
-      {isMobileMenuOpen && (
-        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 md:hidden">
-          <div className="flex flex-col h-full">
-            <div className="flex items-center justify-between p-6 border-b border-gray-800/50">
-              <div className="flex items-center space-x-3">
-                <div className="relative">
-                  <Eye className="w-8 h-8 text-cyan-400" />
-                  <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-md"></div>
-                </div>
-                <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
-                  The Overmind Gallery
-                </span>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="text-gray-300 hover:text-cyan-400"
-              >
-                <X className="w-5 h-5" />
-              </Button>
-            </div>
-            <nav className="flex-1 flex flex-col space-y-6 p-6">
-              <a href="/" className="text-cyan-400 font-medium text-xl" onClick={() => setIsMobileMenuOpen(false)}>
-                Home
-              </a>
-              <a
-                href="/explore"
-                className="text-gray-300 hover:text-cyan-400 transition-colors text-xl"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Explore
-              </a>
-              <a
-                href="/collections"
-                className="text-gray-300 hover:text-cyan-400 transition-colors text-xl"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Collections
-              </a>
-              <a
-                href="/creators"
-                className="text-gray-300 hover:text-cyan-400 transition-colors text-xl"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Creators
-              </a>
-            </nav>
-          </div>
-        </div>
-      )}
+      <Header currentPage="home" onSearchOpen={() => setIsSearchOpen(true)} />
 
       <header className="text-center relative z-10 py-16">
         <div className="container mx-auto px-6">

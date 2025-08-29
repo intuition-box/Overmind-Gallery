@@ -4,7 +4,8 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Search, X, Users, Eye, Menu } from "lucide-react"
+import { Search, X, Users, Eye } from "lucide-react"
+import { Header } from "@/components/layout/Header"
 
 // Mock creators data
 const creators = [
@@ -109,7 +110,6 @@ const creators = [
 export default function CreatorsPage() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const filteredCreators = creators.filter(
     (creator) =>
@@ -123,117 +123,7 @@ export default function CreatorsPage() {
 
   return (
     <div className="min-h-screen bg-background smoky-gradient">
-      <header className="relative z-10 border-b border-gray-800/50 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <div className="flex items-center space-x-3">
-              <div className="relative">
-                <Eye className="w-8 h-8 text-cyan-400" />
-                <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-md"></div>
-              </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
-                The Overmind Gallery
-              </span>
-            </div>
-
-            {/* Navigation */}
-            <nav className="hidden md:flex items-center space-x-8">
-              <a href="/" className="text-gray-300 hover:text-cyan-400 transition-colors">
-                Home
-              </a>
-              <a href="/explore" className="text-gray-300 hover:text-cyan-400 transition-colors">
-                Explore
-              </a>
-              <a href="/collections" className="text-gray-300 hover:text-cyan-400 transition-colors">
-                Collections
-              </a>
-              <a href="/creators" className="text-cyan-400 font-medium">
-                Creators
-              </a>
-            </nav>
-
-            {/* Search and Connect */}
-            <div className="flex items-center space-x-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsSearchOpen(true)}
-                className="text-gray-300 hover:text-cyan-400 hover:bg-cyan-400/10"
-              >
-                <Search className="w-5 h-5" />
-              </Button>
-              <Button className="bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white px-6">
-                Connect Wallet
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsMobileMenuOpen(true)}
-                className="md:hidden text-gray-300 hover:text-cyan-400 hover:bg-cyan-400/10"
-              >
-                <Menu className="w-5 h-5" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {isMobileMenuOpen && (
-        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 md:hidden">
-          <div className="flex flex-col h-full">
-            <div className="flex items-center justify-between p-6 border-b border-gray-800/50">
-              <div className="flex items-center space-x-3">
-                <div className="relative">
-                  <Eye className="w-8 h-8 text-cyan-400" />
-                  <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-md"></div>
-                </div>
-                <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
-                  The Overmind Gallery
-                </span>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="text-gray-300 hover:text-cyan-400"
-              >
-                <X className="w-5 h-5" />
-              </Button>
-            </div>
-            <nav className="flex-1 flex flex-col space-y-6 p-6">
-              <a
-                href="/"
-                className="text-gray-300 hover:text-cyan-400 transition-colors text-xl"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Home
-              </a>
-              <a
-                href="/explore"
-                className="text-gray-300 hover:text-cyan-400 transition-colors text-xl"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Explore
-              </a>
-              <a
-                href="/collections"
-                className="text-gray-300 hover:text-cyan-400 transition-colors text-xl"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Collections
-              </a>
-              <a
-                href="/creators"
-                className="text-cyan-400 font-medium text-xl"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Creators
-              </a>
-            </nav>
-          </div>
-        </div>
-      )}
+      <Header currentPage="creators" onSearchOpen={() => setIsSearchOpen(true)} />
 
       {isSearchOpen && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-start justify-center pt-32">

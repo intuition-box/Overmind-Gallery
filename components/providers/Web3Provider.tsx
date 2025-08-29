@@ -44,7 +44,6 @@ export function Web3Provider({ children }: Web3ProviderProps) {
           theme={overmindTheme}
           appInfo={{
             appName: 'The Overmind Gallery',
-            disclaimer: 'Where ancient wisdom meets digital artistry',
           }}
         >
           {children}

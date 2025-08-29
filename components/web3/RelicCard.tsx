@@ -34,8 +34,8 @@ export function RelicCard({
   // const { data: relicPower } = getRelicPower(tokenId)
   // const { data: relicCreatorAddress } = getRelicCreator(tokenId)
 
-  // Mock data for now
-  const relicPower = Math.floor(Math.random() * 1000) + 1
+  // Mock data for now - using deterministic value to avoid hydration mismatch
+  const relicPower = ((tokenId * 137) % 1000) + 1
   const relicCreatorAddress = "0x1234567890123456789012345678901234567890"
 
   return (
