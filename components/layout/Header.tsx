@@ -63,7 +63,7 @@ export function Header({ currentPage = 'home', onSearchOpen }: HeaderProps) {
                 onClick={onSearchOpen}
                 className="text-gray-300 hover:text-cyan-400 hover:bg-cyan-400/10"
               >
-                <Search className="w-5 h-5" />
+                <Search className="w-6 h-6" />
               </Button>
               <div className="connect-button-wrapper">
                 <ConnectButton.Custom>

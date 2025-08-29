@@ -400,29 +400,30 @@ export default function CollectionsPage() {
 
       <Header currentPage="collections" onSearchOpen={() => setIsSearchOpen(true)} />
 
-      {/* Search Overlay */}
+      {/* Search Modal */}
       {isSearchOpen && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-start justify-center pt-32">
-          <div className="bg-gray-900/90 border border-cyan-500/30 rounded-lg p-6 w-full max-w-md mx-4 shadow-2xl shadow-cyan-500/20">
-            <div className="flex items-center space-x-3 mb-4">
-              <Search className="w-5 h-5 text-cyan-400" />
-              <input
-                type="text"
-                placeholder="Search collections..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="flex-1 bg-transparent text-white placeholder-gray-400 outline-none"
-                autoFocus
-              />
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsSearchOpen(false)}
-                className="text-gray-400 hover:text-white"
-              >
-                ✕
-              </Button>
-            </div>
+        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 bg-gray-900/95 border border-cyan-500/30 rounded-lg p-6 w-full max-w-md mx-4 shadow-2xl shadow-cyan-500/20">
+          <div className="flex items-center space-x-3 mb-4">
+            <Search className="w-6 h-6 text-cyan-400" />
+            <input
+              type="text"
+              placeholder="Search collections..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="flex-1 bg-transparent text-white placeholder-gray-400 outline-none"
+              autoFocus
+            />
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                setIsSearchOpen(false)
+                setSearchQuery('')
+              }}
+              className="text-gray-400 hover:text-white"
+            >
+              ✕
+            </Button>
           </div>
         </div>
       )}
