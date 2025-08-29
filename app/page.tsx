@@ -9,6 +9,9 @@ import { Input } from "@/components/ui/input"
 import { Search, Eye, User, Folder, Gem, X, Menu } from "lucide-react"
 import Link from "next/link"
 import { ConnectButton } from "@rainbow-me/rainbowkit"
+import { Balance } from "@/components/web3/Balance"
+import { NetworkInfo } from "@/components/web3/NetworkInfo"
+import { RelicCard } from "@/components/web3/RelicCard"
 
 // Mock curated NFTs for homepage
 const curatedRelics = [
@@ -227,8 +230,11 @@ export default function HomePage() {
               </a>
             </nav>
 
-            {/* Search and Connect */}
+            {/* Network Info, Search and Connect */}
             <div className="flex items-center space-x-4">
+              <div className="hidden md:block">
+                <NetworkInfo />
+              </div>
               <Button
                 variant="ghost"
                 size="sm"
@@ -317,15 +323,15 @@ export default function HomePage() {
                                 {chain.name}
                               </Button>
 
-                              <Button
-                                onClick={openAccountModal}
-                                className="bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white px-4"
-                              >
-                                {account.displayName}
-                                {account.displayBalance
-                                  ? ` (${account.displayBalance})`
-                                  : ''}
-                              </Button>
+                              <div className="flex flex-col items-end space-y-1">
+                                <Button
+                                  onClick={openAccountModal}
+                                  className="bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white px-4"
+                                >
+                                  {account.displayName}
+                                </Button>
+                                <Balance />
+                              </div>
                             </div>
                           )
                         })()}
@@ -438,42 +444,16 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-          {curatedRelics.map((relic) => (
-            <Card
+          {curatedRelics.map((relic, index) => (
+            <RelicCard
               key={relic.id}
-              className="group obsidian-texture border-border/30 overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:rune-glow"
-              onClick={() => setSelectedRelic(relic)}
-            >
-              <div className="aspect-square relative overflow-hidden">
-                <img
-                  src={relic.image || "/placeholder.svg"}
-                  alt={relic.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
-
-              <div className="p-6 space-y-4">
-                <div>
-                  <h3 className="font-playfair text-lg font-bold text-card-foreground mb-2 group-hover:text-primary transition-colors">
-                    {relic.title}
-                  </h3>
-                  <p className="text-muted-foreground text-sm">by {relic.creator}</p>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <Badge variant="secondary" className="bg-secondary/20 text-secondary border-secondary/30">
-                    {relic.price}
-                  </Badge>
-                  <Button
-                    size="sm"
-                    className="bg-primary/20 text-primary border border-primary/30 hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:rune-glow"
-                  >
-                    Acquire
-                  </Button>
-                </div>
-              </div>
-            </Card>
+              tokenId={index + 1}
+              title={relic.title}
+              image={relic.image}
+              creator={relic.creator}
+              price={relic.price}
+              onAcquire={() => setSelectedRelic(relic)}
+            />
           ))}
         </div>
       </section>
