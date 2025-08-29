@@ -6,8 +6,10 @@ import { Card } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { Search, Eye, User, Folder, Gem, X, Menu } from "lucide-react"
+import { Search, Eye, User, Folder, Gem, X } from "lucide-react"
 import Link from "next/link"
+import { RelicCard } from "@/components/web3/RelicCard"
+import { Header } from "@/components/layout/Header"
 
 // Mock curated NFTs for homepage
 const curatedRelics = [
@@ -154,7 +156,6 @@ export default function HomePage() {
   const [selectedRelic, setSelectedRelic] = useState<(typeof curatedRelics)[0] | null>(null)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const getSearchResults = () => {
     if (!searchQuery.trim()) return { creators: [], collections: [], relics: [] }
@@ -195,115 +196,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Header */}
-      <header className="relative z-10 border-b border-gray-800/50 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <div className="flex items-center space-x-3">
-              <div className="relative">
-                <Eye className="w-8 h-8 text-cyan-400" />
-                <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-md"></div>
-              </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
-                The Overmind Gallery
-              </span>
-            </div>
-
-            {/* Navigation */}
-            <nav className="hidden md:flex items-center space-x-8">
-              <a href="/" className="text-cyan-400 font-medium">
-                Home
-              </a>
-              <a href="/explore" className="text-gray-300 hover:text-cyan-400 transition-colors">
-                Explore
-              </a>
-              <a href="/collections" className="text-gray-300 hover:text-cyan-400 transition-colors">
-                Collections
-              </a>
-              <a href="/creators" className="text-gray-300 hover:text-cyan-400 transition-colors">
-                Creators
-              </a>
-            </nav>
-
-            {/* Search and Connect */}
-            <div className="flex items-center space-x-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsSearchOpen(true)}
-                className="text-gray-300 hover:text-cyan-400 hover:bg-cyan-400/10"
-              >
-                <Search className="w-5 h-5" />
-              </Button>
-              <Button className="bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white px-6">
-                Connect Wallet
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsMobileMenuOpen(true)}
-                className="md:hidden text-gray-300 hover:text-cyan-400 hover:bg-cyan-400/10"
-              >
-                <Menu className="w-5 h-5" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Mobile Menu Overlay */}
-      {isMobileMenuOpen && (
-        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 md:hidden">
-          <div className="flex flex-col h-full">
-            <div className="flex items-center justify-between p-6 border-b border-gray-800/50">
-              <div className="flex items-center space-x-3">
-                <div className="relative">
-                  <Eye className="w-8 h-8 text-cyan-400" />
-                  <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-md"></div>
-                </div>
-                <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
-                  The Overmind Gallery
-                </span>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="text-gray-300 hover:text-cyan-400"
-              >
-                <X className="w-5 h-5" />
-              </Button>
-            </div>
-            <nav className="flex-1 flex flex-col space-y-6 p-6">
-              <a href="/" className="text-cyan-400 font-medium text-xl" onClick={() => setIsMobileMenuOpen(false)}>
-                Home
-              </a>
-              <a
-                href="/explore"
-                className="text-gray-300 hover:text-cyan-400 transition-colors text-xl"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Explore
-              </a>
-              <a
-                href="/collections"
-                className="text-gray-300 hover:text-cyan-400 transition-colors text-xl"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Collections
-              </a>
-              <a
-                href="/creators"
-                className="text-gray-300 hover:text-cyan-400 transition-colors text-xl"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Creators
-              </a>
-            </nav>
-          </div>
-        </div>
-      )}
+      <Header currentPage="home" onSearchOpen={() => setIsSearchOpen(true)} />
 
       <header className="text-center relative z-10 py-16">
         <div className="container mx-auto px-6">
@@ -343,42 +236,16 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-          {curatedRelics.map((relic) => (
-            <Card
+          {curatedRelics.map((relic, index) => (
+            <RelicCard
               key={relic.id}
-              className="group obsidian-texture border-border/30 overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:rune-glow"
-              onClick={() => setSelectedRelic(relic)}
-            >
-              <div className="aspect-square relative overflow-hidden">
-                <img
-                  src={relic.image || "/placeholder.svg"}
-                  alt={relic.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
-
-              <div className="p-6 space-y-4">
-                <div>
-                  <h3 className="font-playfair text-lg font-bold text-card-foreground mb-2 group-hover:text-primary transition-colors">
-                    {relic.title}
-                  </h3>
-                  <p className="text-muted-foreground text-sm">by {relic.creator}</p>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <Badge variant="secondary" className="bg-secondary/20 text-secondary border-secondary/30">
-                    {relic.price}
-                  </Badge>
-                  <Button
-                    size="sm"
-                    className="bg-primary/20 text-primary border border-primary/30 hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:rune-glow"
-                  >
-                    Acquire
-                  </Button>
-                </div>
-              </div>
-            </Card>
+              tokenId={index + 1}
+              title={relic.title}
+              image={relic.image}
+              creator={relic.creator}
+              price={relic.price}
+              onAcquire={() => setSelectedRelic(relic)}
+            />
           ))}
         </div>
       </section>
