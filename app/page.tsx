@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Search, Eye, User, Folder, Gem, X, Menu } from "lucide-react"
 import Link from "next/link"
+import { ConnectButton } from "@rainbow-me/rainbowkit"
 
 // Mock curated NFTs for homepage
 const curatedRelics = [
@@ -236,9 +237,103 @@ export default function HomePage() {
               >
                 <Search className="w-5 h-5" />
               </Button>
-              <Button className="bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white px-6">
-                Connect Wallet
-              </Button>
+              <div className="connect-button-wrapper">
+                <ConnectButton.Custom>
+                  {({
+                    account,
+                    chain,
+                    openAccountModal,
+                    openChainModal,
+                    openConnectModal,
+                    authenticationStatus,
+                    mounted,
+                  }) => {
+                    const ready = mounted && authenticationStatus !== 'loading'
+                    const connected =
+                      ready &&
+                      account &&
+                      chain &&
+                      (!authenticationStatus ||
+                        authenticationStatus === 'authenticated')
+
+                    return (
+                      <div
+                        {...(!ready && {
+                          'aria-hidden': true,
+                          'style': {
+                            opacity: 0,
+                            pointerEvents: 'none',
+                            userSelect: 'none',
+                          },
+                        })}
+                      >
+                        {(() => {
+                          if (!connected) {
+                            return (
+                              <Button 
+                                onClick={openConnectModal}
+                                className="bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white px-6"
+                              >
+                                Connect Wallet
+                              </Button>
+                            )
+                          }
+
+                          if (chain.unsupported) {
+                            return (
+                              <Button 
+                                onClick={openChainModal}
+                                className="bg-red-500 hover:bg-red-600 text-white px-6"
+                              >
+                                Wrong network
+                              </Button>
+                            )
+                          }
+
+                          return (
+                            <div className="flex items-center space-x-2">
+                              <Button
+                                onClick={openChainModal}
+                                variant="outline"
+                                size="sm"
+                                className="border-cyan-400/30 text-cyan-400 hover:bg-cyan-400/10"
+                              >
+                                {chain.hasIcon && (
+                                  <div
+                                    className="w-4 h-4 mr-2 rounded-full overflow-hidden"
+                                    style={{
+                                      background: chain.iconBackground,
+                                    }}
+                                  >
+                                    {chain.iconUrl && (
+                                      <img
+                                        alt={chain.name ?? 'Chain icon'}
+                                        src={chain.iconUrl}
+                                        className="w-4 h-4"
+                                      />
+                                    )}
+                                  </div>
+                                )}
+                                {chain.name}
+                              </Button>
+
+                              <Button
+                                onClick={openAccountModal}
+                                className="bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white px-4"
+                              >
+                                {account.displayName}
+                                {account.displayBalance
+                                  ? ` (${account.displayBalance})`
+                                  : ''}
+                              </Button>
+                            </div>
+                          )
+                        })()}
+                      </div>
+                    )
+                  }}
+                </ConnectButton.Custom>
+              </div>
               <Button
                 variant="ghost"
                 size="sm"
