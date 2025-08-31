@@ -1,12 +1,12 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { Search, Eye, User, Folder, Gem, X, Menu } from "lucide-react"
+import { Search, Eye, User, Folder, Gem, X, Menu, Calendar, Clock } from "lucide-react"
 import Link from "next/link"
 
 // Mock curated NFTs for homepage
@@ -18,6 +18,7 @@ const curatedRelics = [
     price: "2.5 TRUST",
     image: "/dark-mystical-obsidian-codex-ancient-book-glowing-.png",
     description: "An ancient digital grimoire containing forbidden knowledge of the blockchain realm.",
+    collection: "ancient-codex",
   },
   {
     id: 2,
@@ -26,6 +27,7 @@ const curatedRelics = [
     price: "1.8 TRUST",
     image: "/ethereal-void-walker-dark-figure-glowing-eyes-myst.png",
     description: "A spectral guardian that traverses between digital dimensions.",
+    collection: "void-walkers",
   },
   {
     id: 3,
@@ -34,6 +36,7 @@ const curatedRelics = [
     price: "3.2 TRUST",
     image: "/neon-sigil-glowing-cyan-violet-runes-mystical-symb.png",
     description: "A powerful sigil that channels the energy of the digital cosmos.",
+    collection: "cyber-sigils",
   },
   {
     id: 4,
@@ -42,6 +45,7 @@ const curatedRelics = [
     price: "4.1 TRUST",
     image: "/shadow-crystal-dark-mystical-glowing-purple-energy.png",
     description: "A crystalline artifact that holds the essence of shadow magic.",
+    collection: "shadow-crystals",
   },
 ]
 
@@ -110,6 +114,13 @@ const mockCreators = [
     followers: "4.5K",
     verified: true,
   },
+  {
+    id: 6,
+    name: "Wolfgang",
+    avatar: "/cyber-oracle-mask-futuristic-mystical-glowing-eyes.png",
+    followers: "5.2K",
+    verified: true,
+  },
 ]
 
 const mockCollections = [
@@ -155,11 +166,67 @@ export default function HomePage() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [voidWalkerCountdown, setVoidWalkerCountdown] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  })
+
+  useEffect(() => {
+    const targetDate = new Date()
+    targetDate.setDate(targetDate.getDate() + 3) // 3 days from now
+    targetDate.setHours(23, 59, 59, 999)
+
+    const updateCountdown = () => {
+      const now = new Date().getTime()
+      const distance = targetDate.getTime() - now
+
+      if (distance > 0) {
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24))
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000)
+
+        setVoidWalkerCountdown({ days, hours, minutes, seconds })
+      }
+    }
+
+    updateCountdown()
+    const interval = setInterval(updateCountdown, 1000)
+
+    return () => clearInterval(interval)
+  }, [])
+
+  const generateCalendarLink = (relic: (typeof curatedRelics)[0]) => {
+    const startDate = new Date()
+    startDate.setDate(startDate.getDate() + 3)
+    startDate.setHours(23, 59, 0, 0)
+
+    const endDate = new Date(startDate)
+    endDate.setHours(endDate.getHours() + 1)
+
+    const formatDate = (date: Date) => {
+      return date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z"
+    }
+
+    const title = encodeURIComponent(`${relic.title} Auction Ends`)
+    const details = encodeURIComponent(`Don't miss the auction end for ${relic.title} by ${relic.creator}`)
+    const startTime = formatDate(startDate)
+    const endTime = formatDate(endDate)
+
+    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startTime}/${endTime}&details=${details}`
+  }
+
+  const handleCalendarClick = (relic: (typeof curatedRelics)[0]) => {
+    const calendarUrl = generateCalendarLink(relic)
+    window.open(calendarUrl, "_blank")
+  }
 
   const getSearchResults = () => {
     if (!searchQuery.trim()) return { creators: [], collections: [], relics: [] }
 
-    const query = searchQuery.toLowerCase()
+    const query = searchQuery.toLowerCase().trim()
 
     const filteredCreators = mockCreators.filter((creator) => creator.name.toLowerCase().includes(query))
 
@@ -218,6 +285,9 @@ export default function HomePage() {
               <a href="/explore" className="text-gray-300 hover:text-cyan-400 transition-colors">
                 Explore
               </a>
+              <Link href="/about" className="text-gray-300 hover:text-cyan-400 transition-colors">
+                About
+              </Link>
               <a href="/collections" className="text-gray-300 hover:text-cyan-400 transition-colors">
                 Collections
               </a>
@@ -286,6 +356,13 @@ export default function HomePage() {
               >
                 Explore
               </a>
+              <Link
+                href="/about"
+                className="text-gray-300 hover:text-cyan-400 transition-colors text-xl"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                About
+              </Link>
               <a
                 href="/collections"
                 className="text-gray-300 hover:text-cyan-400 transition-colors text-xl"
@@ -346,9 +423,20 @@ export default function HomePage() {
           {curatedRelics.map((relic) => (
             <Card
               key={relic.id}
-              className="group obsidian-texture border-border/30 overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:rune-glow"
+              className="group obsidian-texture border-border/30 overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:rune-glow relative"
               onClick={() => setSelectedRelic(relic)}
             >
+              {relic.collection !== "void-walkers" && (
+                <div className="absolute inset-0 bg-black/80 backdrop-blur-sm z-10 flex items-center justify-center">
+                  <div className="text-center">
+                    <Badge className="bg-gradient-to-r from-violet-500/20 to-cyan-500/20 border border-violet-400/30 text-lg px-6 py-3 mb-4 bg-gray-900 text-sky-300">
+                      Coming Soon
+                    </Badge>
+                    <p className="text-gray-400 text-sm">This artifact will be available soon</p>
+                  </div>
+                </div>
+              )}
+
               <div className="aspect-square relative overflow-hidden">
                 <img
                   src={relic.image || "/placeholder.svg"}
@@ -372,7 +460,7 @@ export default function HomePage() {
                   </Badge>
                   <Button
                     size="sm"
-                    className="bg-primary/20 text-primary border border-primary/30 hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:rune-glow"
+                    className="bg-primary/20 border border-primary/30 hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:rune-glow text-primary"
                   >
                     Acquire
                   </Button>
@@ -442,7 +530,7 @@ export default function HomePage() {
 
       {/* Modal for NFT Preview */}
       <Dialog open={!!selectedRelic} onOpenChange={() => setSelectedRelic(null)}>
-        <DialogContent className="max-w-2xl obsidian-texture border-border/30 rune-glow-violet">
+        <DialogContent className="w-[95vw] max-w-2xl max-h-[90vh] overflow-y-auto obsidian-texture border-border/30 rune-glow-violet">
           {selectedRelic && (
             <>
               <DialogHeader>
@@ -481,9 +569,64 @@ export default function HomePage() {
                     </Badge>
                   </div>
 
-                  <Button className="w-full bg-primary/20 text-primary border border-primary/30 hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:rune-glow py-6 text-lg font-semibold">
-                    Acquire Sacred Artifact
-                  </Button>
+                  {selectedRelic.collection === "void-walkers" ? (
+                    <div className="space-y-4">
+                      <div className="bg-gradient-to-r from-cyan-500/10 to-violet-500/10 border border-cyan-400/30 rounded-lg p-4">
+                        <div className="flex items-center space-x-2 mb-3">
+                          <Clock className="w-5 h-5 text-cyan-400" />
+                          <span className="text-cyan-400 font-semibold">Auction Ends In:</span>
+                        </div>
+                        <div className="grid grid-cols-4 gap-2 text-center">
+                          <div className="bg-background/50 rounded-lg p-2">
+                            <div className="text-2xl font-bold text-cyan-400">{voidWalkerCountdown.days}</div>
+                            <div className="text-xs text-muted-foreground">D</div>
+                          </div>
+                          <div className="bg-background/50 rounded-lg p-2">
+                            <div className="text-2xl font-bold text-cyan-400">{voidWalkerCountdown.hours}</div>
+                            <div className="text-xs text-muted-foreground">H</div>
+                          </div>
+                          <div className="bg-background/50 rounded-lg p-2">
+                            <div className="text-2xl font-bold text-cyan-400">{voidWalkerCountdown.minutes}</div>
+                            <div className="text-xs text-muted-foreground">M</div>
+                          </div>
+                          <div className="bg-background/50 rounded-lg p-2 px-2 text-center">
+                            <div className="text-2xl font-bold text-cyan-400">{voidWalkerCountdown.seconds}</div>
+                            <div className="text-xs text-muted-foreground">S</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex space-x-2">
+                        <Button className="flex-1 bg-primary/20 text-primary border border-primary/30 hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:rune-glow py-6 text-lg font-semibold">
+                          Place Bid
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleCalendarClick(selectedRelic)
+                          }}
+                          className="border-cyan-400/30 text-cyan-400 hover:bg-cyan-400/10 py-6 bg-transparent"
+                        >
+                          <Calendar className="w-5 h-5" />
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      <div className="bg-gradient-to-r from-gray-500/10 to-gray-600/10 border border-gray-400/30 rounded-lg p-6 text-center">
+                        <div className="text-2xl font-bold text-gray-400 mb-2">Coming Soon</div>
+                        <p className="text-gray-500 text-sm">This artifact will be available for auction soon</p>
+                      </div>
+                      <Button
+                        disabled
+                        className="w-full bg-gray-500/20 text-gray-400 border border-gray-400/30 py-6 text-lg font-semibold cursor-not-allowed"
+                      >
+                        Not Available Yet
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </div>
             </>

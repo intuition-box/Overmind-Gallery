@@ -148,6 +148,42 @@
       );
   }
 
+  /* Added animated smoky fog layer for sacred artifact vibes */
+  .smoky-gradient::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 20% 80%, oklch(0.1 0.05 240 / 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, oklch(0.08 0.08 200 / 0.12) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, oklch(0.06 0.03 280 / 0.08) 0%, transparent 50%);
+    animation: smoky-drift 20s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @keyframes smoky-drift {
+    0%,
+    100% {
+      transform: translateX(0) translateY(0) scale(1);
+      opacity: 0.3;
+    }
+    25% {
+      transform: translateX(-10px) translateY(-5px) scale(1.05);
+      opacity: 0.5;
+    }
+    50% {
+      transform: translateX(5px) translateY(-10px) scale(0.95);
+      opacity: 0.4;
+    }
+    75% {
+      transform: translateX(-5px) translateY(5px) scale(1.02);
+      opacity: 0.6;
+    }
+  }
+
   /* Added gradient text utilities for cyan-blue gradients matching the screenshot */
   .gradient-text-cyan {
     background: linear-gradient(135deg, #22d3ee 0%, #3b82f6 50%, #22d3ee 100%);
