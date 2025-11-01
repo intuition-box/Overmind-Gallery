@@ -1,30 +1,32 @@
-# Overmind Gallery NFT
-
-*Automatically synced with your [v0.app](https://v0.app) deployments*
-
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/wolfgang-s-projects/v0-overmind-gallery-nft)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/projects/9MNeg4splgY)
+# The Overmind Gallery
 
 ## Overview
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+The Overmind Gallery is an art-first, auction-driven gallery built on the Intuition Network. Every sale is a live auction designed to let time, attention, and competition discover value.
+Each artifact is listed with a starting price and an auction duration. Collectors place bids using $TRUST. When a new bid outbids the previous bidder, the previous bidder receives a dynamic outbid reward.
+
 
 ## Deployment
 
-Your project is live at:
+Project is live at:
 
-**[https://vercel.com/wolfgang-s-projects/v0-overmind-gallery-nft](https://vercel.com/wolfgang-s-projects/v0-overmind-gallery-nft)**
+**[The Overmind Gallery](https://overmind-gallery.intuition.box)**
 
-## Build your app
-
-Continue building your app on:
-
-**[https://v0.app/chat/projects/9MNeg4splgY](https://v0.app/chat/projects/9MNeg4splgY)**
 
 ## How It Works
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+When you are outbid, you can receive a reward. That reward increases when the new bidder jumps the price by a larger margin and is smaller for tiny increases. The reward cannot exceed 10% of the new bid.
+
+Let:
+B_prev = previous (outbid) bid amount (in $TRUST)
+B_new = new winning bid amount (in $TRUST)
+r = relative increase
+MAX_P = maximum reward percent = 0.10 (10%)
+p = reward percent
+R = reward amount in $TRUST
+
+Where:
+MAX_P = 0.10 (10%)
+r = (B_new - B_prev) / B_prev
+p = (MAX_P * r)
+R = (p * B_new)
