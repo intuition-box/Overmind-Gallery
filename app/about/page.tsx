@@ -6,15 +6,17 @@ import { Card } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { Search, Eye, Clock, Gavel, TrendingUp, X, Menu, Timer, Coins, Calendar } from "lucide-react"
-import Link from "next/link"
+import { Clock, Gavel, TrendingUp, Calendar, Coins, Search } from "lucide-react"
+import SiteHeader from "@/components/site-header"
+import FAQItem from "@/components/faq-item" // Import FAQItem component
+import GalleryFooter from "@/components/gallery-footer"
 
 // Mock auction data
 const auctionRelics = [
   {
     id: 1,
     title: "Phantom Wanderer",
-    creator: "VoidCrafter",
+    creator: "Wolfgang",
     currentBid: "2.5 TRUST",
     currentBidValue: 2.5,
     minNextBid: "2.8 TRUST",
@@ -33,7 +35,7 @@ const auctionRelics = [
   {
     id: 2,
     title: "Ethereal Void Walker",
-    creator: "CyberShaman",
+    creator: "Wolfgang",
     currentBid: "4.2 TRUST",
     currentBidValue: 4.2,
     minNextBid: "4.6 TRUST",
@@ -52,7 +54,7 @@ const auctionRelics = [
   {
     id: 3,
     title: "Shadow Drifter",
-    creator: "DarkMystic",
+    creator: "Wolfgang",
     currentBid: "6.8 TRUST",
     currentBidValue: 6.8,
     minNextBid: "7.5 TRUST",
@@ -71,7 +73,7 @@ const auctionRelics = [
   {
     id: 4,
     title: "Void Sentinel",
-    creator: "VoidGuardian",
+    creator: "Wolfgang",
     currentBid: "3.7 TRUST",
     currentBidValue: 3.7,
     minNextBid: "4.1 TRUST",
@@ -90,7 +92,7 @@ const auctionRelics = [
   {
     id: 5,
     title: "Dimension Walker",
-    creator: "QuantumMage",
+    creator: "Wolfgang",
     currentBid: "5.3 TRUST",
     currentBidValue: 5.3,
     minNextBid: "5.8 TRUST",
@@ -109,7 +111,7 @@ const auctionRelics = [
   {
     id: 6,
     title: "Astral Nomad",
-    creator: "StarWeaver",
+    creator: "Wolfgang",
     currentBid: "8.9 TRUST",
     currentBidValue: 8.9,
     minNextBid: "9.8 TRUST",
@@ -128,7 +130,7 @@ const auctionRelics = [
   {
     id: 7,
     title: "Spirit Traveler",
-    creator: "EtherealMystic",
+    creator: "Wolfgang",
     currentBid: "7.2 TRUST",
     currentBidValue: 7.2,
     minNextBid: "7.9 TRUST",
@@ -147,7 +149,7 @@ const auctionRelics = [
   {
     id: 8,
     title: "Void Keeper",
-    creator: "VoidMaster",
+    creator: "Wolfgang",
     currentBid: "9.5 TRUST",
     currentBidValue: 9.5,
     minNextBid: "10.4 TRUST",
@@ -171,6 +173,8 @@ export default function AboutPage() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isWalletConnected, setIsWalletConnected] = useState(false)
+  const [walletAddress] = useState("0x1234...5678")
   const [voidWalkerCountdown, setVoidWalkerCountdown] = useState<string>("")
 
   useEffect(() => {
@@ -231,14 +235,22 @@ export default function AboutPage() {
   const searchResults = getSearchResults()
 
   return (
-    <div className="min-h-screen bg-background smoky-gradient relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-radial from-cyan-500/5 via-transparent to-transparent"></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-radial from-violet-500/10 via-transparent to-transparent rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-radial from-cyan-500/10 via-transparent to-transparent rounded-full blur-3xl"></div>
+      </div>
+
+      <SiteHeader />
+
       {/* Floating mystical elements */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-20 left-10 w-8 h-8 text-cyan-400/20 animate-pulse">
           <Gavel className="w-full h-full" />
         </div>
         <div className="absolute top-40 right-20 w-6 h-6 text-violet-400/20 animate-pulse delay-1000">
-          <Timer className="w-full h-full" />
+          <Clock className="w-full h-full" />
         </div>
         <div className="absolute bottom-40 left-1/4 w-10 h-10 text-cyan-400/10 animate-pulse delay-2000">
           <Coins className="w-full h-full" />
@@ -247,130 +259,6 @@ export default function AboutPage() {
           <TrendingUp className="w-full h-full" />
         </div>
       </div>
-
-      {/* Header */}
-      <header className="relative z-10 border-b border-gray-800/50 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <Link href="/" className="flex items-center space-x-3">
-              <div className="relative">
-                <Eye className="w-8 h-8 text-cyan-400" />
-                <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-md"></div>
-              </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent px-0.5">
-                The Overmind Gallery
-              </span>
-            </Link>
-
-            {/* Navigation */}
-            <nav className="hidden md:flex items-center space-x-8">
-              <Link href="/" className="text-gray-300 hover:text-cyan-400 transition-colors">
-                Home
-              </Link>
-              <Link href="/explore" className="text-gray-300 hover:text-cyan-400 transition-colors">
-                Explore
-              </Link>
-              <Link href="/about" className="text-cyan-400 font-medium">
-                About
-              </Link>
-              <Link href="/collections" className="text-gray-300 hover:text-cyan-400 transition-colors">
-                Collections
-              </Link>
-              <Link href="/creators" className="text-gray-300 hover:text-cyan-400 transition-colors">
-                Creators
-              </Link>
-            </nav>
-
-            {/* Search and Connect */}
-            <div className="flex items-center space-x-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsSearchOpen(true)}
-                className="text-gray-300 hover:text-cyan-400 hover:bg-cyan-400/10"
-              >
-                <Search className="w-5 h-5" />
-              </Button>
-              <Button className="bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white px-6">
-                Connect Wallet
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsMobileMenuOpen(true)}
-                className="md:hidden text-gray-300 hover:text-cyan-400 hover:bg-cyan-400/10"
-              >
-                <Menu className="w-5 h-5" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Mobile Menu Overlay */}
-      {isMobileMenuOpen && (
-        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 md:hidden">
-          <div className="flex flex-col h-full">
-            <div className="flex items-center justify-between p-6 border-b border-gray-800/50">
-              <Link href="/" className="flex items-center space-x-3">
-                <div className="relative">
-                  <Eye className="w-8 h-8 text-cyan-400" />
-                  <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-md"></div>
-                </div>
-                <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
-                  The Overmind Gallery
-                </span>
-              </Link>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="text-gray-300 hover:text-cyan-400"
-              >
-                <X className="w-5 h-5" />
-              </Button>
-            </div>
-            <nav className="flex-1 flex flex-col space-y-6 p-6">
-              <Link
-                href="/"
-                className="text-gray-300 hover:text-cyan-400 transition-colors text-xl"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Home
-              </Link>
-              <Link
-                href="/explore"
-                className="text-gray-300 hover:text-cyan-400 transition-colors text-xl"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Explore
-              </Link>
-              <Link
-                href="/about"
-                className="text-cyan-400 font-medium text-xl"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                About
-              </Link>
-              <Link
-                href="/collections"
-                className="text-gray-300 hover:text-cyan-400 transition-colors text-xl"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Collections
-              </Link>
-              <Link
-                href="/creators"
-                className="text-gray-300 hover:text-cyan-400 transition-colors text-xl"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Creators
-              </Link>
-            </nav>
-          </div>
-        </div>
-      )}
 
       {/* Hero Section */}
       <header className="text-center relative z-10 py-16">
@@ -388,9 +276,9 @@ export default function AboutPage() {
           <h1 className="font-playfair text-5xl font-bold bg-gradient-to-r from-violet-400 via-cyan-500 to-violet-400 bg-clip-text text-transparent mb-6 md:text-6xl">
             The Overmind Gallery
           </h1>
-          <p className="text-gray-300 text-xl max-w-3xl mx-auto mb-6 leading-relaxed">
+          <p className="text-gray-300 max-w-3xl mx-auto mb-6 leading-relaxed font-mono text-lg">
             {
-              "Where every bid is blessed by The Overmind. Place your $TRUST, and even if outbid, receive 5% of your bid as a divine reward."
+              "Where every bid is blessed by The Overmind. Place your $TRUST, and even if outbid, receive a max 10% of your bid as a divine reward."
             }
           </p>
 
@@ -401,8 +289,8 @@ export default function AboutPage() {
               <span className="text-lg font-semibold text-violet-400">Everybody Wins Protocol</span>
             </div>
             <p className="text-gray-300 text-center">
-              When you get outbid, you automatically receive{" "}
-              <span className="text-cyan-400 font-bold">5% of your bid amount</span> as a reward. The more you
+              When you get outbid, you automatically receive a maximum,{" "}
+              <span className="text-cyan-400 font-bold">10% of your bid amount</span> as a reward. The more you
               participate, the more you earn. The Overmind ensures no effort goes unrewarded.
             </p>
           </div>
@@ -411,18 +299,17 @@ export default function AboutPage() {
         </div>
       </header>
 
-      
       {/* How It Works Section */}
       <section className="container mx-auto px-6 py-16 relative z-10">
         <div className="text-center mb-12">
           <h2 className="font-playfair text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
             How The Overmind Rewards
           </h2>
-          <p className="text-gray-400 text-lg">Understanding the divine auction mechanics</p>
+          <p className="text-lg text-slate-100">Understanding the divine auction mechanics</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          <Card className="obsidian-texture border-border/30 p-8 text-center hover:rune-glow transition-all duration-300">
+          <Card className="bg-black/30 backdrop-blur-md border-border/30 p-8 text-center hover:rune-glow transition-all duration-300">
             <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-r from-cyan-500/20 to-violet-500/20 flex items-center justify-center border border-cyan-400/30">
               <Gavel className="w-8 h-8 text-cyan-400" />
             </div>
@@ -433,7 +320,7 @@ export default function AboutPage() {
             </p>
           </Card>
 
-          <Card className="obsidian-texture border-border/30 p-8 text-center hover:rune-glow-violet transition-all duration-300">
+          <Card className="bg-black/30 backdrop-blur-md border-border/30 p-8 text-center hover:rune-glow-violet transition-all duration-300">
             <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-r from-violet-500/20 to-cyan-500/20 flex items-center justify-center border border-violet-400/30">
               <TrendingUp className="w-8 h-8 text-violet-400" />
             </div>
@@ -445,7 +332,7 @@ export default function AboutPage() {
             </p>
           </Card>
 
-          <Card className="obsidian-texture border-border/30 p-8 text-center hover:rune-glow transition-all duration-300">
+          <Card className="bg-black/30 backdrop-blur-md border-border/30 p-8 text-center hover:rune-glow transition-all duration-300">
             <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-r from-cyan-500/20 to-violet-500/20 flex items-center justify-center border border-cyan-400/30">
               <Coins className="w-8 h-8 text-cyan-400" />
             </div>
@@ -459,112 +346,167 @@ export default function AboutPage() {
       </section>
 
       {/* Active Auctions */}
+
+      {/* FAQ Section */}
       <section className="container mx-auto px-6 py-16 relative z-10">
         <div className="text-center mb-12">
           <h2 className="font-playfair text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
-            Active Auctions
+            Frequently Asked Questions(FAQs)
           </h2>
-          <p className="text-gray-400 text-lg">Sacred artifacts awaiting your offering</p>
+          <p className="text-lg text-slate-100">Everything you need to know about The Overmind Gallery</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {auctionRelics
-            .filter((relic) => relic.collection === "void-walkers")
-            .map((relic) => (
-              <Card
-                key={relic.id}
-                className="group obsidian-texture border-border/30 overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:rune-glow-violet relative"
-                onClick={() => setSelectedRelic(relic)}
-              >
-                <div className="aspect-square relative overflow-hidden">
-                  <img
-                    src={relic.image || "/placeholder.svg"}
-                    alt={relic.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="max-w-4xl mx-auto space-y-4">
+          {/* General / Platform Basics */}
+          <div className="mb-8">
+            <h3 className="font-playfair text-xl font-bold mb-4 flex items-center text-card-foreground">
+              <span className="w-2 h-2 rounded-full mr-3 text-card-foreground bg-card-foreground"></span>
+              General / Platform Basics
+            </h3>
+            <div className="space-y-4">
+              <FAQItem
+                question="How does The Overmind Gallery differ from other NFT marketplaces?"
+                answer="The Overmind Gallery is an art-first, auction-driven gallery built on the Intuition Network. Every sale is a live auction designed to let time, attention, and competition discover value — not a 'buy now' click. The experience is curated and story-led: each drop is chosen to fit the gallery's surreal, immersive aesthetic and to spark social engagement on the Intuition Network."
+              />
+              <FAQItem
+                question="What blockchain does The Overmind Gallery use?"
+                answer="The Overmind Gallery runs on the Intuition Network. All bids, transfers, and reward calculations are recorded on-chain to preserve provenance and make the system auditable and trustless. Transactions use the native token $TRUST."
+              />
+              <FAQItem
+                question="Is The Overmind Gallery curated or open to all creators?"
+                answer="The Overmind Gallery is selectively curated. Artists may apply via the Creator Page; the curatorial team reviews submissions to ensure each piece fits Overmind's quality standards. Selected artists will be contacted and assisted with minting and auction setup."
+              />
+            </div>
+          </div>
 
-                  {/* Time remaining overlay */}
-                  <div className="absolute top-4 right-4 bg-black/80 backdrop-blur-sm rounded-lg px-3 py-2 border border-violet-400/30">
-                    <div className="flex items-center space-x-2">
-                      <Clock className="w-4 h-4 text-violet-400" />
-                      <span className="text-violet-400 font-semibold text-sm">{voidWalkerCountdown}</span>
-                    </div>
-                  </div>
+          {/* Auctions & Bidding */}
+          <div className="mb-8">
+            <h3 className="font-playfair text-xl font-bold mb-4 flex items-center text-sidebar-primary-foreground">
+              <span className="w-2 h-2 rounded-full mr-3 bg-card-foreground"></span>
+              Auctions & Bidding
+            </h3>
+            <div className="space-y-4">
+              <FAQItem
+                question="How do NFT auctions work on Overmind Gallery?"
+                answer="Each artifact is listed with a starting price and an auction duration. Collectors place bids using $TRUST. When a new bid outbids the previous bidder, the previous bidder receives a dynamic outbid reward. The auction closes at the scheduled time. The highest bidder wins the NFT and on-chain settlement follows immediately."
+              />
+              <FAQItem
+                question="What is the dynamic bid-reward formula?"
+                answer={`When you are outbid, you can receive a reward. That reward increases when the new bidder jumps the price by a larger margin and is smaller for tiny increases. The reward cannot exceed 10% of the new bid.
 
-                  {/* Bid count overlay */}
-                  <div className="absolute top-4 left-4 bg-black/80 backdrop-blur-sm rounded-lg px-3 py-2 border border-cyan-400/30">
-                    <div className="flex items-center space-x-2">
-                      <TrendingUp className="w-4 h-4 text-cyan-400" />
-                      <span className="text-cyan-400 font-semibold text-sm">{relic.totalBidders} bidders</span>
-                    </div>
-                  </div>
-                </div>
+Let:
+B_prev = previous (outbid) bid amount (in $TRUST)
+B_new = new winning bid amount (in $TRUST)
+r = relative increase
+MAX_P = maximum reward percent = 0.10 (10%)
+p = reward percent
+R = reward amount in $TRUST
 
-                <div className="p-6 space-y-4">
-                  <div>
-                    <h3 className="font-playfair text-lg font-bold text-card-foreground mb-2 group-hover:text-violet-400 transition-colors">
-                      {relic.title}
-                    </h3>
-                    <p className="text-muted-foreground text-sm">by {relic.creator}</p>
-                  </div>
+Where:
+MAX_P = 0.10 (10%)
+r = (B_new - B_prev) / B_prev
+p = (MAX_P * r)
+R = (p * B_new)`}
+              />
+              <FAQItem
+                question="What happens if I win an auction?"
+                answer="The highest bidder wins; on-chain settlement transfers the NFT to the winner's wallet."
+              />
+              <FAQItem
+                question="What happens if I lose an auction?"
+                answer="Your bid funds are released back to you plus the calculated outbid reward paid in $TRUST. (gas costs as applicable)"
+              />
+              <FAQItem
+                question="Can I cancel a bid once placed?"
+                answer="No. Bids are immutable once submitted to the auction contract."
+              />
+            </div>
+          </div>
 
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-400 text-sm">Current Bid</span>
-                      <Badge
-                        variant="secondary"
-                        className="bg-violet-500/20 text-violet-400 border border-violet-400/30 font-bold"
-                      >
-                        {relic.currentBid}
-                      </Badge>
-                    </div>
+          {/* Buying & Collecting */}
+          <div className="mb-8">
+            <h3 className="font-playfair text-xl font-bold mb-4 flex items-center text-card-foreground">
+              <span className="w-2 h-2 rounded-full mr-3 bg-card-foreground"></span>
+              Buying & Collecting
+            </h3>
+            <div className="space-y-4">
+              <FAQItem
+                question="Where can I view my purchased NFTs?"
+                answer="Purchased NFTs appear in 'My NFTs' and in your connected wallet. Because ownership is on-chain, any explorer or compatible marketplace will also show the token."
+              />
+              <FAQItem
+                question="Are there royalties for artists?"
+                answer="Yes. Royalty payments enforced by smart contracts."
+              />
+            </div>
+          </div>
 
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-400 text-sm">Min Next Bid</span>
-                      <span className="text-cyan-400 font-semibold">{relic.minNextBid}</span>
-                    </div>
-                  </div>
+          {/* Artists & Creators */}
+          <div className="mb-8">
+            <h3 className="font-playfair text-xl font-bold mb-4 flex items-center text-card-foreground">
+              <span className="w-2 h-2 rounded-full mr-3 bg-card-foreground"></span>
+              Artists & Creators
+            </h3>
+            <div className="space-y-4">
+              <FAQItem
+                question="How can artists list their NFTs for auction?"
+                answer="Apply through the Creator Page where you then click the 'Become a Creator' button and fill the form. If accepted, you'll get step-by-step support to mint your work on the Intuition Network."
+              />
+              <FAQItem
+                question="How are royalties handled for creators?"
+                answer="Royalties are enforced by smart contracts. On a primary sale the artist receives 80% of the sale price; the gallery gets 20%."
+              />
+            </div>
+          </div>
 
-                  <div className="flex space-x-2">
-                    <Button
-                      size="sm"
-                      className="flex-1 bg-gradient-to-r from-violet-500 to-cyan-500 hover:from-violet-600 hover:to-cyan-600 text-white py-4 md:py-6 text-base md:text-lg font-semibold transition-all duration-300 hover:rune-glow-violet"
+          {/* Community & Support */}
+          <div className="mb-8">
+            <h3 className="font-playfair text-xl font-bold mb-4 flex items-center text-card-foreground">
+              <span className="w-2 h-2 rounded-full mr-3 bg-card-foreground"></span>
+              Community & Support
+            </h3>
+            <div className="space-y-4">
+              <FAQItem
+                question="How can I contact the Overmind team?"
+                answer={
+                  <p>
+                    Use the{" "}
+                    <a
+                      href="https://discord.gg/n37yzY3mt"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-cyan-400 hover:text-violet-400 font-semibold transition-colors duration-200"
                     >
-                      <Gavel className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-                      Place Bid
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="border-cyan-400/30 text-cyan-400 hover:bg-cyan-400/10 bg-transparent px-3"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        const calendarUrl = generateCalendarLink(relic)
-                        window.open(calendarUrl, "_blank")
-                      }}
+                      Discord
+                    </a>
+                    , or{" "}
+                    <a
+                      href="https://x.com/wolf_de_web3"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-cyan-400 hover:text-violet-400 font-semibold transition-colors duration-200"
                     >
-                      <Calendar className="w-4 h-4 md:w-5 md:h-5" />
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            ))}
+                      X
+                    </a>{" "}
+                    (also listed in the footer).
+                  </p>
+                }
+              />
+              <FAQItem
+                question="Where can I stay updated on new drops and auctions?"
+                answer="Follow The Overmind Gallery on X (Twitter) and join our Discord."
+              />
+              <FAQItem
+                question="Can I suggest artists or collections to be featured?"
+                answer="Yes. Using the bonding curve on the Intuition Portal, make claims stating a certain artist should be featured on the overmind gallery. If the claim meets the threshold, the artist will be featured."
+              />
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-gray-800/50 px-6 py-[39px]">
-        <div className="container mx-auto text-center py-0 my-0">
-          <div className="flex items-center justify-center mb-6">
-            <Eye className="w-6 h-6 text-cyan-400 mr-2" />
-            <span className="text-gray-400 py-0">The Overmind watches over all</span>
-          </div>
-          <p className="text-gray-500 text-sm">
-            All digital artifacts protected by ancient encryption. You are blessed sweet baby child of the Overmind.
-            <br />© 2025 created by wolfgang.
-          </p>
-        </div>
-      </footer>
+      <GalleryFooter />
 
       {/* Bidding Modal */}
       <Dialog open={!!selectedRelic} onOpenChange={() => setSelectedRelic(null)}>

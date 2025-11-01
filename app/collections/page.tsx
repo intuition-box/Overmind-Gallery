@@ -1,21 +1,23 @@
 "use client"
 
-import { useState } from "react"
-import { Search, Eye, Users, Sparkles, X, Menu, User, Folder, Gem } from "lucide-react"
+import { useState, useEffect } from "react"
+import { Search, Eye, Users, Sparkles, X, User, Folder, Gem, Clock, Calendar } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import Link from "next/link"
+import SiteHeader from "@/components/site-header"
+import GalleryFooter from "@/components/gallery-footer"
 
 const collections = [
   {
     id: 1,
     name: "Ancient Codex",
     description: "Mystical tomes containing forgotten knowledge and arcane wisdom",
-    creator: "The Scribe",
-    itemCount: 47,
+    creator: "Wolfgang",
+    itemCount: 8,
     floorPrice: "2.5 TRUST",
     image: "/dark-mystical-obsidian-codex-ancient-book-glowing-.png",
     banner: "/ancient-library-with-glowing-books-and-mystical-at.png",
@@ -75,8 +77,8 @@ const collections = [
     id: 2,
     name: "Void Walkers",
     description: "Ethereal beings that traverse the boundaries between dimensions",
-    creator: "Shadow Weaver",
-    itemCount: 333,
+    creator: "Wolfgang",
+    itemCount: 8,
     floorPrice: "1.8 TRUST",
     image: "/ethereal-void-walker-dark-figure-glowing-eyes-myst.png",
     banner: "/dark-void-with-ethereal-figures-and-glowing-portal.png",
@@ -136,8 +138,8 @@ const collections = [
     id: 3,
     name: "Neon Sigils",
     description: "Digital runes pulsing with cybernetic energy and ancient power",
-    creator: "Rune Master",
-    itemCount: 108,
+    creator: "Wolfgang",
+    itemCount: 8,
     floorPrice: "3.2 TRUST",
     image: "/neon-sigil-glowing-cyan-violet-runes-mystical-symb.png",
     banner: "/cyberpunk-temple-with-glowing-neon-runes-and-mysti.png",
@@ -197,8 +199,8 @@ const collections = [
     id: 4,
     name: "Shadow Crystals",
     description: "Crystalline formations infused with dark energy and forbidden magic",
-    creator: "Crystal Sage",
-    itemCount: 77,
+    creator: "Wolfgang",
+    itemCount: 8,
     floorPrice: "4.1 TRUST",
     image: "/shadow-crystal-dark-mystical-glowing-purple-energy.png",
     banner: "/dark-crystal-cave-with-purple-glowing-crystals-and.png",
@@ -258,8 +260,8 @@ const collections = [
     id: 5,
     name: "Cyber Oracles",
     description: "Prophetic masks that reveal glimpses of digital futures",
-    creator: "The Prophet",
-    itemCount: 156,
+    creator: "Wolfgang",
+    itemCount: 8,
     floorPrice: "2.9 TRUST",
     image: "/cyber-oracle-mask-futuristic-mystical-glowing-eyes.png",
     banner: "/futuristic-temple-with-glowing-oracle-masks-and-di.png",
@@ -319,8 +321,8 @@ const collections = [
     id: 6,
     name: "Phoenix Feathers",
     description: "Remnants of digital phoenixes, burning with eternal cyber-flame",
-    creator: "Fire Keeper",
-    itemCount: 89,
+    creator: "Wolfgang",
+    itemCount: 8,
     floorPrice: "5.7 TRUST",
     image: "/digital-phoenix-feather-glowing-cyan-fire-mystical.png",
     banner: "/digital-phoenix-nest-with-glowing-cyan-flames-and-.png",
@@ -381,24 +383,10 @@ const collections = [
 const mockCreators = [
   {
     id: 1,
-    name: "The Scribe",
+    name: "Wolfgang",
     avatar: "/cyber-oracle-mask-futuristic-mystical-glowing-eyes.png",
-    followers: "2.3K",
+    followers: "5.2K",
     verified: true,
-  },
-  {
-    id: 2,
-    name: "Shadow Weaver",
-    avatar: "/ethereal-void-walker-dark-figure-glowing-eyes-myst.png",
-    followers: "1.8K",
-    verified: true,
-  },
-  {
-    id: 3,
-    name: "Rune Master",
-    avatar: "/neon-sigil-glowing-cyan-violet-runes-mystical-symb.png",
-    followers: "3.1K",
-    verified: false,
   },
 ]
 
@@ -407,6 +395,40 @@ export default function CollectionsPage() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [selectedCollection, setSelectedCollection] = useState(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isWalletConnected, setIsWalletConnected] = useState(false)
+  const [walletAddress] = useState("0x1234...5678")
+  const [comingSoonCountdowns, setComingSoonCountdowns] = useState<
+    Record<number, { days: number; hours: number; minutes: number; seconds: number }>
+  >({})
+
+  useEffect(() => {
+    const comingSoonTargetDate = new Date()
+    comingSoonTargetDate.setDate(comingSoonTargetDate.getDate() + 7)
+    comingSoonTargetDate.setHours(0, 0, 0, 0)
+
+    const updateComingSoonCountdown = () => {
+      const now = new Date().getTime()
+      const distance = comingSoonTargetDate.getTime() - now
+
+      if (distance > 0) {
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24))
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000)
+
+        setComingSoonCountdowns({
+          3: { days, hours, minutes, seconds },
+          4: { days, hours, minutes, seconds },
+          5: { days, hours, minutes, seconds },
+        })
+      }
+    }
+
+    updateComingSoonCountdown()
+    const comingSoonInterval = setInterval(updateComingSoonCountdown, 1000)
+
+    return () => clearInterval(comingSoonInterval)
+  }, [])
 
   const getSearchResults = () => {
     if (!searchQuery.trim()) return { creators: [], collections: [], artifacts: [] }
@@ -456,72 +478,13 @@ export default function CollectionsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
-      {/* Enhanced Background Effects */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-radial from-cyan-500/5 via-transparent to-transparent"></div>
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-radial from-violet-500/10 via-transparent to-transparent rounded-full blur-3xl"></div>
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-radial from-cyan-500/10 via-transparent to-transparent rounded-full blur-3xl"></div>
       </div>
 
-      {/* Header */}
-      <header className="relative z-10 border-b border-gray-800/50 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <div className="flex items-center space-x-3">
-              <div className="relative">
-                <Eye className="w-8 h-8 text-cyan-400" />
-                <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-md"></div>
-              </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
-                The Overmind Gallery
-              </span>
-            </div>
-
-            {/* Navigation */}
-            <nav className="hidden md:flex items-center space-x-8">
-              <a href="/" className="text-gray-300 hover:text-cyan-400 transition-colors">
-                Home
-              </a>
-              <a href="/explore" className="text-gray-300 hover:text-cyan-400 transition-colors">
-                Explore
-              </a>
-              <Link href="/about" className="text-gray-300 hover:text-cyan-400 transition-colors">
-                About
-              </Link>
-              <a href="/collections" className="text-cyan-400 font-medium">
-                Collections
-              </a>
-              <a href="/creators" className="text-gray-300 hover:text-cyan-400 transition-colors">
-                Creators
-              </a>
-            </nav>
-
-            {/* Search and Connect */}
-            <div className="flex items-center space-x-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsSearchOpen(true)}
-                className="text-gray-300 hover:text-cyan-400 hover:bg-cyan-400/10"
-              >
-                <Search className="w-5 h-5" />
-              </Button>
-              <Button className="bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white px-6">
-                Connect Wallet
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsMobileMenuOpen(true)}
-                className="md:hidden text-gray-300 hover:text-cyan-400 hover:bg-cyan-400/10"
-              >
-                <Menu className="w-5 h-5" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <SiteHeader />
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
@@ -719,7 +682,10 @@ export default function CollectionsPage() {
                                 from {artifact.collectionName} • by {artifact.creator}
                               </p>
                             </div>
-                            <Badge variant="secondary" className="bg-secondary/20 text-secondary border-secondary/30">
+                            <Badge
+                              variant="secondary"
+                              className="bg-cyan-500/30 text-cyan-100 border-cyan-400/50 font-semibold"
+                            >
                               {artifact.price}
                             </Badge>
                           </div>
@@ -762,17 +728,72 @@ export default function CollectionsPage() {
             {/* Modal Content */}
             <div className="p-8 overflow-y-auto max-h-[calc(90vh-200px)]">
               {selectedCollection.name !== "Void Walkers" ? (
-                <div className="flex flex-col items-center justify-center py-16 text-center">
+                <div className="flex flex-col items-center justify-center py-16 text-center space-y-6">
                   <div className="relative mb-8">
                     <div className="w-32 h-32 bg-gradient-to-br from-cyan-500/20 to-violet-500/20 rounded-full flex items-center justify-center border border-cyan-500/30">
                       <Sparkles className="w-16 h-16 text-cyan-400" />
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-violet-500/10 rounded-full blur-xl"></div>
                   </div>
-                  <h3 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent mb-4">
+                  <h3 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
                     Coming Soon
                   </h3>
-                  <p className="text-gray-300 text-lg mb-8 max-w-md">
+                  {comingSoonCountdowns[selectedCollection.id] && (
+                    <div className="bg-gradient-to-r from-cyan-500/10 to-violet-500/10 border border-cyan-400/30 rounded-lg p-6 w-full max-w-sm">
+                      <div className="flex items-center justify-center space-x-2 mb-4">
+                        <Clock className="w-5 h-5 text-cyan-400" />
+                        <span className="text-cyan-400 font-semibold">Collection Launches In:</span>
+                      </div>
+                      <div className="grid grid-cols-4 gap-3 text-center mb-6">
+                        <div className="bg-background/50 rounded-lg p-3">
+                          <div className="text-2xl font-bold text-cyan-400">
+                            {comingSoonCountdowns[selectedCollection.id].days}
+                          </div>
+                          <div className="text-xs text-muted-foreground">Days</div>
+                        </div>
+                        <div className="bg-background/50 rounded-lg p-3">
+                          <div className="text-2xl font-bold text-cyan-400">
+                            {comingSoonCountdowns[selectedCollection.id].hours}
+                          </div>
+                          <div className="text-xs text-muted-foreground">Hours</div>
+                        </div>
+                        <div className="bg-background/50 rounded-lg p-3">
+                          <div className="text-2xl font-bold text-cyan-400">
+                            {comingSoonCountdowns[selectedCollection.id].minutes}
+                          </div>
+                          <div className="text-xs text-muted-foreground">Minutes</div>
+                        </div>
+                        <div className="bg-background/50 rounded-lg p-3">
+                          <div className="text-2xl font-bold text-cyan-400">
+                            {comingSoonCountdowns[selectedCollection.id].seconds}
+                          </div>
+                          <div className="text-xs text-muted-foreground">Seconds</div>
+                        </div>
+                      </div>
+                      <Button
+                        onClick={() => {
+                          const startDate = new Date()
+                          startDate.setDate(startDate.getDate() + 7)
+                          startDate.setHours(0, 0, 0, 0)
+                          const endDate = new Date(startDate)
+                          endDate.setHours(1, 0, 0, 0)
+
+                          const formatDate = (date: Date) => date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z"
+                          const title = encodeURIComponent(`${selectedCollection.name} Collection - Coming Soon`)
+                          const details = encodeURIComponent(
+                            `The ${selectedCollection.name} collection by ${selectedCollection.creator} launches soon!`,
+                          )
+                          const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${formatDate(startDate)}/${formatDate(endDate)}&details=${details}`
+                          window.open(calendarUrl, "_blank")
+                        }}
+                        className="w-full bg-gradient-to-r from-cyan-500/30 to-violet-500/30 border border-cyan-400/50 hover:from-cyan-500/50 hover:to-violet-500/50 text-cyan-100 font-semibold"
+                      >
+                        <Calendar className="w-4 h-4 mr-2" />
+                        Add to Calendar
+                      </Button>
+                    </div>
+                  )}
+                  <p className="text-gray-300 text-lg mb-2 max-w-md">
                     This sacred collection is being prepared by The Overmind. Return soon to witness these digital
                     artifacts.
                   </p>
@@ -813,7 +834,7 @@ export default function CollectionsPage() {
                         <div className="flex items-center justify-between mb-4">
                           <span className="text-cyan-400 font-bold">{nft.price}</span>
                         </div>
-                        <Button className="w-full bg-gradient-to-r from-cyan-600/20 to-violet-600/20 border border-cyan-500/30 text-cyan-400 hover:from-cyan-600/40 hover:to-violet-600/40 hover:border-cyan-400/60 transition-all duration-300 group-hover:shadow-lg group-hover:shadow-cyan-500/20">
+                        <Button className="w-full bg-gradient-to-r from-cyan-600/20 to-violet-600/20 border border-cyan-500/30 hover:from-cyan-600/40 hover:to-violet-600/40 hover:border-cyan-400/60 transition-all duration-300 group-hover:shadow-lg group-hover:shadow-cyan-500/20 text-white">
                           Acquire
                         </Button>
                       </div>
@@ -839,7 +860,7 @@ export default function CollectionsPage() {
           <h1 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent mb-6">
             Sacred Collections
           </h1>
-          <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-300 text-lg max-w-2xl mx-auto font-mono">
             Curated assemblages of digital artifacts, each collection a testament to the artistry and vision of The
             Overmind's chosen creators.
           </p>
@@ -907,7 +928,7 @@ export default function CollectionsPage() {
                 </div>
 
                 {/* Action Button */}
-                <Button className="w-full bg-gradient-to-r from-cyan-600/20 to-violet-600/20 border border-cyan-500/30 hover:from-cyan-600/30 hover:to-violet-600/30 hover:border-cyan-400/50 transition-all duration-300 text-violet-300">
+                <Button className="w-full bg-cyan-500/30 border border-cyan-400/50 hover:bg-cyan-500/50 hover:text-white transition-all duration-300 text-cyan-100 font-semibold">
                   Explore Collection
                 </Button>
               </div>
@@ -931,6 +952,8 @@ export default function CollectionsPage() {
           </div>
         )}
       </main>
+
+      <GalleryFooter />
     </div>
   )
 }

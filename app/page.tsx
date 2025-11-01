@@ -6,15 +6,32 @@ import { Card } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { Search, Eye, User, Folder, Gem, X, Menu, Calendar, Clock } from "lucide-react"
+import {
+  Search,
+  Eye,
+  User,
+  Folder,
+  Gem,
+  X,
+  Calendar,
+  Clock,
+  Wallet,
+  TrendingUp,
+  Users,
+  ShoppingBag,
+  DollarSign,
+} from "lucide-react"
 import Link from "next/link"
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
+import SiteHeader from "@/components/site-header"
+import GalleryFooter from "@/components/gallery-footer"
 
 // Mock curated NFTs for homepage
 const curatedRelics = [
   {
     id: 1,
     title: "The Obsidian Codex",
-    creator: "DigitalMystic",
+    creator: "Wolfgang",
     price: "2.5 TRUST",
     image: "/dark-mystical-obsidian-codex-ancient-book-glowing-.png",
     description: "An ancient digital grimoire containing forbidden knowledge of the blockchain realm.",
@@ -23,7 +40,7 @@ const curatedRelics = [
   {
     id: 2,
     title: "Ethereal Void Walker",
-    creator: "CyberShaman",
+    creator: "Wolfgang",
     price: "1.8 TRUST",
     image: "/ethereal-void-walker-dark-figure-glowing-eyes-myst.png",
     description: "A spectral guardian that traverses between digital dimensions.",
@@ -32,7 +49,7 @@ const curatedRelics = [
   {
     id: 3,
     title: "Neon Sigil of Power",
-    creator: "RuneForger",
+    creator: "Wolfgang",
     price: "3.2 TRUST",
     image: "/neon-sigil-glowing-cyan-violet-runes-mystical-symb.png",
     description: "A powerful sigil that channels the energy of the digital cosmos.",
@@ -41,7 +58,7 @@ const curatedRelics = [
   {
     id: 4,
     title: "Shadow Nexus Crystal",
-    creator: "VoidCrafter",
+    creator: "Wolfgang",
     price: "4.1 TRUST",
     image: "/shadow-crystal-dark-mystical-glowing-purple-energy.png",
     description: "A crystalline artifact that holds the essence of shadow magic.",
@@ -54,7 +71,7 @@ const featuredCollections = [
   {
     id: 1,
     name: "Ancient Codex Archive",
-    creator: "DigitalMystic",
+    creator: "Wolfgang",
     itemCount: 12,
     image: "/ancient-library-with-glowing-books-and-mystical-at.png",
     description: "Sacred texts from the digital realm",
@@ -62,7 +79,7 @@ const featuredCollections = [
   {
     id: 2,
     name: "Void Walker Spirits",
-    creator: "CyberShaman",
+    creator: "Wolfgang",
     itemCount: 8,
     image: "/dark-void-with-ethereal-figures-and-glowing-portal.png",
     description: "Ethereal beings from beyond the veil",
@@ -70,7 +87,7 @@ const featuredCollections = [
   {
     id: 3,
     name: "Cyber Temple Relics",
-    creator: "TechnoMage",
+    creator: "Wolfgang",
     itemCount: 15,
     image: "/cyberpunk-temple-with-glowing-neon-runes-and-mysti.png",
     description: "Artifacts from the digital temples",
@@ -81,41 +98,6 @@ const featuredCollections = [
 const mockCreators = [
   {
     id: 1,
-    name: "DigitalMystic",
-    avatar: "/cyber-oracle-mask-futuristic-mystical-glowing-eyes.png",
-    followers: "2.3K",
-    verified: true,
-  },
-  {
-    id: 2,
-    name: "CyberShaman",
-    avatar: "/ethereal-void-walker-dark-figure-glowing-eyes-myst.png",
-    followers: "1.8K",
-    verified: true,
-  },
-  {
-    id: 3,
-    name: "RuneForger",
-    avatar: "/neon-sigil-glowing-cyan-violet-runes-mystical-symb.png",
-    followers: "3.1K",
-    verified: false,
-  },
-  {
-    id: 4,
-    name: "VoidCrafter",
-    avatar: "/shadow-crystal-dark-mystical-glowing-purple-energy.png",
-    followers: "1.2K",
-    verified: true,
-  },
-  {
-    id: 5,
-    name: "TechnoMage",
-    avatar: "/cyberpunk-temple-with-glowing-neon-runes-and-mysti.png",
-    followers: "4.5K",
-    verified: true,
-  },
-  {
-    id: 6,
     name: "Wolfgang",
     avatar: "/cyber-oracle-mask-futuristic-mystical-glowing-eyes.png",
     followers: "5.2K",
@@ -127,38 +109,49 @@ const mockCollections = [
   {
     id: 1,
     name: "Ancient Codex Archive",
-    creator: "DigitalMystic",
+    creator: "Wolfgang",
     itemCount: 12,
     image: "/ancient-library-with-glowing-books-and-mystical-at.png",
   },
   {
     id: 2,
     name: "Void Walker Spirits",
-    creator: "CyberShaman",
+    creator: "Wolfgang",
     itemCount: 8,
     image: "/dark-void-with-ethereal-figures-and-glowing-portal.png",
   },
   {
     id: 3,
     name: "Cyber Temple Relics",
-    creator: "TechnoMage",
+    creator: "Wolfgang",
     itemCount: 15,
     image: "/cyberpunk-temple-with-glowing-neon-runes-and-mysti.png",
   },
   {
     id: 4,
     name: "Crystal Nexus Collection",
-    creator: "VoidCrafter",
+    creator: "Wolfgang",
     itemCount: 6,
     image: "/dark-crystal-cave-with-purple-glowing-crystals-and.png",
   },
   {
     id: 5,
     name: "Oracle Mask Series",
-    creator: "RuneForger",
+    creator: "Wolfgang",
     itemCount: 10,
     image: "/futuristic-temple-with-glowing-oracle-masks-and-di.png",
   },
+]
+
+// Sample data for activity graph
+const activityData = [
+  { date: "Jan", volume: 45 },
+  { date: "Feb", volume: 52 },
+  { date: "Mar", volume: 61 },
+  { date: "Apr", volume: 58 },
+  { date: "May", volume: 70 },
+  { date: "Jun", volume: 85 },
+  { date: "Jul", volume: 92 },
 ]
 
 export default function HomePage() {
@@ -166,12 +159,15 @@ export default function HomePage() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isWalletConnected, setIsWalletConnected] = useState(false)
+  const [walletAddress] = useState("0x1234...5678") // Mock wallet address
   const [voidWalkerCountdown, setVoidWalkerCountdown] = useState({
     days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0,
   })
+  const [comingSoonCountdowns, setComingSoonCountdowns] = useState<Record<number, string>>({})
 
   useEffect(() => {
     const targetDate = new Date()
@@ -195,7 +191,38 @@ export default function HomePage() {
     updateCountdown()
     const interval = setInterval(updateCountdown, 1000)
 
-    return () => clearInterval(interval)
+    const comingSoonTargetDate = new Date()
+    comingSoonTargetDate.setDate(comingSoonTargetDate.getDate() + 7) // 7 days from now
+    comingSoonTargetDate.setHours(0, 0, 0, 0)
+
+    const updateComingSoonCountdown = () => {
+      const now = new Date().getTime()
+      const distance = comingSoonTargetDate.getTime() - now
+
+      if (distance > 0) {
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24))
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000)
+
+        setComingSoonCountdowns({
+          3: { days, hours, minutes, seconds },
+          4: { days, hours, minutes, seconds },
+          5: { days, hours, minutes, seconds },
+          6: { days, hours, minutes, seconds },
+          7: { days, hours, minutes, seconds },
+          8: { days, hours, minutes, seconds },
+        })
+      }
+    }
+
+    updateComingSoonCountdown()
+    const comingSoonInterval = setInterval(updateComingSoonCountdown, 1000)
+
+    return () => {
+      clearInterval(interval)
+      clearInterval(comingSoonInterval)
+    }
   }, [])
 
   const generateCalendarLink = (relic: (typeof curatedRelics)[0]) => {
@@ -245,94 +272,31 @@ export default function HomePage() {
   const hasResults =
     searchResults.creators.length > 0 || searchResults.collections.length > 0 || searchResults.relics.length > 0
 
+  const handleWalletConnect = () => {
+    setIsWalletConnected(!isWalletConnected)
+  }
+
   return (
-    <div className="min-h-screen bg-background smoky-gradient relative overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 left-10 w-8 h-8 text-cyan-400/20 animate-pulse">
-          <Eye className="w-full h-full" />
-        </div>
-        <div className="absolute top-40 right-20 w-6 h-6 text-violet-400/20 animate-pulse delay-1000">
-          <Eye className="w-full h-full" />
-        </div>
-        <div className="absolute bottom-40 left-1/4 w-10 h-10 text-cyan-400/10 animate-pulse delay-2000">
-          <Eye className="w-full h-full" />
-        </div>
-        <div className="absolute bottom-20 right-1/3 w-7 h-7 text-violet-400/15 animate-pulse delay-3000">
-          <Eye className="w-full h-full" />
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-radial from-cyan-500/5 via-transparent to-transparent"></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-radial from-violet-500/10 via-transparent to-transparent rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-radial from-cyan-500/10 via-transparent to-transparent rounded-full blur-3xl"></div>
       </div>
 
-      {/* Header */}
-      <header className="relative z-10 border-b border-gray-800/50 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <div className="flex items-center space-x-3">
-              <div className="relative">
-                <Eye className="w-8 h-8 text-cyan-400" />
-                <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-md"></div>
-              </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
-                The Overmind Gallery
-              </span>
-            </div>
-
-            {/* Navigation */}
-            <nav className="hidden md:flex items-center space-x-8">
-              <a href="/" className="text-cyan-400 font-medium">
-                Home
-              </a>
-              <a href="/explore" className="text-gray-300 hover:text-cyan-400 transition-colors">
-                Explore
-              </a>
-              <Link href="/about" className="text-gray-300 hover:text-cyan-400 transition-colors">
-                About
-              </Link>
-              <a href="/collections" className="text-gray-300 hover:text-cyan-400 transition-colors">
-                Collections
-              </a>
-              <a href="/creators" className="text-gray-300 hover:text-cyan-400 transition-colors">
-                Creators
-              </a>
-            </nav>
-
-            {/* Search and Connect */}
-            <div className="flex items-center space-x-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsSearchOpen(true)}
-                className="text-gray-300 hover:text-cyan-400 hover:bg-cyan-400/10"
-              >
-                <Search className="w-5 h-5" />
-              </Button>
-              <Button className="bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white px-6">
-                Connect Wallet
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsMobileMenuOpen(true)}
-                className="md:hidden text-gray-300 hover:text-cyan-400 hover:bg-cyan-400/10"
-              >
-                <Menu className="w-5 h-5" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <SiteHeader />
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
         <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 md:hidden">
           <div className="flex flex-col h-full">
-            <div className="flex items-center justify-between p-6 border-b border-gray-800/50">
+            <div className="flex items-center justify-between p-6 border-b border-border">
               <div className="flex items-center space-x-3">
                 <div className="relative">
-                  <Eye className="w-8 h-8 text-cyan-400" />
-                  <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-md"></div>
+                  <Eye className="w-8 h-8 text-primary" />
+                  <div className="absolute inset-0 bg-primary/20 rounded-full blur-md"></div>
                 </div>
-                <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
+                <span className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-primary drop-shadow-sm">
                   The Overmind Gallery
                 </span>
               </div>
@@ -340,39 +304,61 @@ export default function HomePage() {
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="text-gray-300 hover:text-cyan-400"
+                className="text-muted-foreground hover:text-primary"
               >
                 <X className="w-5 h-5" />
               </Button>
             </div>
             <nav className="flex-1 flex flex-col space-y-6 p-6">
-              <a href="/" className="text-cyan-400 font-medium text-xl" onClick={() => setIsMobileMenuOpen(false)}>
+              <Button
+                onClick={() => {
+                  setIsSearchOpen(true)
+                  setIsMobileMenuOpen(false)
+                }}
+                className="text-left justify-start text-muted-foreground hover:text-primary transition-colors text-xl bg-transparent hover:bg-primary/10 p-0"
+                variant="ghost"
+              >
+                <Search className="w-5 h-5 mr-3" />
+                Search
+              </Button>
+              <Button
+                onClick={() => {
+                  handleWalletConnect()
+                  setIsMobileMenuOpen(false)
+                }}
+                className="text-left justify-start bg-gradient-to-r from-primary to-secondary hover:from-primary/80 hover:to-secondary/80 text-primary-foreground text-xl font-medium"
+              >
+                <Wallet className="w-6 h-6 mr-3" />
+                {isWalletConnected ? walletAddress : "Connect Wallet"}
+              </Button>
+              <hr className="border-border" />
+              <a href="/" className="text-primary font-medium text-xl" onClick={() => setIsMobileMenuOpen(false)}>
                 Home
               </a>
               <a
                 href="/explore"
-                className="text-gray-300 hover:text-cyan-400 transition-colors text-xl"
+                className="text-muted-foreground hover:text-primary transition-colors text-xl"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Explore
               </a>
               <Link
                 href="/about"
-                className="text-gray-300 hover:text-cyan-400 transition-colors text-xl"
+                className="text-muted-foreground hover:text-primary transition-colors text-xl"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 About
               </Link>
               <a
                 href="/collections"
-                className="text-gray-300 hover:text-cyan-400 transition-colors text-xl"
+                className="text-muted-foreground hover:text-primary transition-colors text-xl"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Collections
               </a>
               <a
                 href="/creators"
-                className="text-gray-300 hover:text-cyan-400 transition-colors text-xl"
+                className="text-muted-foreground hover:text-primary transition-colors text-xl"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Creators
@@ -387,24 +373,24 @@ export default function HomePage() {
           {/* Central Eye Symbol */}
           <div className="relative mb-8 flex justify-center">
             <div className="relative">
-              <div className="w-24 h-24 rounded-full border-2 border-cyan-400/30 flex items-center justify-center">
-                <Eye className="w-12 h-12 text-cyan-400" />
+              <div className="w-24 h-24 rounded-full border-2 border-primary/30 flex items-center justify-center">
+                <Eye className="w-12 h-12 text-primary" />
               </div>
-              <div className="absolute inset-0 bg-cyan-400/10 rounded-full blur-xl animate-pulse"></div>
+              <div className="absolute inset-0 bg-primary/10 rounded-full blur-xl animate-pulse"></div>
             </div>
           </div>
 
-          <h1 className="font-playfair text-6xl md:text-8xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-400 bg-clip-text text-transparent mb-6">
+          <h1 className="font-playfair text-5xl font-bold bg-gradient-to-r from-secondary via-primary to-secondary bg-clip-text text-transparent md:text-7xl mb-6">
             The Overmind Gallery
           </h1>
-          <p className="text-gray-300 text-xl max-w-3xl mx-auto mb-8 leading-relaxed">
-            Where ancient wisdom meets digital artistry. Discover relics of the digital realm, guarded by the eternal
+          <p className="max-w-3xl mx-auto mb-8 leading-relaxed text-gray-400 font-mono text-lg">
+            Where ancient wisdom meets digital artistry. Discover artifacts of the digital realm, guarded by the eternal
             gaze of The Overmind.
           </p>
           <p className="text-lg font-semibold mb-12 tracking-[0.30em] text-emerald-200">$TRUST YOUR INTUITION</p>
 
           <Link href="/explore">
-            <Button className="bg-gradient-to-r from-cyan-500 to-violet-600 hover:from-cyan-600 hover:to-violet-700 text-white font-bold text-lg px-12 py-4 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/25">
+            <Button className="bg-gradient-to-r from-primary to-secondary hover:from-primary/80 hover:to-secondary/80 text-primary-foreground font-bold text-lg px-12 py-4 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary/25">
               Enter the Gallery
             </Button>
           </Link>
@@ -413,10 +399,10 @@ export default function HomePage() {
 
       <section className="container mx-auto px-6 py-16 relative z-10">
         <div className="text-center mb-12">
-          <h2 className="font-playfair text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
+          <h2 className="font-playfair text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-primary drop-shadow-sm">
             Sacred Artifacts
           </h2>
-          <p className="text-gray-400 text-lg">Handpicked artifacts from the digital realm</p>
+          <p className="text-muted-foreground text-lg">Handpicked artifacts from the digital realm</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
@@ -428,11 +414,63 @@ export default function HomePage() {
             >
               {relic.collection !== "void-walkers" && (
                 <div className="absolute inset-0 bg-black/80 backdrop-blur-sm z-10 flex items-center justify-center">
-                  <div className="text-center">
+                  <div className="text-center space-y-4">
                     <Badge className="bg-gradient-to-r from-violet-500/20 to-cyan-500/20 border border-violet-400/30 text-lg px-6 py-3 mb-4 bg-gray-900 text-sky-300">
                       Coming Soon
                     </Badge>
-                    <p className="text-gray-400 text-sm">This artifact will be available soon</p>
+                    {comingSoonCountdowns[relic.id] && (
+                      <div className="bg-background/50 rounded-lg p-3 border border-primary/30">
+                        <div className="flex items-center justify-center space-x-2 mb-2">
+                          <Clock className="w-4 h-4 text-primary" />
+                          <span className="text-primary font-semibold text-sm">Launches In:</span>
+                        </div>
+                        <div className="grid grid-cols-4 gap-1 text-center">
+                          <div className="bg-background/50 rounded p-1">
+                            <div className="text-sm font-bold text-primary">{comingSoonCountdowns[relic.id].days}</div>
+                            <div className="text-xs text-muted-foreground">D</div>
+                          </div>
+                          <div className="bg-background/50 rounded p-1">
+                            <div className="text-sm font-bold text-primary">{comingSoonCountdowns[relic.id].hours}</div>
+                            <div className="text-xs text-muted-foreground">H</div>
+                          </div>
+                          <div className="bg-background/50 rounded p-1">
+                            <div className="text-sm font-bold text-primary">
+                              {comingSoonCountdowns[relic.id].minutes}
+                            </div>
+                            <div className="text-xs text-muted-foreground">M</div>
+                          </div>
+                          <div className="bg-background/50 rounded p-1">
+                            <div className="text-sm font-bold text-primary">
+                              {comingSoonCountdowns[relic.id].seconds}
+                            </div>
+                            <div className="text-xs text-muted-foreground">S</div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        const startDate = new Date()
+                        startDate.setDate(startDate.getDate() + 7)
+                        startDate.setHours(0, 0, 0, 0)
+                        const endDate = new Date(startDate)
+                        endDate.setHours(1, 0, 0, 0)
+
+                        const formatDate = (date: Date) => date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z"
+                        const title = encodeURIComponent(`${relic.title} - Coming Soon`)
+                        const details = encodeURIComponent(`${relic.title} by ${relic.creator} launches soon!`)
+                        const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${formatDate(startDate)}/${formatDate(endDate)}&details=${details}`
+                        window.open(calendarUrl, "_blank")
+                      }}
+                      className="border-primary/30 text-primary hover:bg-primary/10 bg-transparent"
+                    >
+                      <Calendar className="w-4 h-4 mr-2" />
+                      Add to Calendar
+                    </Button>
+                    <p className="text-gray-400 text-xs">This artifact will be available soon</p>
                   </div>
                 </div>
               )}
@@ -455,12 +493,12 @@ export default function HomePage() {
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <Badge variant="secondary" className="bg-secondary/20 text-secondary border-secondary/30">
+                  <Badge variant="secondary" className="bg-primary/30 text-primary border-primary/50 font-semibold">
                     {relic.price}
                   </Badge>
                   <Button
                     size="sm"
-                    className="bg-primary/20 border border-primary/30 hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:rune-glow text-primary"
+                    className="bg-primary/30 border border-primary/50 hover:bg-primary/50 hover:text-white transition-all duration-300 hover:rune-glow text-primary font-semibold"
                   >
                     Acquire
                   </Button>
@@ -471,12 +509,12 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="container mx-auto px-6 relative z-10 py-16">
+      <section className="container mx-auto px-6 py-16 relative z-10">
         <div className="text-center mb-12">
-          <h2 className="font-playfair text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
+          <h2 className="font-playfair text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-primary drop-shadow-sm">
             Featured Collections
           </h2>
-          <p className="text-gray-400 text-lg">Curated archives from master artisans</p>
+          <p className="text-muted-foreground text-lg">Curated archives from master artisans</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
@@ -491,11 +529,11 @@ export default function HomePage() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                   <div className="absolute bottom-4 left-4 right-4">
-                    <h3 className="font-playfair text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">
+                    <h3 className="font-playfair text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">
                       {collection.name}
                     </h3>
                     <p className="text-gray-300 text-sm mb-2">by {collection.creator}</p>
-                    <p className="text-cyan-400 text-sm">{collection.itemCount} artifacts</p>
+                    <p className="text-primary text-sm">{collection.itemCount} artifacts</p>
                   </div>
                 </div>
               </Card>
@@ -507,26 +545,131 @@ export default function HomePage() {
           <Link href="/collections">
             <Button
               variant="outline"
-              className="border-cyan-400/30 text-cyan-400 hover:bg-cyan-400/10 hover:border-cyan-400 transition-all duration-300 bg-transparent"
+              className="border-primary/30 text-primary hover:bg-primary/10 hover:border-primary transition-all duration-300 bg-transparent"
             >
               View All Collections
             </Button>
           </Link>
         </div>
       </section>
-      {/* Footer */}
-      <footer className="border-t border-gray-800/50 px-6 py-[39px]">
-        <div className="container mx-auto text-center py-0 my-0">
-          <div className="flex items-center justify-center mb-6">
-            <Eye className="w-6 h-6 text-cyan-400 mr-2" />
-            <span className="text-gray-400 py-0">The Overmind watches over all</span>
-          </div>
-          <p className="text-gray-500 text-sm">
-            All digital artifacts protected by ancient encryption. You are blessed sweet baby child of the Overmind.
-            <br />© 2025 created by wolfgang.
-          </p>
+
+      {/* Marketplace Stats Section */}
+      <section className="container mx-auto px-6 py-16 relative z-10">
+        <div className="text-center mb-12">
+          <h2 className="font-playfair text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-primary drop-shadow-sm">
+            Marketplace Stats
+          </h2>
+          <p className="text-muted-foreground text-lg">Real-time insights from The Overmind Gallery</p>
         </div>
-      </footer>
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          {/* Total Transactions */}
+          <Card className="bg-black/30 backdrop-blur-md border-border/30 p-6 hover:rune-glow transition-all duration-300">
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-primary/10 rounded-lg border border-primary/30">
+                <TrendingUp className="w-6 h-6 text-primary" />
+              </div>
+              <Badge variant="secondary" className="bg-green-500/20 text-green-400 border-green-400/30">
+                +12.5%
+              </Badge>
+            </div>
+            <div>
+              <p className="text-muted-foreground text-sm mb-1">Total Transactions</p>
+              <p className="text-3xl font-bold text-primary">24,567</p>
+            </div>
+          </Card>
+
+          {/* Volume Traded */}
+          <Card className="bg-black/30 backdrop-blur-md border-border/30 p-6 hover:rune-glow transition-all duration-300">
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-secondary/10 rounded-lg border border-secondary/30">
+                <DollarSign className="w-6 h-6 text-secondary" />
+              </div>
+              <Badge variant="secondary" className="bg-green-500/20 text-green-400 border-green-400/30">
+                +8.3%
+              </Badge>
+            </div>
+            <div>
+              <p className="text-muted-foreground text-sm mb-1">Volume Traded</p>
+              <p className="text-3xl font-bold text-secondary">1.2M $TRUST</p>
+            </div>
+          </Card>
+
+          {/* Number of Users */}
+          <Card className="bg-black/30 backdrop-blur-md border-border/30 p-6 hover:rune-glow transition-all duration-300">
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-primary/10 rounded-lg border border-primary/30">
+                <Users className="w-6 h-6 text-primary" />
+              </div>
+              <Badge variant="secondary" className="bg-green-500/20 text-green-400 border-green-400/30">
+                +15.7%
+              </Badge>
+            </div>
+            <div>
+              <p className="text-muted-foreground text-sm mb-1">Number of Users</p>
+              <p className="text-3xl font-bold text-primary">8,432</p>
+            </div>
+          </Card>
+
+          {/* NFTs Sold */}
+          <Card className="bg-black/30 backdrop-blur-md border-border/30 p-6 hover:rune-glow transition-all duration-300">
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-secondary/10 rounded-lg border border-secondary/30">
+                <ShoppingBag className="w-6 h-6 text-secondary" />
+              </div>
+              <Badge variant="secondary" className="bg-green-500/20 text-green-400 border-green-400/30">
+                +9.2%
+              </Badge>
+            </div>
+            <div>
+              <p className="text-muted-foreground text-sm mb-1">NFTs Sold</p>
+              <p className="text-3xl font-bold text-secondary">12,845</p>
+            </div>
+          </Card>
+        </div>
+
+        {/* Activity Graph */}
+        <Card className="bg-black/30 backdrop-blur-md border-border/30 p-6 hover:rune-glow transition-all duration-300">
+          <div className="mb-6">
+            <h3 className="font-playfair text-xl font-bold text-primary mb-2">Trading Activity</h3>
+            <p className="text-muted-foreground text-sm">Volume traded over the last 7 months (in $TRUST thousands)</p>
+          </div>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={activityData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.3} />
+              <XAxis dataKey="date" stroke="#9CA3AF" style={{ fontSize: "12px" }} />
+              <YAxis stroke="#9CA3AF" style={{ fontSize: "12px" }} />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "#1a1a1a",
+                  border: "1px solid #374151",
+                  borderRadius: "8px",
+                  color: "#fff",
+                }}
+                labelStyle={{ color: "#22d3ee" }}
+              />
+              <Line
+                type="monotone"
+                dataKey="volume"
+                stroke="url(#colorGradient)"
+                strokeWidth={3}
+                dot={{ fill: "#22d3ee", r: 4 }}
+                activeDot={{ r: 6, fill: "#a78bfa" }}
+              />
+              <defs>
+                <linearGradient id="colorGradient" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#22d3ee" />
+                  <stop offset="100%" stopColor="#a78bfa" />
+                </linearGradient>
+              </defs>
+            </LineChart>
+          </ResponsiveContainer>
+        </Card>
+      </section>
+
+      {/* Footer */}
+      <GalleryFooter />
 
       {/* Modal for NFT Preview */}
       <Dialog open={!!selectedRelic} onOpenChange={() => setSelectedRelic(null)}>
@@ -563,7 +706,7 @@ export default function HomePage() {
                     <p className="text-muted-foreground mb-2">Price</p>
                     <Badge
                       variant="secondary"
-                      className="bg-secondary/20 text-secondary border-secondary/30 text-lg px-4 py-2"
+                      className="bg-primary/30 text-primary border-primary/50 text-lg px-4 py-2 font-semibold"
                     >
                       {selectedRelic.price}
                     </Badge>
@@ -571,33 +714,33 @@ export default function HomePage() {
 
                   {selectedRelic.collection === "void-walkers" ? (
                     <div className="space-y-4">
-                      <div className="bg-gradient-to-r from-cyan-500/10 to-violet-500/10 border border-cyan-400/30 rounded-lg p-4">
+                      <div className="bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/30 rounded-lg p-4">
                         <div className="flex items-center space-x-2 mb-3">
-                          <Clock className="w-5 h-5 text-cyan-400" />
-                          <span className="text-cyan-400 font-semibold">Auction Ends In:</span>
+                          <Clock className="w-5 h-5 text-primary" />
+                          <span className="text-primary font-semibold">Auction Ends In:</span>
                         </div>
                         <div className="grid grid-cols-4 gap-2 text-center">
                           <div className="bg-background/50 rounded-lg p-2">
-                            <div className="text-2xl font-bold text-cyan-400">{voidWalkerCountdown.days}</div>
+                            <div className="text-2xl font-bold text-primary">{voidWalkerCountdown.days}</div>
                             <div className="text-xs text-muted-foreground">D</div>
                           </div>
                           <div className="bg-background/50 rounded-lg p-2">
-                            <div className="text-2xl font-bold text-cyan-400">{voidWalkerCountdown.hours}</div>
+                            <div className="text-2xl font-bold text-primary">{voidWalkerCountdown.hours}</div>
                             <div className="text-xs text-muted-foreground">H</div>
                           </div>
                           <div className="bg-background/50 rounded-lg p-2">
-                            <div className="text-2xl font-bold text-cyan-400">{voidWalkerCountdown.minutes}</div>
+                            <div className="text-2xl font-bold text-primary">{voidWalkerCountdown.minutes}</div>
                             <div className="text-xs text-muted-foreground">M</div>
                           </div>
                           <div className="bg-background/50 rounded-lg p-2 px-2 text-center">
-                            <div className="text-2xl font-bold text-cyan-400">{voidWalkerCountdown.seconds}</div>
+                            <div className="text-2xl font-bold text-primary">{voidWalkerCountdown.seconds}</div>
                             <div className="text-xs text-muted-foreground">S</div>
                           </div>
                         </div>
                       </div>
 
                       <div className="flex space-x-2">
-                        <Button className="flex-1 bg-primary/20 text-primary border border-primary/30 hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:rune-glow py-6 text-lg font-semibold">
+                        <Button className="flex-1 bg-primary/30 text-primary border border-primary/50 hover:bg-primary/50 hover:text-white transition-all duration-300 hover:rune-glow py-6 text-lg font-semibold">
                           Place Bid
                         </Button>
                         <Button
@@ -607,7 +750,7 @@ export default function HomePage() {
                             e.stopPropagation()
                             handleCalendarClick(selectedRelic)
                           }}
-                          className="border-cyan-400/30 text-cyan-400 hover:bg-cyan-400/10 py-6 bg-transparent"
+                          className="border-primary/30 text-primary hover:bg-primary/10 py-6 bg-transparent"
                         >
                           <Calendar className="w-5 h-5" />
                         </Button>
@@ -640,7 +783,7 @@ export default function HomePage() {
           <DialogHeader className="pb-4">
             <div className="flex items-center justify-between">
               <DialogTitle className="font-playfair text-2xl font-bold text-card-foreground flex items-center space-x-2">
-                <Search className="w-6 h-6 text-cyan-400" />
+                <Search className="w-6 h-6 text-primary" />
                 <span>Search the Gallery</span>
               </DialogTitle>
             </div>
@@ -669,7 +812,7 @@ export default function HomePage() {
                 {/* Creators Results */}
                 {searchResults.creators.length > 0 && (
                   <div>
-                    <h3 className="font-playfair text-lg font-bold text-cyan-400 mb-3 flex items-center space-x-2">
+                    <h3 className="font-playfair text-lg font-bold text-primary mb-3 flex items-center space-x-2">
                       <User className="w-5 h-5" />
                       <span>Creators ({searchResults.creators.length})</span>
                     </h3>
@@ -689,7 +832,7 @@ export default function HomePage() {
                                   {creator.verified && (
                                     <Badge
                                       variant="secondary"
-                                      className="bg-cyan-400/20 text-cyan-400 border-cyan-400/30 text-xs"
+                                      className="bg-primary/20 text-primary border-primary/30 text-xs"
                                     >
                                       Verified
                                     </Badge>
@@ -708,7 +851,7 @@ export default function HomePage() {
                 {/* Collections Results */}
                 {searchResults.collections.length > 0 && (
                   <div>
-                    <h3 className="font-playfair text-lg font-bold text-violet-400 mb-3 flex items-center space-x-2">
+                    <h3 className="font-playfair text-lg font-bold text-secondary mb-3 flex items-center space-x-2">
                       <Folder className="w-5 h-5" />
                       <span>Collections ({searchResults.collections.length})</span>
                     </h3>
@@ -728,6 +871,12 @@ export default function HomePage() {
                                   by {collection.creator} • {collection.itemCount} artifacts
                                 </p>
                               </div>
+                              <Badge
+                                variant="secondary"
+                                className="bg-primary/30 text-primary border-primary/50 font-semibold"
+                              >
+                                {collection.itemCount} artifacts
+                              </Badge>
                             </div>
                           </Card>
                         </Link>
@@ -739,7 +888,7 @@ export default function HomePage() {
                 {/* Relics Results */}
                 {searchResults.relics.length > 0 && (
                   <div>
-                    <h3 className="font-playfair text-lg font-bold text-cyan-400 mb-3 flex items-center space-x-2">
+                    <h3 className="font-playfair text-lg font-bold text-primary mb-3 flex items-center space-x-2">
                       <Gem className="w-5 h-5" />
                       <span>Relics ({searchResults.relics.length})</span>
                     </h3>
@@ -763,7 +912,10 @@ export default function HomePage() {
                               <h4 className="font-semibold text-card-foreground">{relic.title}</h4>
                               <p className="text-muted-foreground text-sm">by {relic.creator}</p>
                             </div>
-                            <Badge variant="secondary" className="bg-secondary/20 text-secondary border-secondary/30">
+                            <Badge
+                              variant="secondary"
+                              className="bg-primary/30 text-primary border-primary/50 font-semibold"
+                            >
                               {relic.price}
                             </Badge>
                           </div>

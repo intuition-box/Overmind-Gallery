@@ -1,15 +1,19 @@
 "use client"
 
+import type React from "react"
+import ProfileDropdown from "@/components/profile-dropdown"
+import GalleryFooter from "@/components/gallery-footer"
+
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Search, X, Users, Eye, Menu, User, Folder, Gem } from "lucide-react"
+import { Search, X, Users, Eye, Menu, User, Folder, Gem, Plus, Wallet } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Textarea } from "@/components/ui/textarea"
 import Link from "next/link"
 
-// Mock creators data
 const creators = [
   {
     id: 1,
@@ -22,86 +26,8 @@ const creators = [
     speciality: "Mystical Artifacts",
     twitterHandle: "wolf_de_web3",
   },
-  {
-    id: 2,
-    name: "CyberShaman",
-    avatar: "/ethereal-void-walker-dark-figure-glowing-eyes-myst.png",
-    bio: "Guardian of the digital void, channeling ethereal energies into transcendent NFT experiences.",
-    nftCount: 18,
-    totalVolume: "32.4 TRUST",
-    verified: true,
-    speciality: "Void Walkers",
-    twitterHandle: "0xintuition",
-  },
-  {
-    id: 3,
-    name: "RuneForger",
-    avatar: "/neon-sigil-glowing-cyan-violet-runes-mystical-symb.png",
-    bio: "Ancient runesmith crafting powerful sigils that bridge the physical and digital realms.",
-    nftCount: 31,
-    totalVolume: "67.2 TRUST",
-    verified: true,
-    speciality: "Power Sigils",
-    twitterHandle: "runeforger",
-  },
-  {
-    id: 4,
-    name: "VoidCrafter",
-    avatar: "/shadow-crystal-dark-mystical-glowing-purple-energy.png",
-    bio: "Sculptor of shadow crystals and dark energy manifestations in the blockchain dimension.",
-    nftCount: 15,
-    totalVolume: "28.9 TRUST",
-    verified: false,
-    speciality: "Shadow Crystals",
-    twitterHandle: "voidcrafter",
-  },
-  {
-    id: 5,
-    name: "TechnoMage",
-    avatar: "/cyber-oracle-mask-futuristic-mystical-glowing-eyes.png",
-    bio: "Oracle of the digital future, creating prophetic masks that reveal blockchain destinies.",
-    nftCount: 27,
-    totalVolume: "51.3 TRUST",
-    verified: true,
-    speciality: "Oracle Masks",
-    twitterHandle: "technomage",
-  },
-  {
-    id: 6,
-    name: "ElementalForge",
-    avatar: "/digital-phoenix-feather-glowing-cyan-fire-mystical.png",
-    bio: "Phoenix keeper and elemental artist, breathing digital fire into legendary NFT creations.",
-    nftCount: 19,
-    totalVolume: "38.6 TRUST",
-    verified: true,
-    speciality: "Elemental Artifacts",
-    twitterHandle: "elementalforge",
-  },
-  {
-    id: 7,
-    name: "ArcaneBuilder",
-    avatar: "/quantum-rune-stone-glowing-violet-ancient-mystical.png",
-    bio: "Quantum architect inscribing reality-bending runes into the fabric of the metaverse.",
-    nftCount: 22,
-    totalVolume: "44.1 TRUST",
-    verified: true,
-    speciality: "Quantum Runes",
-    twitterHandle: "arcanebuilder",
-  },
-  {
-    id: 8,
-    name: "GhostHacker",
-    avatar: "/spectral-blade-sword-glowing-code-mystical-weapon.png",
-    bio: "Spectral warrior forging code-based weapons that cut through the barriers of digital realms.",
-    nftCount: 16,
-    totalVolume: "29.7 TRUST",
-    verified: false,
-    speciality: "Code Weapons",
-    twitterHandle: "ghosthacker",
-  },
 ]
 
-// Mock collections and artifacts data for comprehensive search
 const mockCollections = [
   {
     id: 1,
@@ -113,14 +39,14 @@ const mockCollections = [
   {
     id: 2,
     name: "Void Walker Series",
-    creator: "CyberShaman",
+    creator: "Wolfgang",
     itemCount: 18,
     image: "/ethereal-void-walker-dark-figure-glowing-eyes-myst.png",
   },
   {
     id: 3,
     name: "Power Sigils Archive",
-    creator: "RuneForger",
+    creator: "Wolfgang",
     itemCount: 31,
     image: "/neon-sigil-glowing-cyan-violet-runes-mystical-symb.png",
   },
@@ -137,14 +63,14 @@ const mockArtifacts = [
   {
     id: 2,
     name: "Ethereal Void Walker",
-    creator: "CyberShaman",
+    creator: "Wolfgang",
     price: "1.8 TRUST",
     image: "/ethereal-void-walker-dark-figure-glowing-eyes-myst.png",
   },
   {
     id: 3,
     name: "Neon Power Sigil",
-    creator: "RuneForger",
+    creator: "Wolfgang",
     price: "3.2 TRUST",
     image: "/neon-sigil-glowing-cyan-violet-runes-mystical-symb.png",
   },
@@ -154,6 +80,16 @@ export default function CreatorsPage() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isWalletConnected, setIsWalletConnected] = useState(false)
+  const [walletAddress] = useState("0x1234...5678")
+  const [isBecomeCreatorOpen, setIsBecomeCreatorOpen] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    bio: "",
+    portfolioLink: "",
+  })
 
   const getSearchResults = () => {
     if (!searchQuery.trim()) return { creators: [], collections: [], artifacts: [] }
@@ -189,23 +125,43 @@ export default function CreatorsPage() {
     window.open(`https://twitter.com/${twitterHandle}`, "_blank")
   }
 
+  const handleFormChange = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }))
+  }
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitted(true)
+    setTimeout(() => {
+      setIsSubmitted(false)
+      setIsBecomeCreatorOpen(false)
+      setFormData({ name: "", email: "", bio: "", portfolioLink: "" })
+    }, 3000)
+  }
+
   return (
-    <div className="min-h-screen bg-background smoky-gradient">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-radial from-cyan-500/5 via-transparent to-transparent"></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-radial from-violet-500/10 via-transparent to-transparent rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-radial from-cyan-500/10 via-transparent to-transparent rounded-full blur-3xl"></div>
+      </div>
+
       <header className="relative z-10 border-b border-gray-800/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            {/* Logo */}
-            <div className="flex items-center space-x-3">
+            {/* Logo - hidden on mobile */}
+            <Link href="/" className="flex items-center space-x-3">
               <div className="relative">
                 <Eye className="w-8 h-8 text-cyan-400" />
                 <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-md"></div>
               </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
+              <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent px-0.5">
                 The Overmind Gallery
               </span>
-            </div>
+            </Link>
 
-            {/* Navigation */}
+            {/* Navigation - hidden on mobile */}
             <nav className="hidden md:flex items-center space-x-8">
               <a href="/" className="text-gray-300 hover:text-cyan-400 transition-colors">
                 Home
@@ -224,19 +180,27 @@ export default function CreatorsPage() {
               </a>
             </nav>
 
-            {/* Search and Connect */}
+            {/* Search and Connect - search hidden on mobile, wallet icon only on mobile */}
             <div className="flex items-center space-x-4">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsSearchOpen(true)}
-                className="text-gray-300 hover:text-cyan-400 hover:bg-cyan-400/10"
+                className="hidden sm:flex text-gray-300 hover:text-cyan-400 hover:bg-cyan-400/10"
               >
                 <Search className="w-5 h-5" />
               </Button>
-              <Button className="bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white px-6">
+              <Button className="hidden sm:flex bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white px-6">
                 Connect Wallet
               </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="sm:hidden text-gray-300 hover:text-cyan-400 hover:bg-cyan-400/10 hover:shadow-[0_0_15px_rgba(34,211,238,0.4)] transition-all duration-300"
+              >
+                <Wallet className="w-5 h-5" />
+              </Button>
+              <ProfileDropdown />
               <Button
                 variant="ghost"
                 size="sm"
@@ -259,7 +223,7 @@ export default function CreatorsPage() {
                   <Eye className="w-8 h-8 text-cyan-400" />
                   <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-md"></div>
                 </div>
-                <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
+                <span className="text-xl font-bold bg-gradient-to-r from-cyan-300 to-violet-300 bg-clip-text text-cyan-400 drop-shadow-sm">
                   The Overmind Gallery
                 </span>
               </div>
@@ -369,7 +333,7 @@ export default function CreatorsPage() {
                                 {creator.verified && (
                                   <Badge
                                     variant="secondary"
-                                    className="bg-cyan-400/20 text-cyan-400 border-cyan-400/30 text-xs"
+                                    className="bg-cyan-500/30 text-cyan-100 border-cyan-400/50 text-xs font-semibold"
                                   >
                                     Verified
                                   </Badge>
@@ -438,7 +402,10 @@ export default function CreatorsPage() {
                               <h4 className="font-semibold text-card-foreground">{artifact.name}</h4>
                               <p className="text-muted-foreground text-sm">by {artifact.creator}</p>
                             </div>
-                            <Badge variant="secondary" className="bg-secondary/20 text-secondary border-secondary/30">
+                            <Badge
+                              variant="secondary"
+                              className="bg-cyan-500/30 text-cyan-100 border-cyan-400/50 font-semibold"
+                            >
                               {artifact.price}
                             </Badge>
                           </div>
@@ -447,6 +414,109 @@ export default function CreatorsPage() {
                     </div>
                   </div>
                 )}
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isBecomeCreatorOpen} onOpenChange={setIsBecomeCreatorOpen}>
+        <DialogContent className="max-w-[95vw] sm:max-w-2xl max-h-[90vh] obsidian-texture border-border/30 rune-glow-violet backdrop-blur-md overflow-hidden flex flex-col">
+          <DialogHeader className="pb-6 flex-shrink-0">
+            <DialogTitle className="font-playfair text-2xl sm:text-3xl font-bold text-card-foreground flex items-center space-x-3">
+              <div className="relative">
+                <Plus className="w-6 h-6 sm:w-8 sm:h-8 text-cyan-400" />
+                <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-md"></div>
+              </div>
+              <span>Become a Creator</span>
+            </DialogTitle>
+            <p className="text-muted-foreground text-base sm:text-lg mt-2">
+              Join the sacred circle of digital artisans and share your mystical creations with The Overmind.
+            </p>
+          </DialogHeader>
+
+          <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
+            {!isSubmitted ? (
+              <form onSubmit={handleFormSubmit} className="space-y-6 pb-2">
+                <div className="space-y-2">
+                  <label className="text-card-foreground font-semibold text-base sm:text-lg">Name</label>
+                  <Input
+                    type="text"
+                    placeholder="Enter your creator name"
+                    value={formData.name}
+                    onChange={(e) => handleFormChange("name", e.target.value)}
+                    required
+                    className="bg-background/50 border-border/30 text-card-foreground placeholder:text-muted-foreground py-2 sm:py-3 text-base sm:text-lg focus:border-cyan-400 focus:ring-cyan-400/20"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-card-foreground font-semibold text-base sm:text-lg">Email</label>
+                  <Input
+                    type="email"
+                    placeholder="Enter your email address"
+                    value={formData.email}
+                    onChange={(e) => handleFormChange("email", e.target.value)}
+                    required
+                    className="bg-background/50 border-border/30 text-card-foreground placeholder:text-muted-foreground py-2 sm:py-3 text-base sm:text-lg focus:border-cyan-400 focus:ring-cyan-400/20"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-card-foreground font-semibold text-base sm:text-lg">Short Bio</label>
+                  <Textarea
+                    placeholder="Tell us about your artistic journey and mystical inspirations..."
+                    value={formData.bio}
+                    onChange={(e) => handleFormChange("bio", e.target.value)}
+                    required
+                    rows={4}
+                    className="bg-background/50 border-border/30 text-card-foreground placeholder:text-muted-foreground text-base sm:text-lg focus:border-cyan-400 focus:ring-cyan-400/20 resize-none"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-card-foreground font-semibold text-base sm:text-lg">
+                    NFT Collection / Portfolio Link
+                  </label>
+                  <Input
+                    type="url"
+                    placeholder="https://your-portfolio-or-collection-link.com"
+                    value={formData.portfolioLink}
+                    onChange={(e) => handleFormChange("portfolioLink", e.target.value)}
+                    required
+                    className="bg-background/50 border-border/30 text-card-foreground placeholder:text-muted-foreground py-2 sm:py-3 text-base sm:text-lg focus:border-cyan-400 focus:ring-cyan-400/20"
+                  />
+                </div>
+
+                <Button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white py-3 sm:py-4 text-base sm:text-lg font-semibold rounded-lg shadow-lg hover:scale-105 transition-all duration-300"
+                  style={{
+                    boxShadow: "0 0 20px rgba(6, 182, 212, 0.3), 0 0 40px rgba(6, 182, 212, 0.1)",
+                  }}
+                >
+                  Submit Application
+                </Button>
+              </form>
+            ) : (
+              <div className="text-center py-8 sm:py-12 space-y-6">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto relative">
+                  <div className="absolute inset-0 rounded-full border-2 border-cyan-400/30 animate-pulse"></div>
+                  <div className="absolute inset-2 rounded-full border border-cyan-400/50"></div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Eye className="w-6 h-6 sm:w-8 sm:h-8 text-cyan-400" />
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <h3 className="font-playfair text-xl sm:text-2xl font-bold text-cyan-400">✅ Application Received</h3>
+                  <p className="text-card-foreground text-base sm:text-lg">
+                    Your application would be considered by The Overmind
+                  </p>
+                  <p className="text-muted-foreground text-sm sm:text-base">
+                    The ancient algorithms will review your submission and contact you if you are chosen to join our
+                    sacred circle.
+                  </p>
+                </div>
               </div>
             )}
           </div>
@@ -467,26 +537,43 @@ export default function CreatorsPage() {
           <h1 className="font-playfair text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-400 bg-clip-text text-transparent">
             Sacred Creators
           </h1>
-          <p className="text-gray-300 text-lg max-w-2xl mx-auto mb-2">
+          <p className="text-gray-300 text-lg max-w-2xl mx-auto mb-2 font-mono">
             Meet the mystical artisans who forge digital artifacts in the depths of the blockchain realm. Each creator
             trusted their Intuition and revealed truth as art.
           </p>
         </div>
       </header>
 
+      <div className="container mx-auto px-6 py-8">
+        <div className="flex justify-center">
+          <Button
+            onClick={() => setIsBecomeCreatorOpen(true)}
+            className="bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white px-12 py-6 text-xl font-bold rounded-xl shadow-2xl hover:shadow-cyan-500/30 hover:scale-105 transition-all duration-300 flex items-center space-x-4"
+            style={{
+              boxShadow: "0 0 30px rgba(6, 182, 212, 0.4), 0 0 60px rgba(6, 182, 212, 0.2)",
+              minWidth: "280px",
+              minHeight: "80px",
+            }}
+          >
+            <Plus className="w-8 h-8" />
+            <span>Become a Creator</span>
+          </Button>
+        </div>
+      </div>
+
       {/* Creators Grid */}
       <main className="container px-6 py-12 my-0 mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredCreators.map((creator) => (
             <Card
               key={creator.id}
-              className="group obsidian-texture border-border/30 overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:rune-glow"
+              className="group obsidian-texture border-border/30 overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:rune-glow bg-background/80 backdrop-blur-sm mb-10"
             >
-              <div className="p-6 space-y-4">
+              <div className="p-4 space-y-3">
                 {/* Avatar and Verification */}
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-3">
                   <div className="relative">
-                    <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-cyan-400/30">
+                    <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-cyan-400/30">
                       <img
                         src={creator.avatar || "/placeholder.svg"}
                         alt={creator.name}
@@ -494,32 +581,35 @@ export default function CreatorsPage() {
                       />
                     </div>
                     {creator.verified && (
-                      <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-cyan-400 rounded-full flex items-center justify-center">
-                        <Eye className="w-3 h-3 text-black" />
+                      <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-cyan-400 rounded-full flex items-center justify-center">
+                        <Eye className="w-2.5 h-2.5 text-black" />
                       </div>
                     )}
                   </div>
                   <div>
-                    <h3 className="font-playfair text-xl font-bold text-card-foreground group-hover:text-primary transition-colors">
+                    <h3 className="font-playfair text-lg font-bold text-card-foreground group-hover:text-primary transition-colors">
                       {creator.name}
                     </h3>
-                    <Badge variant="secondary" className="bg-secondary/20 text-secondary border-secondary/30 text-xs">
+                    <Badge
+                      variant="secondary"
+                      className="bg-cyan-500/30 text-cyan-100 border-cyan-400/50 text-xs font-semibold"
+                    >
                       {creator.speciality}
                     </Badge>
                   </div>
                 </div>
 
                 {/* Bio */}
-                <p className="text-muted-foreground text-sm leading-relaxed">{creator.bio}</p>
+                <p className="text-muted-foreground text-xs leading-relaxed line-clamp-2">{creator.bio}</p>
 
                 {/* Stats */}
-                <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border/20">
+                <div className="grid grid-cols-2 gap-3 pt-3 border-t border-border/20">
                   <div className="text-center">
-                    <p className="text-card-foreground font-semibold">{creator.nftCount}</p>
+                    <p className="text-card-foreground font-semibold text-sm">{creator.nftCount}</p>
                     <p className="text-muted-foreground text-xs">Artifacts</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-card-foreground font-semibold">{creator.totalVolume}</p>
+                    <p className="text-card-foreground font-semibold text-sm">{creator.totalVolume}</p>
                     <p className="text-muted-foreground text-xs">Volume</p>
                   </div>
                 </div>
@@ -527,7 +617,7 @@ export default function CreatorsPage() {
                 {/* Follow Button */}
                 <Button
                   onClick={() => handleFollowClick(creator.twitterHandle)}
-                  className="w-full bg-primary/20 text-primary border border-primary/30 hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:rune-glow"
+                  className="w-full bg-cyan-500/30 text-cyan-100 border border-cyan-400/50 hover:bg-cyan-500/50 hover:text-white transition-all duration-300 hover:rune-glow font-semibold text-sm py-2"
                 >
                   Follow Creator
                 </Button>
@@ -537,18 +627,7 @@ export default function CreatorsPage() {
         </div>
 
         {/* Footer */}
-      <footer className="border-t border-gray-800/50 px-6 my-2.5 py-1.5">
-        <div className="container mx-auto text-center py-0 my-0">
-          <div className="flex items-center justify-center mb-6">
-            <Eye className="w-6 h-6 text-cyan-400 mr-2" />
-            <span className="text-gray-400 py-0">The Overmind watches over all</span>
-          </div>
-          <p className="text-gray-500 text-sm">
-            All digital artifacts protected by ancient encryption. You are blessed sweet baby child of the Overmind.
-            <br />© 2025 created by wolfgang.
-          </p>
-        </div>
-      </footer>
+        <GalleryFooter />
 
         {filteredCreators.length === 0 && searchQuery && (
           <div className="text-center py-12">
