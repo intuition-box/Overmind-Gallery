@@ -406,8 +406,8 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-          {curatedRelics.map((relic) => (
-            <Card
+          {curatedRelics.map((relic, index) => (
+            <RelicCard
               key={relic.id}
               className="group obsidian-texture border-border/30 overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:rune-glow relative"
               onClick={() => setSelectedRelic(relic)}
