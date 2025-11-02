@@ -29,8 +29,4 @@ Where:
 MAX_P = 0.10 (10%)
 r = (B_new - B_prev) / B_prev
 p = (MAX_P * r)
-<<<<<<< HEAD
 R = (p * B_new)
-=======
-R = (p * B_new)
->>>>>>> e20045c (Removed package-lock.json, conflicting with package.json)
