@@ -24,7 +24,6 @@ import {
 import Link from "next/link"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
 import SiteHeader from "@/components/site-header"
-import GalleryFooter from "@/components/gallery-footer"
 
 // Mock curated NFTs for homepage
 const curatedRelics = [
@@ -384,8 +383,7 @@ export default function HomePage() {
             The Overmind Gallery
           </h1>
           <p className="max-w-3xl mx-auto mb-8 leading-relaxed text-gray-400 font-mono text-lg">
-            Where ancient wisdom meets digital artistry. Discover artifacts of the digital realm, guarded by the eternal
-            gaze of The Overmind.
+            Where ancient wisdom meets digital artistry. Discover artifacts of the digital realm, guarded by the eternal gaze of The Overmind.
           </p>
           <p className="text-lg font-semibold mb-12 tracking-[0.30em] text-emerald-200">$TRUST YOUR INTUITION</p>
 
@@ -406,8 +404,8 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-          {curatedRelics.map((relic, index) => (
-            <RelicCard
+          {curatedRelics.map((relic) => (
+            <Card
               key={relic.id}
               className="group obsidian-texture border-border/30 overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:rune-glow relative"
               onClick={() => setSelectedRelic(relic)}
@@ -669,7 +667,18 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <GalleryFooter />
+      <footer className="border-t border-border px-6 py-[39px]">
+        <div className="container mx-auto text-center py-0 my-0">
+          <div className="flex items-center justify-center mb-6">
+            <Eye className="w-6 h-6 text-primary mr-2" />
+            <span className="text-muted-foreground py-0">The Overmind watches over all</span>
+          </div>
+          <p className="text-muted text-sm">
+            All digital artifacts protected by ancient encryption. You are blessed sweet baby child of the Overmind.
+            <br />© 2025 created by wolfgang.
+          </p>
+        </div>
+      </footer>
 
       {/* Modal for NFT Preview */}
       <Dialog open={!!selectedRelic} onOpenChange={() => setSelectedRelic(null)}>
