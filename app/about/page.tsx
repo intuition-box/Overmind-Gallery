@@ -326,7 +326,7 @@ export default function AboutPage() {
             <h3 className="font-playfair text-xl font-bold text-card-foreground mb-4">Get Outbid & Earn</h3>
             <p className="text-gray-400 leading-relaxed">
               When someone outbids you, receive{" "}
-              <span className="text-violet-400 font-semibold">5% of your bid amount</span> instantly. Your participation
+              <span className="text-violet-400 font-semibold">up to 10% of your bid amount</span> instantly. Your participation
               is always rewarded.
             </p>
           </Card>
@@ -602,7 +602,7 @@ R = (p * B_new)`}
                       <p className="text-gray-300 text-sm">
                         If outbid, you'll receive{" "}
                         <span className="text-cyan-400 font-semibold">
-                          {bidAmount ? `${(Number.parseFloat(bidAmount) * 0.05).toFixed(2)} TRUST` : "5% of your bid"}
+                          {bidAmount ? `up to ${(Number.parseFloat(bidAmount) * 0.10).toFixed(2)} TRUST` : "up to 10% of your bid"}
                         </span>{" "}
                         as a divine reward.
                       </p>

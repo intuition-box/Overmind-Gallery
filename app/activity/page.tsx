@@ -93,7 +93,8 @@ const getStatusBadge = (status: string, isEnded: boolean) => {
 
 const calculateReward = (item: (typeof mockActivityData)[0]) => {
   if (item.status === "Lose" && item.soldAmount && item.bidAmount) {
-    const reward = item.bidAmount * 0.05
+    // Max 10% reward based on bid amount
+    const reward = item.bidAmount * 0.10
     return `+${reward.toFixed(2)} TRUST`
   }
   return null
