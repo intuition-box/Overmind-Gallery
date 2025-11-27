@@ -31,9 +31,7 @@ export default function ProfileSettingsPage() {
   }
 
   const handleSave = () => {
-    // Here you would typically save to a backend or local storage
-    console.log("Saving profile settings:", { profileImage, displayName, bio })
-    // Show success message or redirect
+    // TODO: save to backend or local storage
   }
 
   return (

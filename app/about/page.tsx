@@ -202,8 +202,7 @@ export default function AboutPage() {
 
   const handleBid = () => {
     if (selectedRelic && bidAmount) {
-      // Here you would implement the actual bidding logic
-      console.log(`Placing bid of ${bidAmount} TRUST on ${selectedRelic.title}`)
+      // TODO: implement actual bidding logic
       setBidAmount("")
       setSelectedRelic(null)
     }

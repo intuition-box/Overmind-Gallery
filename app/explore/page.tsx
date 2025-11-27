@@ -413,7 +413,7 @@ export default function ExplorePage() {
 
   const handleBid = () => {
     if (selectedAuctionRelic && bidAmount) {
-      console.log(`Placing bid of ${bidAmount} TRUST on ${selectedAuctionRelic.title}`)
+      // TODO: implement actual bidding logic
       setBidAmount("")
       setSelectedAuctionRelic(null)
     }
