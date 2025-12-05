@@ -13,7 +13,7 @@ const nextConfig = {
     'viem',
     '@walletconnect/ethereum-provider',
   ],
-  webpack: (config, { isServer }) => {
+  webpack: (config, { isServer, webpack }) => {
     // Fallbacks pour les modules Node.js côté client
     if (!isServer) {
       config.resolve.fallback = {
@@ -32,11 +32,13 @@ const nextConfig = {
       'pino': 'commonjs pino',
     })
 
-    // Exclure les fichiers de test du bundle
-    config.module.rules.push({
-      test: /\.test\.(js|ts|tsx)$/,
-      use: 'null-loader',
-    })
+    // Exclure complètement les fichiers de test du bundle
+    config.plugins.push(
+      new webpack.IgnorePlugin({
+        resourceRegExp: /\.test\.|\.spec\.|\.bench\./,
+        contextRegExp: /node_modules/
+      })
+    )
 
     return config
   },
