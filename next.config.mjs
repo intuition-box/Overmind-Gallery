@@ -14,7 +14,7 @@ const nextConfig = {
     '@walletconnect/ethereum-provider',
   ],
   webpack: (config, { isServer }) => {
-    // Fallbacks pour les modules Node.js
+    // Fallbacks pour les modules Node.js côté client
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
@@ -33,6 +33,10 @@ const nextConfig = {
     })
 
     return config
+  },
+  // Désactiver Turbopack pour éviter les conflits
+  experimental: {
+    turbo: false,
   },
 }
 
