@@ -15,7 +15,7 @@ export interface OvermindMarketplace$Type {
   readonly deployedLinkReferences: {};
   readonly immutableReferences: {};
   readonly inputSourceName: "project/contracts/OvermindMarketplace.sol";
-  readonly buildInfoId: "solc-0_8_20-c485c291520e227fb130f06525ea7dcb512d950f";
+  readonly buildInfoId: "solc-0_8_20-a17922b546e16ff6eb83df5f404ee913b9d349fb";
 };
 
 import "hardhat/types/artifacts";

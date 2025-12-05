@@ -121,7 +121,7 @@ export default function CreatorsPage() {
       creator.speciality.toLowerCase().includes(searchQuery.toLowerCase()),
   )
 
-  const handleFollowClick = (twitterHandle) => {
+  const handleFollowClick = (twitterHandle: string) => {
     window.open(`https://twitter.com/${twitterHandle}`, "_blank")
   }
 

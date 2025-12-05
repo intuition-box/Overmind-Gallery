@@ -166,7 +166,7 @@ export default function HomePage() {
     minutes: 0,
     seconds: 0,
   })
-  const [comingSoonCountdowns, setComingSoonCountdowns] = useState<Record<number, string>>({})
+  const [comingSoonCountdowns, setComingSoonCountdowns] = useState<Record<number, { days: number; hours: number; minutes: number; seconds: number; }>>({})
 
   useEffect(() => {
     const targetDate = new Date()
