@@ -25,16 +25,26 @@ const nextConfig = {
       }
     }
 
-    // Complètement exclure les modules problématiques du bundle
+    // Exclure les imports problématiques spécifiques
     config.resolve.alias = {
       ...config.resolve.alias,
+      // Fichiers de test spécifiques qui causent des erreurs
+      './test/helper.js': false,
+      './test/base.test.js': false,
+      './test/commonjs-fallback.test.js': false,
+      './decorators/test.js': false,
+      './clients/decorators/test.js': false,
+      './test/dropTransaction.js': false,
+      './test/dumpState.js': false,
+      './test/getAutomine.js': false,
+      // Modules entiers problématiques
       'thread-stream': false,
       'pino': false,
       '@walletconnect/ethereum-provider': false,
       '@walletconnect/universal-provider': false,
     }
 
-    // Exclure complètement les fichiers de test du bundle
+    // Plugin pour ignorer tous les fichiers de test
     config.plugins.push(
       new webpack.IgnorePlugin({
         resourceRegExp: /\.test\.|\.spec\.|\.bench\.|\.tap\.|\.helper\./,
