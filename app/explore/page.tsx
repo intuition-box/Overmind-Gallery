@@ -445,6 +445,10 @@ export default function ExplorePage() {
     return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDate}/${endDate}&details=${details}`
   }
 
+  const isInAuction = (relic: (typeof nftRelics)[0]): boolean => {
+    return auctionRelics.some(auctionRelic => auctionRelic.id === relic.id)
+  }
+
   const handleCalendarClick = (relic: (typeof auctionRelics)[0]) => {
     const calendarUrl = generateCalendarLink(relic)
     window.open(calendarUrl, "_blank")
@@ -816,7 +820,7 @@ export default function ExplorePage() {
                     </Badge>
                   </div>
 
-                  {selectedRelic.collection === "void-walkers" ? (
+                   {selectedRelic.collection === "void-walkers" && isInAuction(selectedRelic) ? (
                     <div className="space-y-4">
                       <div className="bg-gradient-to-r from-cyan-500/10 to-violet-500/10 border border-cyan-400/30 rounded-lg p-4">
                         <div className="flex items-center space-x-2 mb-3">
@@ -850,10 +854,13 @@ export default function ExplorePage() {
                         <Button
                           variant="outline"
                           size="icon"
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            handleCalendarClick(selectedRelic)
-                          }}
+                           onClick={(e) => {
+                             e.stopPropagation()
+                             const auctionRelic = auctionRelics.find(relic => relic.id === selectedRelic.id)
+                             if (auctionRelic) {
+                               handleCalendarClick(auctionRelic)
+                             }
+                           }}
                           className="border-cyan-400/30 text-cyan-400 hover:bg-cyan-400/10 py-6 bg-transparent"
                         >
                           <Calendar className="w-5 h-5" />

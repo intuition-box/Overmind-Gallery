@@ -390,10 +390,30 @@ const mockCreators = [
   },
 ]
 
+type NftType = {
+  id: number;
+  name: string;
+  price: string;
+  image: string;
+};
+
+type CollectionType = {
+  id: number;
+  name: string;
+  description: string;
+  creator: string;
+  itemCount: number;
+  floorPrice: string;
+  image: string;
+  banner: string;
+  verified: boolean;
+  nfts?: NftType[];
+};
+
 export default function CollectionsPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [selectedCollection, setSelectedCollection] = useState(null)
+  const [selectedCollection, setSelectedCollection] = useState<CollectionType | null>(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isWalletConnected, setIsWalletConnected] = useState(false)
   const [walletAddress] = useState("0x1234...5678")
@@ -468,7 +488,7 @@ export default function CollectionsPage() {
       collection.description.toLowerCase().includes(searchQuery.toLowerCase()),
   )
 
-  const openCollectionModal = (collection) => {
+  const openCollectionModal = (collection: CollectionType) => {
     setSelectedCollection(collection)
   }
 
