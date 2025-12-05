@@ -25,17 +25,19 @@ const nextConfig = {
       }
     }
 
-    // Ignorer les modules problématiques côté client
-    config.externals = config.externals || []
-    config.externals.push({
-      'thread-stream': 'commonjs thread-stream',
-      'pino': 'commonjs pino',
-    })
+    // Complètement exclure les modules problématiques du bundle
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'thread-stream': false,
+      'pino': false,
+      '@walletconnect/ethereum-provider': false,
+      '@walletconnect/universal-provider': false,
+    }
 
     // Exclure complètement les fichiers de test du bundle
     config.plugins.push(
       new webpack.IgnorePlugin({
-        resourceRegExp: /\.test\.|\.spec\.|\.bench\./,
+        resourceRegExp: /\.test\.|\.spec\.|\.bench\.|\.tap\.|\.helper\./,
         contextRegExp: /node_modules/
       })
     )
