@@ -9,13 +9,13 @@ export interface LibDiamond$Type {
   readonly contractName: "LibDiamond";
   readonly sourceName: "contracts/gbm/libraries/LibDiamond.sol";
   readonly abi: [{"anonymous":false,"inputs":[{"components":[{"internalType":"address","name":"facetAddress","type":"address"},{"internalType":"enum IDiamondCut.FacetCutAction","name":"action","type":"uint8"},{"internalType":"bytes4[]","name":"functionSelectors","type":"bytes4[]"}],"indexed":false,"internalType":"struct IDiamondCut.FacetCut[]","name":"_diamondCut","type":"tuple[]"},{"indexed":false,"internalType":"address","name":"_init","type":"address"},{"indexed":false,"internalType":"bytes","name":"_calldata","type":"bytes"}],"name":"DiamondCut","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"}];
-  readonly bytecode: "0x6055604b600b8282823980515f1a607314603f577f4e487b71000000000000000000000000000000000000000000000000000000005f525f60045260245ffd5b305f52607381538281f3fe730000000000000000000000000000000000000000301460806040525f80fdfea26469706673582212208f3f59edd28d9b44746674231a3dee2bfa7c08c9b00445fa57ddc5a82425c96464736f6c63430008140033";
-  readonly deployedBytecode: "0x730000000000000000000000000000000000000000301460806040525f80fdfea26469706673582212208f3f59edd28d9b44746674231a3dee2bfa7c08c9b00445fa57ddc5a82425c96464736f6c63430008140033";
+  readonly bytecode: "0x6055604b600b8282823980515f1a607314603f577f4e487b71000000000000000000000000000000000000000000000000000000005f525f60045260245ffd5b305f52607381538281f3fe730000000000000000000000000000000000000000301460806040525f80fdfea2646970667358221220d3d964b927709a5a1fe68d606bfafd4eb4f7f6eba5611ae10b9d17c907d5d1b064736f6c63430008140033";
+  readonly deployedBytecode: "0x730000000000000000000000000000000000000000301460806040525f80fdfea2646970667358221220d3d964b927709a5a1fe68d606bfafd4eb4f7f6eba5611ae10b9d17c907d5d1b064736f6c63430008140033";
   readonly linkReferences: {};
   readonly deployedLinkReferences: {};
   readonly immutableReferences: {};
   readonly inputSourceName: "project/contracts/gbm/libraries/LibDiamond.sol";
-  readonly buildInfoId: "solc-0_8_20-b85f9cfe4cab07e9559623a9ebaedd8f56f2ba7b";
+  readonly buildInfoId: "solc-0_8_20-6f2bb91fe730bdfdfde5b1a672c80169b7927823";
 };
 
 import "hardhat/types/artifacts";

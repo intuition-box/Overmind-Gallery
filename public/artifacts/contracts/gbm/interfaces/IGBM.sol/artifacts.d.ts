@@ -15,7 +15,7 @@ export interface IGBM$Type {
   readonly deployedLinkReferences: {};
   readonly immutableReferences: {};
   readonly inputSourceName: "project/contracts/gbm/interfaces/IGBM.sol";
-  readonly buildInfoId: "solc-0_8_20-b85f9cfe4cab07e9559623a9ebaedd8f56f2ba7b";
+  readonly buildInfoId: "solc-0_8_20-6f2bb91fe730bdfdfde5b1a672c80169b7927823";
 };
 
 import "hardhat/types/artifacts";
