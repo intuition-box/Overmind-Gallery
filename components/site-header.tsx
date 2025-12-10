@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
@@ -93,12 +94,16 @@ const mockRelics = [
 
 export function SiteHeader() {
   const pathname = usePathname()
-  const isProfilePage = ["/activity", "/profile-settings", "/user-stats", "/my-nfts"].includes(pathname)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [isWalletConnected, setIsWalletConnected] = useState(false)
-  const [walletAddress] = useState("0x1234...5678")
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const isProfilePage = pathname?.startsWith('/profile') || pathname?.startsWith('/my-nfts')
 
   const getSearchResults = () => {
     if (!searchQuery.trim()) return { creators: [], collections: [], relics: [] }
@@ -121,10 +126,6 @@ export function SiteHeader() {
   const searchResults = getSearchResults()
   const hasResults =
     searchResults.creators.length > 0 || searchResults.collections.length > 0 || searchResults.relics.length > 0
-
-  const handleWalletConnect = () => {
-    setIsWalletConnected(!isWalletConnected)
-  }
 
   return (
     <>
@@ -207,21 +208,28 @@ export function SiteHeader() {
                 >
                   <Search className="w-5 h-5" />
                 </Button>
-                <Button
-                  onClick={handleWalletConnect}
-                  className="bg-gradient-to-r from-primary to-secondary hover:from-primary/80 hover:to-secondary/80 text-primary-foreground font-medium transition-all duration-300 hidden sm:flex"
-                >
-                  <Wallet className="w-5 h-5 md:mr-2" />
-                  <span className="hidden md:inline">{isWalletConnected ? walletAddress : "Connect Wallet"}</span>
-                </Button>
-                <Button
-                  onClick={handleWalletConnect}
-                  variant="ghost"
-                  size="sm"
-                  className="sm:hidden text-muted-foreground hover:text-primary hover:bg-primary/10 hover:shadow-[0_0_15px_rgba(34,211,238,0.4)] transition-all duration-300"
-                >
-                  <Wallet className="w-5 h-5" />
-                </Button>
+                <div className="hidden sm:flex">
+                  {mounted && <ConnectButton />}
+                </div>
+                <div className="sm:hidden">
+                  {mounted && <ConnectButton.Custom>
+                    {({ account, chain, openAccountModal, openChainModal, openConnectModal, mounted }) => {
+                      const ready = mounted
+                      const connected = ready && account && chain
+
+                      return (
+                        <Button
+                          onClick={openConnectModal}
+                          variant="ghost"
+                          size="sm"
+                          className="text-muted-foreground hover:text-primary hover:bg-primary/10 hover:shadow-[0_0_15px_rgba(34,211,238,0.4)] transition-all duration-300"
+                        >
+                          <Wallet className="w-5 h-5" />
+                        </Button>
+                      )
+                    }}
+                  </ConnectButton.Custom>}
+                </div>
                 <div className="flex items-center space-x-2 sm:space-x-4">
                   <ProfileDropdown />
                   <Button
@@ -274,16 +282,31 @@ export function SiteHeader() {
                 <Search className="w-6 h-6 mr-3" />
                 Search
               </Button>
-              <Button
-                onClick={() => {
-                  handleWalletConnect()
-                  setIsMobileMenuOpen(false)
-                }}
-                className="text-left justify-start bg-gradient-to-r from-primary to-secondary hover:from-primary/80 hover:to-secondary/80 text-primary-foreground text-xl font-medium"
-              >
-                <Wallet className="w-6 h-6 mr-3" />
-                {isWalletConnected ? walletAddress : "Connect Wallet"}
-              </Button>
+               <div className="text-left">
+                 <ConnectButton.Custom>
+                   {({ account, chain, openAccountModal, openChainModal, openConnectModal, mounted }) => {
+                     const ready = mounted
+                     const connected = ready && account && chain
+
+                     return (
+                       <Button
+                         onClick={() => {
+                           if (connected) {
+                             openAccountModal()
+                           } else {
+                             openConnectModal()
+                           }
+                           setIsMobileMenuOpen(false)
+                         }}
+                         className="text-left justify-start bg-gradient-to-r from-primary to-secondary hover:from-primary/80 hover:to-secondary/80 text-primary-foreground text-xl font-medium w-full"
+                       >
+                         <Wallet className="w-6 h-6 mr-3" />
+                         {connected ? `${account.displayName}` : "Connect Wallet"}
+                       </Button>
+                     )
+                   }}
+                 </ConnectButton.Custom>
+               </div>
               <hr className="border-border" />
               <a
                 href="/"

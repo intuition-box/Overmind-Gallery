@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "cp -r artifacts public/ && next build",
+    "dev": "next dev --webpack",
+    "build": "cp -r artifacts public/ && next build --webpack",
     "start": "next start",
     "lint": "next lint",
     "test": "hardhat test",
