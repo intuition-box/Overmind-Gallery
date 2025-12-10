@@ -1,14 +1,13 @@
 "use client"
 
 import type React from "react"
-import ProfileDropdown from "@/components/profile-dropdown"
-import GalleryFooter from "@/components/gallery-footer"
+import SiteHeader from "@/components/site-header"
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Search, X, Users, Eye, Menu, User, Folder, Gem, Plus, Wallet } from "lucide-react"
+import { Search, X, Users, Eye, User, Folder, Gem, Plus } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Textarea } from "@/components/ui/textarea"
@@ -147,72 +146,7 @@ export default function CreatorsPage() {
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-radial from-cyan-500/10 via-transparent to-transparent rounded-full blur-3xl"></div>
       </div>
 
-      <header className="relative z-10 border-b border-gray-800/50 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            {/* Logo - hidden on mobile */}
-            <Link href="/" className="flex items-center space-x-3">
-              <div className="relative">
-                <Eye className="w-8 h-8 text-cyan-400" />
-                <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-md"></div>
-              </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent px-0.5">
-                The Overmind Gallery
-              </span>
-            </Link>
-
-            {/* Navigation - hidden on mobile */}
-            <nav className="hidden md:flex items-center space-x-8">
-              <a href="/" className="text-gray-300 hover:text-cyan-400 transition-colors">
-                Home
-              </a>
-              <a href="/explore" className="text-gray-300 hover:text-cyan-400 transition-colors">
-                Explore
-              </a>
-              <Link href="/about" className="text-gray-300 hover:text-cyan-400 transition-colors">
-                About
-              </Link>
-              <a href="/collections" className="text-gray-300 hover:text-cyan-400 transition-colors">
-                Collections
-              </a>
-              <a href="/creators" className="text-cyan-400 font-medium">
-                Creators
-              </a>
-            </nav>
-
-            {/* Search and Connect - search hidden on mobile, wallet icon only on mobile */}
-            <div className="flex items-center space-x-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsSearchOpen(true)}
-                className="hidden sm:flex text-gray-300 hover:text-cyan-400 hover:bg-cyan-400/10"
-              >
-                <Search className="w-5 h-5" />
-              </Button>
-              <Button className="hidden sm:flex bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white px-6">
-                Connect Wallet
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="sm:hidden text-gray-300 hover:text-cyan-400 hover:bg-cyan-400/10 hover:shadow-[0_0_15px_rgba(34,211,238,0.4)] transition-all duration-300"
-              >
-                <Wallet className="w-5 h-5" />
-              </Button>
-              <ProfileDropdown />
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsMobileMenuOpen(true)}
-                className="md:hidden text-gray-300 hover:text-cyan-400 hover:bg-cyan-400/10"
-              >
-                <Menu className="w-5 h-5" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <SiteHeader />
 
       {isMobileMenuOpen && (
         <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 md:hidden">
@@ -563,17 +497,17 @@ export default function CreatorsPage() {
 
       {/* Creators Grid */}
       <main className="container px-6 py-12 my-0 mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {filteredCreators.map((creator) => (
             <Card
               key={creator.id}
-              className="group obsidian-texture border-border/30 overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:rune-glow bg-background/80 backdrop-blur-sm mb-10"
+              className="group obsidian-texture border-border/30 overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:rune-glow"
             >
-              <div className="p-4 space-y-3">
+              <div className="p-6 space-y-4">
                 {/* Avatar and Verification */}
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-4">
                   <div className="relative">
-                    <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-cyan-400/30">
+                    <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-cyan-400/30">
                       <img
                         src={creator.avatar || "/placeholder.svg"}
                         alt={creator.name}
@@ -581,13 +515,13 @@ export default function CreatorsPage() {
                       />
                     </div>
                     {creator.verified && (
-                      <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-cyan-400 rounded-full flex items-center justify-center">
-                        <Eye className="w-2.5 h-2.5 text-black" />
+                      <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-cyan-400 rounded-full flex items-center justify-center">
+                        <Eye className="w-3 h-3 text-black" />
                       </div>
                     )}
                   </div>
                   <div>
-                    <h3 className="font-playfair text-lg font-bold text-card-foreground group-hover:text-primary transition-colors">
+                    <h3 className="font-playfair text-xl font-bold text-card-foreground group-hover:text-primary transition-colors">
                       {creator.name}
                     </h3>
                     <Badge
@@ -600,16 +534,16 @@ export default function CreatorsPage() {
                 </div>
 
                 {/* Bio */}
-                <p className="text-muted-foreground text-xs leading-relaxed line-clamp-2">{creator.bio}</p>
+                <p className="text-muted-foreground text-sm leading-relaxed">{creator.bio}</p>
 
                 {/* Stats */}
-                <div className="grid grid-cols-2 gap-3 pt-3 border-t border-border/20">
+                <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border/20">
                   <div className="text-center">
-                    <p className="text-card-foreground font-semibold text-sm">{creator.nftCount}</p>
+                    <p className="text-card-foreground font-semibold">{creator.nftCount}</p>
                     <p className="text-muted-foreground text-xs">Artifacts</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-card-foreground font-semibold text-sm">{creator.totalVolume}</p>
+                    <p className="text-card-foreground font-semibold">{creator.totalVolume}</p>
                     <p className="text-muted-foreground text-xs">Volume</p>
                   </div>
                 </div>
@@ -617,7 +551,7 @@ export default function CreatorsPage() {
                 {/* Follow Button */}
                 <Button
                   onClick={() => handleFollowClick(creator.twitterHandle)}
-                  className="w-full bg-cyan-500/30 text-cyan-100 border border-cyan-400/50 hover:bg-cyan-500/50 hover:text-white transition-all duration-300 hover:rune-glow font-semibold text-sm py-2"
+                  className="w-full bg-cyan-500/30 text-cyan-100 border border-cyan-400/50 hover:bg-cyan-500/50 hover:text-white transition-all duration-300 hover:rune-glow font-semibold"
                 >
                   Follow Creator
                 </Button>
@@ -627,7 +561,6 @@ export default function CreatorsPage() {
         </div>
 
         {/* Footer */}
-        <GalleryFooter />
 
         {filteredCreators.length === 0 && searchQuery && (
           <div className="text-center py-12">

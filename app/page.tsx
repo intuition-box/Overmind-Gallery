@@ -24,6 +24,7 @@ import {
 import Link from "next/link"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
 import SiteHeader from "@/components/site-header"
+import Image from "next/image"
 
 // Mock curated NFTs for homepage
 const curatedRelics = [
@@ -368,17 +369,22 @@ export default function HomePage() {
       )}
 
       <header className="text-center relative z-10 py-16">
-        <div className="container mx-auto px-6">
-          {/* Central Eye Symbol */}
-          <div className="relative mb-8 flex justify-center">
-            <div className="relative">
-              <div className="w-24 h-24 rounded-full border-2 border-primary/30 flex items-center justify-center">
-                <Eye className="w-12 h-12 text-primary" />
-              </div>
-              <div className="absolute inset-0 bg-primary/10 rounded-full blur-xl animate-pulse"></div>
-            </div>
-          </div>
+  <div className="container mx-auto px-6">
 
+    {/* YOUR CUSTOM LOGO - MUST BE PROPERLY CLOSED */}
+    <div className="relative mb-8 flex justify-center">
+      <div className="relative">
+        <Image
+          src="/The_Overmind_Gallery_Logo.png"
+          alt="The Overmind Gallery Logo"
+          width={200}
+          height={80}
+          className="w-25 h-auto md:w-96 lg:w-[300px] object-contain drop-shadow-2xl"
+          priority
+        />
+      </div>
+    </div>
+    {/* END LOGO */}
           <h1 className="font-playfair text-5xl font-bold bg-gradient-to-r from-secondary via-primary to-secondary bg-clip-text text-transparent md:text-7xl mb-6">
             The Overmind Gallery
           </h1>
