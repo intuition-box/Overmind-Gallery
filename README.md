@@ -108,8 +108,16 @@ npm start
 │   ├── scaffold-eth/      # Scaffold-ETH style hooks
 │   └── overmind/          # Project-specific hooks
 ├── lib/                   # Utilities and configurations
-└── scripts/               # Deployment scripts
+├── scripts/               # Deployment scripts
+├── ARCHITECTURE.md        # System architecture and GBM documentation
+└── README.md             # This file
 ```
+
+## Architecture
+
+For detailed information about the system architecture, GBM auction mechanism, and contract interactions, see [ARCHITECTURE.md](./ARCHITECTURE.md).
+
+The Overmind Gallery implements the sophisticated GBM (Gotta-Be-More) auction system from Aavegotchi, featuring dynamic pricing through competitive bidding with reward mechanisms for outbid participants.
 
 ## Web3 Features
 
