@@ -21,7 +21,7 @@ const sourceSans = Source_Sans_3({
 export const metadata: Metadata = {
   title: "The Overmind Gallery - Explore Sacred Relics",
   description: "Discover ancient digital artifacts in our mystical NFT marketplace",
-  generator: "v0.app",
+  generator: "Wolfgang",
 }
 
 export default function RootLayout({
