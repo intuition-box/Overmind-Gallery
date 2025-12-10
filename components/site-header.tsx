@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { Button } from "@/components/ui/button"
@@ -94,10 +94,16 @@ const mockRelics = [
 
 export function SiteHeader() {
   const pathname = usePathname()
-  const isProfilePage = ["/activity", "/profile-settings", "/user-stats", "/my-nfts"].includes(pathname)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const isProfilePage = pathname?.startsWith('/profile') || pathname?.startsWith('/my-nfts')
 
   const getSearchResults = () => {
     if (!searchQuery.trim()) return { creators: [], collections: [], relics: [] }
@@ -203,10 +209,10 @@ export function SiteHeader() {
                   <Search className="w-5 h-5" />
                 </Button>
                 <div className="hidden sm:flex">
-                  <ConnectButton />
+                  {mounted && <ConnectButton />}
                 </div>
                 <div className="sm:hidden">
-                  <ConnectButton.Custom>
+                  {mounted && <ConnectButton.Custom>
                     {({ account, chain, openAccountModal, openChainModal, openConnectModal, mounted }) => {
                       const ready = mounted
                       const connected = ready && account && chain
@@ -222,7 +228,7 @@ export function SiteHeader() {
                         </Button>
                       )
                     }}
-                  </ConnectButton.Custom>
+                  </ConnectButton.Custom>}
                 </div>
                 <div className="flex items-center space-x-2 sm:space-x-4">
                   <ProfileDropdown />

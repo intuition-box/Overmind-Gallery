@@ -7,7 +7,6 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { User, Settings, BarChart3, Activity, Gem, LogOut } from "lucide-react"
 
 export default function ProfileDropdown() {
-  const { disconnect } = useDisconnect()
   const [isOpen, setIsOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
   const buttonRef = useRef<HTMLButtonElement>(null)
@@ -16,6 +15,10 @@ export default function ProfileDropdown() {
   useEffect(() => {
     setMounted(true)
   }, [])
+
+  // Always call the hook to follow Rules of Hooks, but only use result when mounted
+  const { disconnect: wagmiDisconnect } = useDisconnect()
+  const disconnect = mounted ? wagmiDisconnect : () => {}
 
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, right: 0 })
 
