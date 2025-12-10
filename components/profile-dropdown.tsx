@@ -1,11 +1,13 @@
 "use client"
 import { useState, useRef, useEffect } from "react"
 import { createPortal } from "react-dom"
+import { useDisconnect } from 'wagmi'
 import Link from "next/link"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { User, Settings, BarChart3, Activity, Gem, LogOut } from "lucide-react"
 
 export default function ProfileDropdown() {
+  const { disconnect } = useDisconnect()
   const [isOpen, setIsOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
   const buttonRef = useRef<HTMLButtonElement>(null)
@@ -66,7 +68,7 @@ export default function ProfileDropdown() {
 
   const handleDisconnectWallet = () => {
     setIsOpen(false)
-    alert("Wallet disconnected!")
+    disconnect()
   }
 
   const DropdownMenu = () => (
