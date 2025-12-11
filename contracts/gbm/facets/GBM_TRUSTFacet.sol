@@ -49,6 +49,7 @@ contract GBM_TRUSTFacet is IGBM, IERC1155TokenReceiver, IERC721TokenReceiver, Mo
         uint256 _bidAmount,
         uint256 _highestBid
     ) internal {
+        require(!s.paused, "bid: contract is paused");
         require(s.collections[s.tokenMapping[_auctionId].contractAddress].biddingAllowed, "bid: bidding is currently not allowed");
 
         require(_bidAmount > 1, "bid: _bidAmount cannot be 0");
@@ -130,6 +131,7 @@ contract GBM_TRUSTFacet is IGBM, IERC1155TokenReceiver, IERC721TokenReceiver, Mo
         address _ca = s.tokenMapping[_auctionId].contractAddress;
         uint256 _tid = s.tokenMapping[_auctionId].tokenId;
 
+        require(!s.paused, "claim: contract is paused");
         require(s.collections[_ca].biddingAllowed, "claim: Claiming is currently not allowed");
         require(getAuctionEndTime(_auctionId) < block.timestamp, "claim: Auction has not yet ended");
         require(s.auctionItemClaimed[_auctionId] == false, "claim: Item has already been claimed");
