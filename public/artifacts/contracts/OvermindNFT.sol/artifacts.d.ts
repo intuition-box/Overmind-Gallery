@@ -15,7 +15,7 @@ export interface OvermindNFT$Type {
   readonly deployedLinkReferences: {};
   readonly immutableReferences: {};
   readonly inputSourceName: "project/contracts/OvermindNFT.sol";
-  readonly buildInfoId: "solc-0_8_20-a17922b546e16ff6eb83df5f404ee913b9d349fb";
+  readonly buildInfoId: "solc-0_8_20-6f2bb91fe730bdfdfde5b1a672c80169b7927823";
 };
 
 import "hardhat/types/artifacts";

@@ -74,6 +74,7 @@ struct AppStorage {
     mapping(address => mapping(uint256 => uint256)) erc1155TokensIndex; //Contract => TokenID => Amount being auctionned
     mapping(address => mapping(uint256 => uint256)) erc1155TokensUnderAuction; //Contract => TokenID => Amount being auctionned
     bytes backendPubKey;
+    bool paused; // Global emergency pause state
 }
 
 contract Modifiers {
