@@ -2,11 +2,12 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Search, Eye, Menu, X } from "lucide-react"
+import { Search, Eye, Menu, X, Wallet } from "lucide-react"
 import Link from "next/link"
 import { ConnectButton } from "@rainbow-me/rainbowkit"
 import { Balance } from "@/components/web3/Balance"
 import { NetworkInfo } from "@/components/web3/NetworkInfo"
+
 
 interface HeaderProps {
   currentPage?: 'home' | 'explore' | 'collections' | 'creators'

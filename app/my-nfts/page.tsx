@@ -44,7 +44,7 @@ export default function MyNFTsPage() {
                 <p className="text-muted-foreground text-lg max-w-md mx-auto leading-relaxed mb-8">
                   You don't own any NFTs yet. Start bidding on artifacts to build your collection.
                 </p>
-                <Link href="/">
+                <Link href="/explore">
                   <Button className="bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30 transition-all duration-300 hover:shadow-[0_0_20px_rgba(34,211,238,0.5)]">
                     Browse Gallery
                   </Button>
