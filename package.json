@@ -81,6 +81,7 @@
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/three": "^0.182.0",
     "chai": "^6.2.1",
     "ethers": "^6.15.0",
     "hardhat": "^3.0.3",

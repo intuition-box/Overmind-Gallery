@@ -3,7 +3,9 @@
 
 import React, { useEffect, useRef } from "react"
 import * as THREE from "three"
+// @ts-ignore
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
+// @ts-ignore
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 
 type Props = {
@@ -29,7 +31,7 @@ export default function ThreeNFTViewer({ glbUrl, title, className }: Props) {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     renderer.setSize(width, height)
     renderer.shadowMap.enabled = true
-    renderer.outputEncoding = THREE.sRGBEncoding
+    renderer.outputColorSpace = THREE.SRGBColorSpace
     renderer.toneMapping = THREE.ACESFilmicToneMapping
     container.appendChild(renderer.domElement)
     rendererRef.current = renderer
@@ -102,27 +104,30 @@ export default function ThreeNFTViewer({ glbUrl, title, className }: Props) {
     if (glbUrl) {
       loader.load(
         glbUrl,
-        (gltf) => {
+        (gltf: any) => {
           currentModel = gltf.scene
+          if (!currentModel) return
           // basic material correction (make sure it uses sRGB)
-          currentModel.traverse((child) => {
+          currentModel.traverse((child: any) => {
             if ((child as THREE.Mesh).isMesh) {
               const m = (child as THREE.Mesh).material as any
               if (m && typeof m === "object") {
-                if (m.map) m.map.encoding = THREE.sRGBEncoding
+                if (m.map) m.map.colorSpace = THREE.SRGBColorSpace
                 m.needsUpdate = true
               }
             }
           })
 
-          root.add(currentModel)
-          // fit camera
-          fitCameraToObject(camera, currentModel)
+          if (currentModel) {
+            root.add(currentModel)
+            // fit camera
+            fitCameraToObject(camera, currentModel)
+          }
         },
-        (xhr) => {
+        (xhr: any) => {
           // progress - we could surface a mini loader later
         },
-        (err) => {
+        (err: any) => {
           console.error("GLTF load error:", err)
         }
       )

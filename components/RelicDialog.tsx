@@ -6,7 +6,7 @@ import dynamic from "next/dynamic"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Calendar, Clock } from "lucide-react"
-import { Relic } from "@/data/nftRelics"
+import { Relic } from "@/lib/nftRelics"
 
 // dynamic import - no SSR
 const ThreeNFTViewer = dynamic(() => import("./ThreeNFTViewer"), {
