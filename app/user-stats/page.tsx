@@ -39,9 +39,7 @@ export default function UserStatsPage() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-violet-900/20 via-transparent to-transparent" />
 
       <div className="relative z-10">
-        {/* Header */}
-        <SiteHeader />
-
+        
         <div className="max-w-6xl mx-auto px-6">
           <Button
             onClick={() => router.back()}
@@ -102,7 +100,7 @@ export default function UserStatsPage() {
               </div>
 
               {/* Share Button */}
-              <div className="text-center pt-6">
+              <div className="text-center pt-5">
                 <Button
                   onClick={handleShareStats}
                   className="bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30 px-8 py-3 text-lg transition-all duration-300 hover:shadow-[0_0_20px_rgba(34,211,238,0.5)]"

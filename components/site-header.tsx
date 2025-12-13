@@ -346,9 +346,9 @@ export function SiteHeader() {
                            }
                            setIsMobileMenuOpen(false)
                          }}
-                         className="text-left justify-start bg-gradient-to-r from-primary to-secondary hover:from-primary/80 hover:to-secondary/80 text-primary-foreground text-xl font-medium w-full"
+                         className="bg-gradient-to-r from-primary to-secondary hover:from-primary/80 hover:to-secondary/80 text-primary-foreground font-medium transition-all duration-300 hidden sm:flex"
                        >
-                         <Wallet className="w-6 h-6 mr-3" />
+                         <Wallet className="w-5 h-5 md:mr-2" />
                          {connected ? `${account.displayName}` : "Connect Wallet"}
                        </Button>
                      )

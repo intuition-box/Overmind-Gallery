@@ -14,6 +14,7 @@ export const config = getDefaultConfig({
     [sepolia.id]: http(process.env.NEXT_PUBLIC_SEPOLIA_RPC_URL),
     [hardhat.id]: http('http://127.0.0.1:8545'),
   },
+  autoConnect: true,
   ssr: true, // Enable SSR support to prevent WagmiProviderNotFoundError
 })
 
