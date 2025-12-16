@@ -1,5 +1,4 @@
 "use client"
-
 import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
 import { ConnectButton } from '@rainbow-me/rainbowkit'
@@ -9,11 +8,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Search, User, Folder, Gem, X, Menu, Wallet, HelpCircle } from "lucide-react"
+import { Search, User, Folder, Gem, X, Menu, Wallet, HelpCircle, ChevronDown } from "lucide-react"
 import Link from "next/link"
 import ProfileDropdown from "@/components/profile-dropdown"
 import Image from "next/image"
-
 // Mock data for search functionality
 const mockCreators = [
   {
@@ -24,7 +22,6 @@ const mockCreators = [
     verified: true,
   },
 ]
-
 const mockCollections = [
   {
     id: 1,
@@ -62,7 +59,6 @@ const mockCollections = [
     image: "/futuristic-temple-with-glowing-oracle-masks-and-di.png",
   },
 ]
-
 const mockRelics = [
   {
     id: 1,
@@ -93,42 +89,27 @@ const mockRelics = [
     image: "/shadow-crystal-dark-mystical-glowing-purple-energy.png",
   },
 ]
-
 export function SiteHeader() {
   const pathname = usePathname()
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
   const isProfilePage = pathname?.startsWith('/profile') || pathname?.startsWith('/my-nfts')
-
   const getSearchResults = () => {
     if (!searchQuery.trim()) return { creators: [], collections: [], relics: [] }
-
     const query = searchQuery.toLowerCase().trim()
-
     const filteredCreators = mockCreators.filter((creator) => creator.name.toLowerCase().includes(query))
-
     const filteredCollections = mockCollections.filter(
       (collection) => collection.name.toLowerCase().includes(query) || collection.creator.toLowerCase().includes(query),
     )
-
     const filteredRelics = mockRelics.filter(
       (relic) => relic.title.toLowerCase().includes(query) || relic.creator.toLowerCase().includes(query),
     )
-
     return { creators: filteredCreators, collections: filteredCollections, relics: filteredRelics }
   }
-
   const searchResults = getSearchResults()
   const hasResults =
     searchResults.creators.length > 0 || searchResults.collections.length > 0 || searchResults.relics.length > 0
-
   return (
     <>
       {!isProfilePage && (
@@ -148,7 +129,6 @@ export function SiteHeader() {
                   The Overmind Gallery
                 </span>
               </Link>
-
               {/* Navigation - hidden on mobile */}
               <nav className="hidden md:flex items-center space-x-8">
                 <a
@@ -161,7 +141,6 @@ export function SiteHeader() {
                 >
                   Home
                 </a>
-
                 <Link
                   href="/about"
                   className={
@@ -172,7 +151,6 @@ export function SiteHeader() {
                 >
                   About
                 </Link>
-
                 <a
                   href="/explore"
                   className={
@@ -183,7 +161,7 @@ export function SiteHeader() {
                 >
                   Explore
                 </a>
-                
+               
                 <a
                   href="/collections"
                   className={
@@ -242,9 +220,9 @@ export function SiteHeader() {
                   </DropdownMenuContent>
                 </DropdownMenu>
               </nav>
-
-              {/* Search and Connect - search hidden on mobile, wallet icon only on mobile */}
+              {/* Right side actions - FIXED ORDER: Search, Wallet, Profile, Mobile Menu */}
               <div className="flex items-center space-x-2 sm:space-x-4">
+                {/* Search button */}
                 <Button
                   variant="ghost"
                   size="sm"
@@ -253,45 +231,143 @@ export function SiteHeader() {
                 >
                   <Search className="w-5 h-5" />
                 </Button>
-                <div className="hidden sm:flex">
-                  {mounted && <ConnectButton />}
-                </div>
-                <div className="sm:hidden">
-                  {mounted && <ConnectButton.Custom>
-                    {({ account, chain, openAccountModal, openChainModal, openConnectModal, mounted }) => {
-                      const ready = mounted
-                      const connected = ready && account && chain
-
+               
+                {/* Desktop wallet button - Network selector only, no wallet icon */}
+                <div className="hidden sm:block relative z-10">
+                  <ConnectButton.Custom>
+                    {({
+                      account,
+                      chain,
+                      openAccountModal,
+                      openChainModal,
+                      openConnectModal,
+                      authenticationStatus,
+                      mounted,
+                    }) => {
+                      const ready = mounted && authenticationStatus !== 'loading';
+                      const connected =
+                        ready &&
+                        account &&
+                        chain &&
+                        (!authenticationStatus ||
+                          authenticationStatus === 'authenticated');
                       return (
-                        <Button
-                          onClick={openConnectModal}
-                          variant="ghost"
-                          size="sm"
-                          className="text-muted-foreground hover:text-primary hover:bg-primary/10 hover:shadow-[0_0_15px_rgba(34,211,238,0.4)] transition-all duration-300"
+                        <div
+                          {...(!ready && {
+                            'aria-hidden': true,
+                            'style': {
+                              opacity: 0,
+                              pointerEvents: 'none',
+                              userSelect: 'none',
+                            },
+                          })}
                         >
-                          <Wallet className="w-5 h-5" />
-                        </Button>
-                      )
+                          {!connected ? (
+                            <Button
+                              onClick={openConnectModal}
+                              className="bg-gradient-to-r from-primary to-secondary hover:from-primary/80 hover:to-secondary/80 text-primary-foreground font-medium transition-all duration-300"
+                            >
+                              Connect Wallet
+                            </Button>
+                          ) : chain.unsupported ? (
+                            <Button
+                              onClick={openChainModal}
+                              variant="destructive"
+                              size="sm"
+                              className="font-medium"
+                            >
+                              Wrong network
+                              <ChevronDown className="w-4 h-4 ml-1" />
+                            </Button>
+                          ) : (
+                            <Button
+                              onClick={openChainModal}
+                              variant="outline"
+                              size="sm"
+                              className="font-medium border-border/30 hover:border-primary/50 transition-all"
+                            >
+                              {chain.hasIcon && (
+                                <div className="w-4 h-4 mr-2">
+                                  {chain.iconUrl && (
+                                    <img
+                                      alt={chain.name ?? 'Chain icon'}
+                                      src={chain.iconUrl}
+                                      className="w-4 h-4"
+                                    />
+                                  )}
+                                </div>
+                              )}
+                              {chain.name}
+                              <ChevronDown className="w-4 h-4 ml-1" />
+                            </Button>
+                          )}
+                        </div>
+                      );
                     }}
-                  </ConnectButton.Custom>}
+                  </ConnectButton.Custom>
                 </div>
-                <div className="flex items-center space-x-2 sm:space-x-4">
-                  <ProfileDropdown />
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setIsMobileMenuOpen(true)}
-                    className="md:hidden text-muted-foreground hover:text-primary"
-                  >
-                    <Menu className="w-5 h-5" />
-                  </Button>
+               
+                {/* Profile dropdown - moved after wallet */}
+                <ProfileDropdown />
+               
+                {/* Mobile wallet icon */}
+                <div className="sm:hidden">
+                  <ConnectButton.Custom>
+                    {({
+                      account,
+                      chain,
+                      openAccountModal,
+                      openChainModal,
+                      openConnectModal,
+                      authenticationStatus,
+                      mounted,
+                    }) => {
+                      const ready = mounted && authenticationStatus !== 'loading';
+                      const connected =
+                        ready &&
+                        account &&
+                        chain &&
+                        (!authenticationStatus ||
+                          authenticationStatus === 'authenticated');
+                      return (
+                        <div
+                          {...(!ready && {
+                            'aria-hidden': true,
+                            'style': {
+                              opacity: 0,
+                              pointerEvents: 'none',
+                              userSelect: 'none',
+                            },
+                          })}
+                        >
+                          <Button
+                            onClick={connected ? openAccountModal : openConnectModal}
+                            variant="ghost"
+                            size="sm"
+                            className="text-muted-foreground hover:text-primary hover:bg-primary/10 hover:shadow-[0_0_15px_rgba(34,211,238,0.4)] transition-all duration-300"
+                          >
+                            <Wallet className="w-5 h-5" />
+                          </Button>
+                        </div>
+                      );
+                    }}
+                  </ConnectButton.Custom>
                 </div>
+               
+                {/* Mobile menu button */}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsMobileMenuOpen(true)}
+                  className="md:hidden text-muted-foreground hover:text-primary"
+                >
+                  <Menu className="w-5 h-5" />
+                </Button>
               </div>
             </div>
           </div>
         </header>
       )}
-
       {/* Mobile Menu Overlay */}
       {!isProfilePage && isMobileMenuOpen && (
         <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 md:hidden">
@@ -330,31 +406,50 @@ export function SiteHeader() {
                 <Search className="w-6 h-6 mr-3" />
                 Search
               </Button>
-               <div className="text-left">
-                 <ConnectButton.Custom>
-                   {({ account, chain, openAccountModal, openChainModal, openConnectModal, mounted }) => {
-                     const ready = mounted
-                     const connected = ready && account && chain
-
-                     return (
-                       <Button
-                         onClick={() => {
-                           if (connected) {
-                             openAccountModal()
-                           } else {
-                             openConnectModal()
-                           }
-                           setIsMobileMenuOpen(false)
-                         }}
-                         className="bg-gradient-to-r from-primary to-secondary hover:from-primary/80 hover:to-secondary/80 text-primary-foreground font-medium transition-all duration-300 hidden sm:flex"
-                       >
-                         <Wallet className="w-5 h-5 md:mr-2" />
-                         {connected ? `${account.displayName}` : "Connect Wallet"}
-                       </Button>
-                     )
-                   }}
-                 </ConnectButton.Custom>
-               </div>
+             
+              {/* Mobile menu wallet button */}
+              <div className="text-left">
+                <ConnectButton.Custom>
+                  {({
+                    account,
+                    chain,
+                    openAccountModal,
+                    openChainModal,
+                    openConnectModal,
+                    authenticationStatus,
+                    mounted,
+                  }) => {
+                    const ready = mounted && authenticationStatus !== 'loading';
+                    const connected =
+                      ready &&
+                      account &&
+                      chain &&
+                      (!authenticationStatus ||
+                        authenticationStatus === 'authenticated');
+                    return (
+                      <div
+                        {...(!ready && {
+                          'aria-hidden': true,
+                          'style': {
+                            opacity: 0,
+                            pointerEvents: 'none',
+                            userSelect: 'none',
+                          },
+                        })}
+                      >
+                        <Button
+                          onClick={connected ? openAccountModal : openConnectModal}
+                          className="bg-gradient-to-r from-primary to-secondary hover:from-primary/80 hover:to-secondary/80 text-primary-foreground font-medium transition-all duration-300 w-full"
+                        >
+                          <Wallet className="w-5 h-5 mr-2" />
+                          {connected ? "Wallet" : "Connect Wallet"}
+                        </Button>
+                      </div>
+                    );
+                  }}
+                </ConnectButton.Custom>
+              </div>
+             
               <hr className="border-border" />
               <a
                 href="/"
@@ -446,7 +541,6 @@ export function SiteHeader() {
           </div>
         </div>
       )}
-
       {/* Search Modal */}
       {!isProfilePage && (
         <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
@@ -459,7 +553,6 @@ export function SiteHeader() {
                 </DialogTitle>
               </div>
             </DialogHeader>
-
             <div className="space-y-6">
               <div className="relative">
                 <Input
@@ -471,7 +564,6 @@ export function SiteHeader() {
                 />
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               </div>
-
               {searchQuery && (
                 <div className="max-h-96 overflow-y-auto space-y-6">
                   {!hasResults && (
@@ -479,7 +571,6 @@ export function SiteHeader() {
                       <p className="text-muted-foreground text-lg">No results found for "{searchQuery}"</p>
                     </div>
                   )}
-
                   {/* Creators Results */}
                   {searchResults.creators.length > 0 && (
                     <div>
@@ -518,7 +609,6 @@ export function SiteHeader() {
                       </div>
                     </div>
                   )}
-
                   {/* Collections Results */}
                   {searchResults.collections.length > 0 && (
                     <div>
@@ -555,7 +645,6 @@ export function SiteHeader() {
                       </div>
                     </div>
                   )}
-
                   {/* Relics Results */}
                   {searchResults.relics.length > 0 && (
                     <div>
@@ -600,5 +689,4 @@ export function SiteHeader() {
     </>
   )
 }
-
 export default SiteHeader

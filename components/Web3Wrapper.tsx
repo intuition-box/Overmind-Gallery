@@ -1,22 +1,24 @@
-'use client'
+'use client';
 
-import { ReactNode } from 'react'
-import dynamic from 'next/dynamic'
+import { WagmiProvider } from 'wagmi';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { config } from '@/lib/wagmi';
+import { SiteHeader } from '@/components/site-header'; 
+import '@rainbow-me/rainbowkit/styles.css';
 
-interface Web3WrapperProps {
-  children: ReactNode
-}
+const queryClient = new QueryClient();
 
-// Import Web3Provider dynamically to avoid SSR issues
-const Web3Provider = dynamic(() => import("@/components/providers/Web3Provider").then(mod => ({ default: mod.Web3Provider })), {
-  ssr: false,
-  loading: () => <>{null}</>
-})
-
-export function Web3Wrapper({ children }: Web3WrapperProps) {
+export function Web3Wrapper({ children }: { children: React.ReactNode }) {
   return (
-    <Web3Provider>
-      {children}
-    </Web3Provider>
-  )
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <RainbowKitProvider>
+          {/* SiteHeader is now INSIDE the provider */}
+          
+          {children}
+        </RainbowKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
+  );
 }
