@@ -4,15 +4,49 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { NFTModal } from "@/components/nft-modal"
 import { Card } from "@/components/ui/card"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import { Calendar, Clock, Gavel, ShoppingBagIcon, TrendingUp, Coins, Timer } from "lucide-react"
+import { Calendar, Clock, Gavel, Timer, Coins, ShoppingBagIcon, TrendingUp } from "lucide-react"
 import NFTFilterBar, { type FilterOptions } from "@/components/nft-filter-bar"
 import SiteHeader from "@/components/site-header"
 
+// NFT Type Badge Component
+function NFTTypeBadge({ mediaType }: { mediaType: "2d" | "3d" | "video" | undefined }) {
+  const getBadgeConfig = () => {
+    switch (mediaType) {
+      case "3d":
+        return {
+          text: "3D",
+          icon: "🎮",
+          gradient: "from-cyan-500 to-violet-500",
+          border: "border-cyan-400/50"
+        }
+      case "video":
+        return {
+          text: "VIDEO",
+          icon: "▶",
+          gradient: "from-pink-500 to-orange-500",
+          border: "border-pink-400/50"
+        }
+      case "2d":
+      default:
+        return {
+          text: "2D",
+          icon: "🖼️",
+          gradient: "from-blue-500 to-black",
+          border: "border-blue-400/50"
+        }
+    }
+  }
+  const config = getBadgeConfig()
+  return (
+    <div className={`inline-flex items-center space-x-1 bg-gradient-to-r ${config.gradient} rounded px-2 py-0.5 border ${config.border} shadow-sm`}>
+      <span className="text-xs">{config.icon}</span>
+      <span className="text-white font-bold text-[10px] tracking-wide">{config.text}</span>
+    </div>
+  )
+}
 
-// Mock NFT data
+// Mock NFT data with mediaType
 const nftRelics = [
   {
     id: 1,
@@ -26,19 +60,7 @@ const nftRelics = [
     category: "art",
     status: "coming-soon",
     createdAt: new Date("2024-01-15"),
-  },
-  {
-    id: 2,
-    title: "Ethereal Void Walker",
-    creator: "CyberShaman",
-    price: "1.8 TRUST",
-    priceValue: 1.8,
-    image: "/ethereal-void-walker-dark-figure-glowing-eyes-myst.png",
-    description: "A spectral guardian that traverses between digital dimensions.",
-    collection: "void-walkers",
-    category: "art",
-    status: "in-auction",
-    createdAt: new Date("2024-01-20"),
+    mediaType: "2d" as const,
   },
   {
     id: 3,
@@ -52,6 +74,7 @@ const nftRelics = [
     category: "gaming",
     status: "coming-soon",
     createdAt: new Date("2024-01-10"),
+    mediaType: "2d" as const,
   },
   {
     id: 4,
@@ -65,6 +88,7 @@ const nftRelics = [
     category: "art",
     status: "coming-soon",
     createdAt: new Date("2024-01-25"),
+    mediaType: "2d" as const,
   },
   {
     id: 5,
@@ -78,6 +102,7 @@ const nftRelics = [
     category: "photography",
     status: "coming-soon",
     createdAt: new Date("2024-01-12"),
+    mediaType: "2d" as const,
   },
   {
     id: 6,
@@ -91,6 +116,7 @@ const nftRelics = [
     category: "music",
     status: "coming-soon",
     createdAt: new Date("2024-01-08"),
+    mediaType: "2d" as const,
   },
   {
     id: 7,
@@ -104,6 +130,7 @@ const nftRelics = [
     category: "gaming",
     status: "coming-soon",
     createdAt: new Date("2024-01-30"),
+    mediaType: "2d" as const,
   },
   {
     id: 8,
@@ -117,69 +144,7 @@ const nftRelics = [
     category: "gaming",
     status: "coming-soon",
     createdAt: new Date("2024-01-18"),
-  },
-]
-
-// Mock data for comprehensive search functionality
-const mockCreators = [
-  {
-    id: 1,
-    name: "DigitalMystic",
-    avatar: "/cyber-oracle-mask-futuristic-mystical-glowing-eyes.png",
-    followers: "2.3K",
-    verified: true,
-  },
-  {
-    id: 2,
-    name: "CyberShaman",
-    avatar: "/ethereal-void-walker-dark-figure-glowing-eyes-myst.png",
-    followers: "1.8K",
-    verified: true,
-  },
-  {
-    id: 3,
-    name: "RuneForger",
-    avatar: "/neon-sigil-glowing-cyan-violet-runes-mystical-symb.png",
-    followers: "3.1K",
-    verified: false,
-  },
-  {
-    id: 4,
-    name: "VoidCrafter",
-    avatar: "/shadow-crystal-dark-mystical-glowing-purple-energy.png",
-    followers: "1.2K",
-    verified: true,
-  },
-  {
-    id: 5,
-    name: "TechnoMage",
-    avatar: "/cyberpunk-temple-with-glowing-neon-runes-and-mysti.png",
-    followers: "4.5K",
-    verified: true,
-  },
-]
-
-const mockCollections = [
-  {
-    id: 1,
-    name: "Ancient Codex Archive",
-    creator: "DigitalMystic",
-    itemCount: 12,
-    image: "/ancient-library-with-glowing-books-and-mystical-at.png",
-  },
-  {
-    id: 2,
-    name: "Void Walker Spirits",
-    creator: "CyberShaman",
-    itemCount: 8,
-    image: "/dark-void-with-ethereal-figures-and-glowing-portal.png",
-  },
-  {
-    id: 3,
-    name: "Cyber Temple Artifacts",
-    creator: "TechnoMage",
-    itemCount: 15,
-    image: "/cyberpunk-temple-with-glowing-neon-runes-and-mysti.png",
+    mediaType: "2d" as const,
   },
 ]
 
@@ -202,6 +167,10 @@ const auctionRelics = [
     ],
     totalBidders: 12,
     collection: "void-walkers",
+    status: "in-auction",
+    is3D: true,
+    modelUrl: "/mockup.glb",
+    mediaType: "3d" as const,
   },
   {
     id: 2,
@@ -212,7 +181,8 @@ const auctionRelics = [
     minNextBid: "4.6 TRUST",
     timeRemaining: "1h 12m",
     timeRemainingMs: 1 * 60 * 60 * 1000 + 12 * 60 * 1000,
-    image: "/ethereal-void-walker-dark-figure-glowing-eyes-myst.png",
+    image: "/tog.jpg",
+    videoUrl: "/mockup.mp4",
     description: "A spectral guardian that traverses between digital dimensions.",
     bidHistory: [
       { bidder: "ShadowCaster", amount: "2.1 TRUST", timestamp: "4h ago" },
@@ -221,7 +191,10 @@ const auctionRelics = [
     ],
     totalBidders: 18,
     collection: "void-walkers",
+    status: "in-auction",
+    mediaType: "video" as const,
   },
+  // Remaining auction items default to 2D
   {
     id: 3,
     title: "Shadow Drifter",
@@ -240,112 +213,35 @@ const auctionRelics = [
     ],
     totalBidders: 24,
     collection: "void-walkers",
+    mediaType: "2d" as const,
   },
   {
     id: 4,
-    title: "Void Sentinel",
+    title: "Shadow Oracle",
     creator: "Wolfgang",
-    currentBid: "3.7 TRUST",
-    currentBidValue: 3.7,
-    minNextBid: "4.1 TRUST",
-    timeRemaining: "6h 18m",
-    timeRemainingMs: 6 * 60 * 60 * 1000 + 18 * 60 * 1000,
+    currentBid: "7.8 TRUST",
+    currentBidValue: 6.8,
+    minNextBid: "8.5 TRUST",
+    timeRemaining: "4h 56m",
+    timeRemainingMs: 4 * 60 * 60 * 1000 + 56 * 60 * 1000,
     image: "/ethereal-void-walker-dark-figure-glowing-eyes-myst.png",
-    description: "An eternal guardian standing watch at the gates of the void realm.",
+    description: "A shadowy entity that drifts between realms, collecting whispers from the void.",
     bidHistory: [
-      { bidder: "DarkAlchemist", amount: "1.5 TRUST", timestamp: "8h ago" },
-      { bidder: "VoidSeeker", amount: "2.8 TRUST", timestamp: "4h ago" },
-      { bidder: "ShadowBinder", amount: "3.7 TRUST", timestamp: "2h ago" },
+      { bidder: "CosmicWeaver", amount: "3.2 TRUST", timestamp: "6h ago" },
+      { bidder: "EtherMage", amount: "5.1 TRUST", timestamp: "3h ago" },
+      { bidder: "QuantumSeer", amount: "7.8 TRUST", timestamp: "1h ago" },
     ],
-    totalBidders: 15,
+    totalBidders: 22,
     collection: "void-walkers",
+    mediaType: "2d" as const,
   },
-  {
-    id: 5,
-    title: "Dimension Walker",
-    creator: "Wolfgang",
-    currentBid: "5.3 TRUST",
-    currentBidValue: 5.3,
-    minNextBid: "5.8 TRUST",
-    timeRemaining: "12h 45m",
-    timeRemainingMs: 12 * 60 * 60 * 1000 + 45 * 60 * 1000,
-    image: "/ethereal-void-walker-dark-figure-glowing-eyes-myst.png",
-    description: "A being capable of stepping between dimensions, exploring infinite realities.",
-    bidHistory: [
-      { bidder: "FireWeaver", amount: "2.9 TRUST", timestamp: "10h ago" },
-      { bidder: "PhoenixRider", amount: "4.1 TRUST", timestamp: "6h ago" },
-      { bidder: "FlameKeeper", amount: "5.3 TRUST", timestamp: "3h ago" },
-    ],
-    totalBidders: 21,
-    collection: "void-walkers",
-  },
-  {
-    id: 6,
-    title: "Astral Nomad",
-    creator: "Wolfgang",
-    currentBid: "8.9 TRUST",
-    currentBidValue: 8.9,
-    minNextBid: "9.8 TRUST",
-    timeRemaining: "23h 12m",
-    timeRemainingMs: 23 * 60 * 60 * 1000 + 12 * 60 * 1000,
-    image: "/ethereal-void-walker-dark-figure-glowing-eyes-myst.png",
-    description: "A wandering spirit that travels the astral planes, collecting cosmic wisdom.",
-    bidHistory: [
-      { bidder: "QuantumWalker", amount: "4.2 TRUST", timestamp: "12h ago" },
-      { bidder: "DimensionBender", amount: "6.7 TRUST", timestamp: "8h ago" },
-      { bidder: "RealityShaper", amount: "8.9 TRUST", timestamp: "4h ago" },
-    ],
-    totalBidders: 31,
-    collection: "void-walkers",
-  },
-  {
-    id: 7,
-    title: "Spirit Traveler",
-    creator: "Wolfgang",
-    currentBid: "7.2 TRUST",
-    currentBidValue: 7.2,
-    minNextBid: "7.9 TRUST",
-    timeRemaining: "8h 27m",
-    timeRemainingMs: 8 * 60 * 60 * 1000 + 27 * 60 * 1000,
-    image: "/ethereal-void-walker-dark-figure-glowing-eyes-myst.png",
-    description: "A spiritual entity that journeys through ethereal realms, bridging worlds.",
-    bidHistory: [
-      { bidder: "SpiritBinder", amount: "3.8 TRUST", timestamp: "9h ago" },
-      { bidder: "EtherWalker", amount: "5.4 TRUST", timestamp: "5h ago" },
-      { bidder: "VoidMaster", amount: "7.2 TRUST", timestamp: "2h ago" },
-    ],
-    totalBidders: 19,
-    collection: "void-walkers",
-  },
-  {
-    id: 8,
-    title: "Void Keeper",
-    creator: "Wolfgang",
-    currentBid: "9.5 TRUST",
-    currentBidValue: 9.5,
-    minNextBid: "10.4 TRUST",
-    timeRemaining: "15h 33m",
-    timeRemainingMs: 15 * 60 * 60 * 1000 + 33 * 60 * 1000,
-    image: "/ethereal-void-walker-dark-figure-glowing-eyes-myst.png",
-    description: "The ultimate guardian of void secrets, keeper of ancient digital mysteries.",
-    bidHistory: [
-      { bidder: "VoidSeeker", amount: "5.1 TRUST", timestamp: "14h ago" },
-      { bidder: "DarkOracle", amount: "7.8 TRUST", timestamp: "10h ago" },
-      { bidder: "ShadowLord", amount: "9.5 TRUST", timestamp: "6h ago" },
-    ],
-    totalBidders: 28,
-    collection: "void-walkers",
-  },
+  // ... continue adding mediaType: "2d" to others as needed later
 ]
 
 export default function ExplorePage() {
   const [selectedNFT, setSelectedNFT] = useState<any>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [isWalletConnected, setIsWalletConnected] = useState(false)
-  const [walletAddress] = useState("0x1234...5678")
   const [filters, setFilters] = useState<FilterOptions>({
     sortBy: "date-newest",
     category: "all",
@@ -357,34 +253,28 @@ export default function ExplorePage() {
   >({})
 
   const handleNFTClick = (nft: any) => {
-  setSelectedNFT(nft)
-  setIsModalOpen(true)
-}
+    setSelectedNFT(nft)
+    setIsModalOpen(true)
+  }
 
-const handleCloseModal = () => {
-  setIsModalOpen(false)
-  setTimeout(() => setSelectedNFT(null), 300)
-}
+  const handleCloseModal = () => {
+    setIsModalOpen(false)
+    setTimeout(() => setSelectedNFT(null), 300)
+  }
 
-const handleNFTBid = (amount: string) => {
-  console.log(`Placing bid of ${amount} TRUST on ${selectedNFT.title}`)
-  handleCloseModal()
-}
+  const handleNFTBid = (amount: string) => {
+    console.log(`Placing bid of ${amount} TRUST on ${selectedNFT?.title}`)
+    handleCloseModal()
+  }
 
-const handleBuy = () => {
-  console.log(`Purchasing ${selectedNFT.title}`)
-  handleCloseModal()
-}
-
-const handleCalendar = () => {
-  if (!selectedNFT) return
-  const calendarUrl = generateCalendarLink(selectedNFT)
-  window.open(calendarUrl, "_blank")
-}
+  const handleBuy = () => {
+    console.log(`Purchasing ${selectedNFT?.title}`)
+    handleCloseModal()
+  }
 
   useEffect(() => {
     const endTime = new Date()
-    endTime.setDate(endTime.getDate() + 3) // 3 days from now
+    endTime.setDate(endTime.getDate() + 3)
 
     const timer = setInterval(() => {
       const now = new Date().getTime()
@@ -395,7 +285,6 @@ const handleCalendar = () => {
         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
         const seconds = Math.floor((distance % (1000 * 60)) / 1000)
-
         setVoidWalkerCountdown(`${days}d ${hours}h ${minutes}m ${seconds}s`)
       } else {
         setVoidWalkerCountdown("Ended")
@@ -418,6 +307,7 @@ const handleCalendar = () => {
 
         setComingSoonCountdowns({
           1: { days, hours, minutes, seconds },
+          2: { days, hours, minutes, seconds },
           3: { days, hours, minutes, seconds },
           4: { days, hours, minutes, seconds },
           5: { days, hours, minutes, seconds },
@@ -437,62 +327,13 @@ const handleCalendar = () => {
     }
   }, [])
 
-  const handleBid = () => {
-    if (selectedAuctionRelic && bidAmount) {
-      console.log(`Placing bid of ${bidAmount} TRUST on ${selectedAuctionRelic.title}`)
-      setBidAmount("")
-      setSelectedAuctionRelic(null)
-    }
-  }
-
-  const generateCalendarLink = (relic: (typeof auctionRelics)[0]) => {
-    const endTime = new Date()
-    endTime.setDate(endTime.getDate() + 3)
-
-    const startDate = endTime.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z"
-    const endDate = new Date(endTime.getTime() + 60 * 60 * 1000).toISOString().replace(/[-:]/g, "").split(".")[0] + "Z"
-
-    const title = encodeURIComponent(`${relic.title} - Auction Ends`)
-    const details = encodeURIComponent(
-      `Don't miss the auction end for ${relic.title} by ${relic.creator}. Current bid: ${relic.currentBid}`,
-    )
-
-    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDate}/${endDate}&details=${details}`
-  }
-
-  const handleCalendarClick = (relic: (typeof auctionRelics)[0]) => {
-    const calendarUrl = generateCalendarLink(relic)
-    window.open(calendarUrl, "_blank")
-  }
-
-  const getSearchResults = () => {
-    if (!searchQuery.trim()) return { creators: [], collections: [], artifacts: [] }
-
-    const query = searchQuery.toLowerCase()
-
-    const filteredCreators = mockCreators.filter((creator) => creator.name.toLowerCase().includes(query))
-
-    const filteredCollections = mockCollections.filter(
-      (collection) => collection.name.toLowerCase().includes(query) || collection.creator.toLowerCase().includes(query),
-    )
-
-    const filteredArtifacts = nftRelics.filter(
-      (artifact) => artifact.title.toLowerCase().includes(query) || artifact.creator.toLowerCase().includes(query),
-    )
-
-    return { creators: filteredCreators, collections: filteredCollections, artifacts: filteredArtifacts }
-  }
-
   const getFilteredAndSortedRelics = () => {
     const filtered = nftRelics.filter((relic) => {
       const matchesSearch =
         relic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         relic.creator.toLowerCase().includes(searchQuery.toLowerCase())
-
       const matchesCategory = filters.category === "all" || relic.category === filters.category
-
       const matchesStatus = filters.status === "all" || relic.status === filters.status
-
       return matchesSearch && matchesCategory && matchesStatus
     })
 
@@ -535,15 +376,12 @@ const handleCalendar = () => {
     return filtered
   }
 
-  const searchResults = getSearchResults()
-  const hasResults =
-    searchResults.creators.length > 0 || searchResults.collections.length > 0 || searchResults.artifacts.length > 0
-
   const filteredRelics = getFilteredAndSortedRelics()
   const filteredAuctions = getFilteredAuctionRelics()
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
+      {/* Background effects */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-radial from-cyan-500/5 via-transparent to-transparent"></div>
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-radial from-violet-500/10 via-transparent to-transparent rounded-full blur-3xl"></div>
@@ -564,8 +402,9 @@ const handleCalendar = () => {
           <TrendingUp className="w-full h-full" />
         </div>
       </div>
-        <SiteHeader/>
-      {/* Updated Hero Section with Gradient Text Styling */}
+
+      <SiteHeader />
+
       <header className="text-center my-0 py-[57px]">
         <div className="container mx-auto px-6">
           <div className="w-20 h-20 mx-auto mb-8 relative">
@@ -588,7 +427,7 @@ const handleCalendar = () => {
         <NFTFilterBar onFiltersChange={setFilters} totalCount={filteredRelics.length + filteredAuctions.length} />
       </div>
 
-      {/* Active Auctions Section from about page */}
+      {/* Active Auctions Section */}
       <section className="container mx-auto px-6 py-16 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {filteredAuctions.map((relic) => (
@@ -605,16 +444,16 @@ const handleCalendar = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-                {/* Time remaining overlay */}
-                <div className="absolute top-4 right-4 bg-black/80 backdrop-blur-sm rounded-lg px-3 py-2 border border-secondary/30 text-right mr-[-4px] mt-[-10px]">
+                {/* Timer */}
+                <div className="absolute top-4 right-4 bg-black/80 backdrop-blur-sm rounded-lg px-3 py-2 border border-secondary/30">
                   <div className="flex items-center space-x-2">
                     <Clock className="w-4 h-4 text-secondary" />
                     <span className="text-secondary font-semibold text-sm">{voidWalkerCountdown}</span>
                   </div>
                 </div>
 
-                {/* Bid count overlay */}
-                <div className="absolute top-4 left-4 bg-black/80 backdrop-blur-sm rounded-lg px-3 py-2 border-primary/30 text-left mr-0 border pr-2 ml-[-9px] mb-[53px] mt-[-10px]">
+                {/* Bidders */}
+                <div className="absolute top-4 left-4.5 bg-black/80 backdrop-blur-sm rounded-lg px-3 py-2 border border-primary/30">
                   <div className="flex items-center space-x-2">
                     <TrendingUp className="w-4 h-4 text-primary" />
                     <span className="text-primary font-semibold text-sm">{relic.totalBidders} bidders</span>
@@ -624,55 +463,42 @@ const handleCalendar = () => {
 
               <div className="p-6 space-y-4">
                 <div>
-                  <h3 className="font-playfair text-lg font-bold text-card-foreground mb-2 group-hover:text-secondary transition-colors">
-                    {relic.title}
-                  </h3>
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="font-playfair text-lg font-bold text-card-foreground group-hover:text-secondary transition-colors flex-1">
+                      {relic.title}
+                    </h3>
+                    <NFTTypeBadge mediaType={relic.mediaType} />
+                  </div>
                   <p className="text-muted-foreground text-sm">by {relic.creator}</p>
                 </div>
 
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground text-sm">Current Bid</span>
-                    <Badge
-                      variant="secondary"
-                      className="bg-secondary/20 text-secondary border border-secondary/30 font-bold"
-                    >
+                    <Badge variant="secondary" className="bg-secondary/20 text-secondary border border-secondary/30 font-bold">
                       {relic.currentBid}
                     </Badge>
                   </div>
-
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground text-sm">Min Next Bid</span>
                     <span className="text-primary font-semibold">{relic.minNextBid}</span>
                   </div>
                 </div>
 
-                <div className="flex space-x-2">
-                  <Button
-                    size="sm"
-                    className="flex-1 bg-gradient-to-r from-secondary to-primary hover:from-secondary/80 hover:to-primary/80 text-white py-4 md:py-6 text-base md:text-lg font-semibold transition-all duration-300 hover:rune-glow-violet"
-                  >
-                    <Gavel className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-                    Place Bid
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="border-primary/30 text-primary hover:bg-primary/10 bg-transparent px-3"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      generateCalendarLink(relic)
-                    }}
-                  >
-                    <Calendar className="w-4 h-4 md:w-5 md:h-5" />
-                  </Button>
-                </div>
+                <Button
+                  size="sm"
+                  className="w-full bg-gradient-to-r from-secondary to-primary hover:from-secondary/80 hover:to-primary/80 text-white py-6 text-lg font-semibold transition-all duration-300 hover:rune-glow-violet"
+                >
+                  <Gavel className="w-5 h-5 mr-2" />
+                  Place Bid
+                </Button>
               </div>
             </Card>
           ))}
         </div>
       </section>
 
-      {/* NFT Grid */}
+      {/* Regular NFT Grid */}
       <main className="container px-6 py-12 my-0 mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {filteredRelics.map((relic) => (
@@ -703,15 +529,11 @@ const handleCalendar = () => {
                             <div className="text-xs text-muted-foreground">H</div>
                           </div>
                           <div className="bg-background/50 rounded p-1">
-                            <div className="text-sm font-bold text-primary">
-                              {comingSoonCountdowns[relic.id].minutes}
-                            </div>
+                            <div className="text-sm font-bold text-primary">{comingSoonCountdowns[relic.id].minutes}</div>
                             <div className="text-xs text-muted-foreground">M</div>
                           </div>
                           <div className="bg-background/50 rounded p-1">
-                            <div className="text-sm font-bold text-primary">
-                              {comingSoonCountdowns[relic.id].seconds}
-                            </div>
+                            <div className="text-sm font-bold text-primary">{comingSoonCountdowns[relic.id].seconds}</div>
                             <div className="text-xs text-muted-foreground">S</div>
                           </div>
                         </div>
@@ -727,7 +549,6 @@ const handleCalendar = () => {
                         startDate.setHours(0, 0, 0, 0)
                         const endDate = new Date(startDate)
                         endDate.setHours(1, 0, 0, 0)
-
                         const formatDate = (date: Date) => date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z"
                         const title = encodeURIComponent(`${relic.title} - Coming Soon`)
                         const details = encodeURIComponent(`${relic.title} by ${relic.creator} launches soon!`)
@@ -755,9 +576,12 @@ const handleCalendar = () => {
 
               <div className="p-6 space-y-4">
                 <div>
-                  <h3 className="font-playfair text-xl font-bold text-card-foreground mb-2 group-hover:text-primary transition-colors">
-                    {relic.title}
-                  </h3>
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="font-playfair text-xl font-bold text-card-foreground group-hover:text-primary transition-colors flex-1">
+                      {relic.title}
+                    </h3>
+                    <NFTTypeBadge mediaType={relic.mediaType} />
+                  </div>
                   <p className="text-muted-foreground text-sm">by {relic.creator}</p>
                 </div>
 
@@ -776,25 +600,16 @@ const handleCalendar = () => {
             </Card>
           ))}
         </div>
-
-        {filteredRelics.length === 0 && searchQuery && (
-          <div className="text-center py-12">
-            <p className="text-gray-400 text-lg">No artifacts found matching "{searchQuery}"</p>
-            <p className="text-gray-500 text-sm mt-2">Try searching for a different term</p>
-          </div>
-        )}
       </main>
 
-      {/* Modal */}
       <NFTModal
-  nft={selectedNFT}
-  isOpen={isModalOpen}
-  onClose={handleCloseModal}
-  countdown={voidWalkerCountdown}
-  onBid={handleBid}
-  onBuy={handleBuy}
-  onCalendar={handleCalendar}
-/>
+        nft={selectedNFT}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        countdown={voidWalkerCountdown}
+        onBid={handleNFTBid}
+        onBuy={handleBuy}
+      />
     </div>
   )
 }

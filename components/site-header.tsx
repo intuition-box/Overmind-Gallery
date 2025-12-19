@@ -8,10 +8,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Search, User, Folder, Gem, X, Menu, Wallet, HelpCircle, ChevronDown } from "lucide-react"
+import { Search, User, Folder, Gem, X, Menu, Wallet, HelpCircle, ChevronDown,} from "lucide-react"
 import Link from "next/link"
 import ProfileDropdown from "@/components/profile-dropdown"
 import Image from "next/image"
+import { useAccount } from 'wagmi'
 // Mock data for search functionality
 const mockCreators = [
   {
@@ -94,6 +95,8 @@ export function SiteHeader() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isCopied, setIsCopied] = useState(false)
+  const { address } = useAccount()
   const isProfilePage = pathname?.startsWith('/profile') || pathname?.startsWith('/my-nfts')
   const getSearchResults = () => {
     if (!searchQuery.trim()) return { creators: [], collections: [], relics: [] }
@@ -110,6 +113,7 @@ export function SiteHeader() {
   const searchResults = getSearchResults()
   const hasResults =
     searchResults.creators.length > 0 || searchResults.collections.length > 0 || searchResults.relics.length > 0
+  
   return (
     <>
       {!isProfilePage && (

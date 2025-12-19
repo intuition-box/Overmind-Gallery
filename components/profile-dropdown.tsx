@@ -2,12 +2,10 @@
 
 import { useState, useRef, useEffect } from "react"
 import { createPortal } from "react-dom"
-import { useAccount, useDisconnect, useConnectors } from 'wagmi'
+import { useAccount, useDisconnect } from 'wagmi'
 import Link from "next/link"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
-import { User, Settings, BarChart3, Activity, Gem, LogOut, Wallet } from "lucide-react"
-
-// Import your Balance component
+import { User, LogOut } from "lucide-react"
 import { Balance } from "@/components/web3/Balance"
 
 export default function ProfileDropdown() {
@@ -20,10 +18,8 @@ export default function ProfileDropdown() {
     setMounted(true)
   }, [])
 
-  // Wagmi hooks
   const { address, isConnected } = useAccount()
   const { disconnect } = useDisconnect()
-  const connectors = useConnectors()
 
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, right: 0 })
 
@@ -79,14 +75,6 @@ export default function ProfileDropdown() {
     disconnect()
   }
 
-  const handleConnectWallet = () => {
-    setIsOpen(false)
-    if (connectors.length > 0) {
-      const connector = connectors[0]
-      connector.connect()
-    }
-  }
-
   const walletAddressDisplay = address ? `${address.slice(0, 6)}...${address.slice(-4)}` : "0x1234...5678"
 
   const DisconnectedDropdownMenu = () => (
@@ -114,7 +102,7 @@ export default function ProfileDropdown() {
   const ConnectedDropdownMenu = () => (
     <div
       ref={dropdownRef}
-      className="fixed w-56 bg-background border border-border rounded-md shadow-xl overflow-hidden will-change-transform"
+      className="fixed w-64 bg-background border border-primary/30 rounded-lg shadow-2xl shadow-primary/20 overflow-hidden will-change-transform"
       style={{
         top: dropdownPosition.top,
         right: dropdownPosition.right,
@@ -124,79 +112,42 @@ export default function ProfileDropdown() {
       aria-orientation="vertical"
     >
       {/* Balance Section */}
-      <div className="px-4 py-4 border-b border-border bg-gradient-to-b from-primary/5 to-transparent">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 font-bold text-primary text-lg tracking-wider">
-            <Balance />
-          </div>
+      <div className="px-4 py-4 border-b border-primary/20 bg-gradient-to-b from-primary/5 to-transparent">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-xs text-muted-foreground uppercase tracking-wider">Balance</span>
+        </div>
+        <div className="flex items-center gap-2 font-bold text-primary text-xl tracking-wide">
+          <Balance />
         </div>
       </div>
 
-      <ul className="py-1" role="none">
+      <ul className="py-2" role="none">
+        {/* Profile Link */}
         <li role="none">
           <Link
-            href="/profile-settings"
-            className="flex items-center w-full px-4 py-3 text-sm text-muted-foreground hover:text-primary hover:shadow-[0_0_15px_rgba(34,211,238,0.5)] transition-all duration-300 no-underline"
+            href="/profile"
+            className="flex items-center w-full px-4 py-3 text-sm text-card-foreground hover:text-primary hover:bg-primary/10 transition-all duration-300 no-underline group"
             role="menuitem"
             onClick={handleNavigation}
           >
-            <Settings className="w-4 h-4 mr-3 flex-shrink-0 pointer-events-none" />
-            <span className="font-medium">Profile Settings</span>
+            <User className="w-4 h-4 mr-3 flex-shrink-0 pointer-events-none group-hover:text-primary transition-colors" />
+            <span className="font-medium">Profile</span>
           </Link>
         </li>
 
         <li role="none">
-          <div className="h-px bg-border mx-3" />
+          <div className="h-px bg-border mx-3 my-1" />
         </li>
 
-        <li role="none">
-          <Link
-            href="/user-stats"
-            className="flex items-center w-full px-4 py-3 text-sm text-muted-foreground hover:text-primary hover:shadow-[0_0_15px_rgba(34,211,238,0.5)] transition-all duration-300 no-underline"
-            role="menuitem"
-            onClick={handleNavigation}
-          >
-            <BarChart3 className="w-4 h-4 mr-3 flex-shrink-0 pointer-events-none" />
-            <span className="font-medium">User Stats</span>
-          </Link>
-        </li>
-
-        <li role="none">
-          <Link
-            href="/activity"
-            className="flex items-center w-full px-4 py-3 text-sm text-muted-foreground hover:text-primary hover:shadow-[0_0_15px_rgba(34,211,238,0.5)] transition-all duration-300 no-underline"
-            role="menuitem"
-            onClick={handleNavigation}
-          >
-            <Activity className="w-4 h-4 mr-3 flex-shrink-0 pointer-events-none" />
-            <span className="font-medium">Activity</span>
-          </Link>
-        </li>
-
-        <li role="none">
-          <Link
-            href="/my-nfts"
-            className="flex items-center w-full px-4 py-3 text-sm text-muted-foreground hover:text-primary hover:shadow-[0_0_15px_rgba(34,211,238,0.5)] transition-all duration-300 no-underline"
-            role="menuitem"
-            onClick={handleNavigation}
-          >
-            <Gem className="w-4 h-4 mr-3 flex-shrink-0 pointer-events-none" />
-            <span className="font-medium">My NFTs</span>
-          </Link>
-        </li>
-
-        <li role="none">
-          <div className="h-px bg-border mx-3" />
-        </li>
-
+        {/* Disconnect Wallet */}
         <li role="none">
           <button
-            className="flex items-center w-full px-4 py-3 text-sm text-muted-foreground hover:text-destructive hover:shadow-[0_0_15px_rgba(239,68,68,0.5)] transition-all duration-300 text-left"
+            className="flex items-center w-full px-4 py-3 text-sm text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-300 text-left group"
             role="menuitem"
             onClick={handleDisconnectWallet}
             type="button"
           >
-            <LogOut className="w-4 h-4 mr-3 flex-shrink-0 pointer-events-none" />
+            <LogOut className="w-4 h-4 mr-3 flex-shrink-0 pointer-events-none group-hover:text-destructive transition-colors" />
             <span className="font-medium">Disconnect Wallet</span>
           </button>
         </li>
