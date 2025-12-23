@@ -5,14 +5,13 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Upload, Save } from "lucide-react"
+import { Save } from "lucide-react"
 
 export default function ProfileSettingsContent() {
   const [displayName, setDisplayName] = useState("Wolfgang")
   const [bio, setBio] = useState("Collector of mystical artifacts and digital relics from the ethereal realm.")
 
   const handleSave = () => {
-    // TODO: save to backend or local storage
     console.log("Saving profile settings...")
   }
 
@@ -42,7 +41,7 @@ export default function ProfileSettingsContent() {
           value={bio}
           onChange={(e) => setBio(e.target.value)}
           className="bg-background/50 border-border/30 text-card-foreground min-h-[100px] resize-none"
-          placeholder="Tell others about yourself..."
+          placeholder="Why The Overmind Gallery?"
         />
         <p className="text-xs text-muted-foreground">
           Maximum 200 characters

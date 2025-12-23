@@ -1,20 +1,21 @@
-// components/nft-modal.tsx
 "use client"
 
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { 
-  X, 
-  Gavel, 
-  Calendar, 
-  Clock, 
-  TrendingUp, 
-  Coins, 
+import UserLink from "@/components/UserLink"
+import {
+  X,
+  Gavel,
+  Calendar,
+  Clock,
+  TrendingUp,
+  Coins,
   ChevronDown,
   ChevronUp,
   User,
+  Share2,
 } from "lucide-react"
 import { NFT3DViewer } from "@/components/nft-3d-viewer"
 
@@ -28,35 +29,34 @@ interface NFTModalProps {
   onCalendar?: () => void
 }
 
-export function NFTModal({ 
-  nft, 
-  isOpen, 
-  onClose, 
+export function NFTModal({
+  nft,
+  isOpen,
+  onClose,
   countdown,
   onBid,
   onBuy,
-  onCalendar 
+  onCalendar
 }: NFTModalProps) {
   const [bidAmount, setBidAmount] = useState("")
   const [showMetadata, setShowMetadata] = useState(false)
   const [showHistory, setShowHistory] = useState(false)
+  const [shareSuccess, setShareSuccess] = useState(false)
 
   useEffect(() => {
-  if (isOpen) {
-    document.body.style.overflow = "hidden"
-  }
+    if (isOpen) {
+      document.body.style.overflow = "hidden"
+    }
+    return () => {
+      document.body.style.overflow = ""
+    }
+  }, [isOpen])
 
-  return () => {
-    document.body.style.overflow = ""
-  }
-}, [isOpen])
-
- if (!isOpen || !nft) return null
+  if (!isOpen || !nft) return null
 
   const isAuction = nft.status === "in-auction" || nft.currentBid
   const isComingSoon = nft.status === "coming-soon"
-  
-  // ✅ Unified media type detection
+
   const mediaType = nft.mediaType || "2d"
   const is3D = mediaType === "3d" && nft.modelUrl
   const isVideo = mediaType === "video" && nft.videoUrl
@@ -74,14 +74,53 @@ export function NFTModal({
     }
   }
 
-  // ✅ Unified Media Renderer
+  const handleShare = () => {
+    const shareUrl = window.location.href
+    const shareText = `Check out ${nft.title} by ${nft.creator} on The Overmind Gallery`
+    
+    if (navigator.share) {
+      navigator.share({
+        title: nft.title,
+        text: shareText,
+        url: shareUrl,
+      }).catch(() => {
+        navigator.clipboard.writeText(shareUrl)
+        setShareSuccess(true)
+        setTimeout(() => setShareSuccess(false), 2000)
+      })
+    } else {
+      navigator.clipboard.writeText(shareUrl)
+      setShareSuccess(true)
+      setTimeout(() => setShareSuccess(false), 2000)
+    }
+  }
+
+  // === CORRECT REWARD GUARANTEE CALCULATION ===
+  const calculateReward = () => {
+    if (!bidAmount || !nft.currentBid) return null
+
+    const B_prev = parseFloat(nft.currentBid.split(" ")[0]) // current winning bid
+    const B_new = parseFloat(bidAmount)
+
+    if (isNaN(B_prev) || isNaN(B_new) || B_new <= B_prev) return null
+
+    const MAX_P = 0.10 // 10%
+    const r = (B_new - B_prev) / B_prev
+    const p = Math.min(MAX_P * r, MAX_P) // cap at 10%
+    const R = p * B_new
+
+    return R.toFixed(2)
+  }
+
+  const rewardAmount = calculateReward()
+
   const renderMedia = () => {
     const containerClasses = "relative w-full max-w-[530px] aspect-square rounded-xl overflow-hidden shadow-2xl"
     
     switch (mediaType) {
       case "3d":
         return (
-          <div className={containerClasses}>
+          <div className={containerClasses} key={nft.id}>
             <NFT3DViewer modelUrl={nft.modelUrl} />
           </div>
         )
@@ -142,7 +181,6 @@ export function NFTModal({
       className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200"
       onClick={handleBackdropClick}
     >
-      {/* Modal Container - Responsive max height */}
       <div className={`relative w-full ${(is3D || isVideo) ? 'max-w-[1400px]' : 'max-w-[1200px]'} max-h-[95vh] bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-2xl border border-cyan-500/20 shadow-2xl shadow-cyan-500/10 overflow-hidden animate-in zoom-in-95 duration-300`}>
         
         <button
@@ -152,46 +190,57 @@ export function NFTModal({
           <X className="w-5 h-5 text-gray-400 group-hover:text-cyan-400 transition-colors" />
         </button>
 
-        {/* Main Content Grid - Responsive height */}
         <div className={(is3D || isVideo)
           ? "grid grid-cols-1 lg:grid-cols-[58%_42%] max-h-[95vh]"
           : "grid grid-cols-1 lg:grid-cols-2 max-h-[95vh]"
         }>
           
-          {/* LEFT SIDE - Media Container */}
           <div className="relative bg-gradient-to-br from-gray-800 to-black p-4 sm:p-6 lg:p-8 flex items-center justify-center border-r border-gray-800 overflow-hidden">
             {renderMedia()}
           </div>
 
-          {/* RIGHT SIDE - Details Panel (Scrollable) */}
           <div className="flex flex-col max-h-[95vh] overflow-y-auto">
             <div className="p-4 sm:p-6 lg:p-8 space-y-4">
               
-              {/* Header */}
               <div className="space-y-2">
-                <h1 className="font-playfair text-2xl sm:text-3xl font-bold bg-gradient-to-r from-cyan-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent">
-                  {nft.title}
-                </h1>
+                <div className="flex items-start justify-between gap-4">
+                  <h1 className="font-playfair text-2xl sm:text-3xl font-bold bg-gradient-to-r from-cyan-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent flex-1">
+                    {nft.title}
+                  </h1>
+                  <div className="flex flex-col items-end gap-2">
+                    <Button
+                      onClick={handleShare}
+                      variant="outline"
+                      size="sm"
+                      className="border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-500/50 transition-all"
+                    >
+                      <Share2 className="w-4 h-4 mr-2" />
+                      Share
+                    </Button>
+                    {shareSuccess && (
+                      <span className="text-green-400 text-xs font-medium animate-in fade-in duration-200">
+                        Link copied!
+                      </span>
+                    )}
+                  </div>
+                </div>
                 <div className="flex items-center space-x-2">
                   <User className="w-4 h-4 text-gray-400" />
-                  <span className="text-gray-300 text-sm">by {nft.creator}</span>
+                  <UserLink address={nft.creatorAddress || "0x0000000000000000000000000000000000000000"} displayName={nft.creator} />
                 </div>
               </div>
 
-              {/* Collection Badge */}
               {nft.collection && (
                 <Badge variant="outline" className="border-cyan-500/30 text-cyan-400 px-3 py-1 text-xs">
                   {nft.collection.replace(/-/g, ' ').toUpperCase()}
                 </Badge>
               )}
 
-              {/* Description */}
               <div className="space-y-2">
                 <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Description</h3>
                 <p className="text-gray-300 text-sm leading-relaxed">{nft.description}</p>
               </div>
 
-              {/* Price/Auction Info */}
               {isAuction ? (
                 <div className="space-y-3 bg-gradient-to-r from-cyan-500/10 to-violet-500/10 border border-cyan-500/20 rounded-xl p-4">
                   <div className="grid grid-cols-2 gap-3">
@@ -214,7 +263,6 @@ export function NFTModal({
                     </div>
                   )}
 
-                  {/* Bid Input */}
                   <div className="space-y-2 pt-3 border-t border-gray-700">
                     <div className="flex space-x-2">
                       <Input
@@ -233,7 +281,13 @@ export function NFTModal({
                         <span className="text-violet-400 font-semibold text-xs">Reward Guarantee</span>
                       </div>
                       <p className="text-gray-300 text-xs leading-tight">
-                        If outbid, receive {bidAmount ? `${(parseFloat(bidAmount) * 0.1).toFixed(2)} TRUST` : "10% of your bid"} as a divine reward
+                        If outbid, receive{" "}
+                        {rewardAmount ? (
+                          <span className="text-violet-300 font-bold">{rewardAmount} TRUST</span>
+                        ) : (
+                          "up to 10% of your bid"
+                        )}{" "}
+                        as a divine reward
                       </p>
                     </div>
                   </div>
@@ -249,7 +303,6 @@ export function NFTModal({
                 </div>
               )}
 
-              {/* Action Buttons */}
               <div className="flex space-x-2 pt-2">
                 {isAuction ? (
                   <>
@@ -288,7 +341,6 @@ export function NFTModal({
                 )}
               </div>
 
-              {/* Bid History */}
               {isAuction && nft.bidHistory && (
                 <div className="space-y-2">
                   <button
@@ -307,7 +359,10 @@ export function NFTModal({
                           className="flex items-center justify-between p-2.5 bg-black/50 rounded-lg border border-gray-700"
                         >
                           <div>
-                            <p className="text-gray-300 font-semibold text-xs">{bid.bidder}</p>
+                            <UserLink 
+                              address={bid.bidderAddress} 
+                              displayName={bid.bidder} 
+                            />
                             <p className="text-gray-500 text-xs">{bid.timestamp}</p>
                           </div>
                           <Badge className="bg-cyan-500/20 text-cyan-400 border-cyan-500/30 text-xs">

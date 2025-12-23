@@ -1,15 +1,15 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useAccount } from "wagmi"
 import { useRouter } from "next/navigation"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Copy, Check, User, Settings, Activity, BarChart3, Gem, ArrowLeft } from "lucide-react"
+import { Copy, Check, User, Settings, Activity, BarChart3, Gem, ArrowLeft, Camera } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
 
-// Import existing page content
+// Import existing tab content
 import ProfileSettingsContent from "./components/profile-settings-content"
 import MyNFTsContent from "./components/my-nfts-content"
 import ActivityContent from "./components/activity-content"
@@ -20,18 +20,50 @@ type TabType = "settings" | "my-nfts" | "activity" | "user-stats"
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState<TabType>("settings")
   const [copied, setCopied] = useState(false)
+  const [profileImage, setProfileImage] = useState("/cyber-oracle-mask-futuristic-mystical-glowing-eyes.png")
+  const [displayName, setDisplayName] = useState("Wolfgang")
   const { address, isConnected } = useAccount()
   const router = useRouter()
 
-  const displayName = "Wolfgang"
-  const isCreator = true
-  const profileImage = "/cyber-oracle-mask-futuristic-mystical-glowing-eyes.png"
+  // Avatar change states
+  const [isHoveringAvatar, setIsHoveringAvatar] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const isCreator = true // Keep your current logic or replace with real detection later
+
+  // Load saved avatar and name from localStorage on mount (global for now, will be address-specific in PublicProfile)
+  useEffect(() => {
+    const savedAvatar = localStorage.getItem('userAvatar')
+    const savedDisplayName = localStorage.getItem('userDisplayName')
+    if (savedAvatar) setProfileImage(savedAvatar)
+    if (savedDisplayName) setDisplayName(savedDisplayName)
+  }, [])
+
+  // Save avatar and name to localStorage whenever they change
+  useEffect(() => {
+    if (address) {
+      localStorage.setItem('userAvatar', profileImage)
+      localStorage.setItem('userDisplayName', displayName)
+    }
+  }, [profileImage, displayName, address])
 
   const handleCopyAddress = async () => {
     if (address) {
       await navigator.clipboard.writeText(address)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
+    }
+  }
+
+  const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        const result = e.target?.result as string
+        setProfileImage(result)
+      }
+      reader.readAsDataURL(file)
     }
   }
 
@@ -51,7 +83,7 @@ export default function ProfilePage() {
       case "settings":
         return <ProfileSettingsContent />
       case "my-nfts":
-        return <MyNFTsContent />
+        return <MyNFTsContent isCreator={isCreator} />
       case "activity":
         return <ActivityContent />
       case "user-stats":
@@ -103,13 +135,39 @@ export default function ProfilePage() {
           {/* Profile Header */}
           <div className="bg-black/30 backdrop-blur-md border border-primary/20 rounded-2xl p-6 sm:p-8 mb-6 shadow-2xl shadow-primary/10">
             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
-              {/* Avatar */}
-              <Avatar className="w-24 h-24 sm:w-28 sm:h-28 border-4 border-primary/30 shadow-lg shadow-primary/20">
-                <AvatarImage src={profileImage} alt="Profile Avatar" className="object-cover" />
-                <AvatarFallback className="bg-primary/20 text-primary text-2xl">
-                  <User className="w-12 h-12" />
-                </AvatarFallback>
-              </Avatar>
+              {/* Avatar with Change Functionality */}
+              <div
+                className="relative cursor-pointer"
+                onClick={() => fileInputRef.current?.click()}
+                onMouseEnter={() => setIsHoveringAvatar(true)}
+                onMouseLeave={() => setIsHoveringAvatar(false)}
+              >
+                <Avatar className="w-24 h-24 sm:w-28 sm:h-28 border-4 border-primary/30 hover:border-primary/50 hover:shadow-[0_0_25px_rgba(34,211,238,0.6)] transition-all duration-300">
+                  <AvatarImage src={profileImage} alt="Profile Avatar" className="object-cover" />
+                  <AvatarFallback className="bg-primary/20 text-primary">
+                    <User className="w-12 h-12" />
+                  </AvatarFallback>
+                </Avatar>
+
+                {/* Hover Overlay */}
+                {isHoveringAvatar && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/70 rounded-full backdrop-blur-sm">
+                    <div className="text-center">
+                      <Camera className="w-8 h-8 text-cyan-400 mx-auto mb-1" />
+                      <span className="text-xs font-semibold text-cyan-400">Change avatar</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Hidden File Input */}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleAvatarChange}
+                  className="hidden"
+                />
+              </div>
 
               {/* Profile Info */}
               <div className="flex-1 text-center sm:text-left">
