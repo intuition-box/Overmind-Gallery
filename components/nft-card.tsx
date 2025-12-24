@@ -65,9 +65,10 @@ interface NFTCardProps {
     seconds: number
   }
   forceAuctionButton?: boolean
+  showAuctionBadge?: boolean
 }
 
-export function NFTCard({ nft, onClick, countdown, comingSoonCountdown, forceAuctionButton = false }: NFTCardProps) {
+export function NFTCard({ nft, onClick, countdown, comingSoonCountdown, forceAuctionButton = false, showAuctionBadge = true }: NFTCardProps) {
   const isAuction = nft.status === "in-auction"
   const isComingSoon = nft.status === "coming-soon"
 
@@ -145,7 +146,7 @@ export function NFTCard({ nft, onClick, countdown, comingSoonCountdown, forceAuc
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
         {/* Compact Auction Badges: Smaller, slimmer, same cyan theme */}
-        {isAuction && (
+        {isAuction && showAuctionBadge && (
           <div className="absolute top-3 left-3 right-3 flex justify-between pointer-events-none">
             {/* Bidders Badge */}
             {nft.totalBidders !== undefined && (

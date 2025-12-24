@@ -633,7 +633,7 @@ export default function CollectionDetail({ slug }: CollectionDetailProps) {
                 }}
                 onClick={() => handleNFTClick(nft)}
                 countdown={countdown}
-                hideAuctionBadge={true}
+                showAuctionBadge={false}
                 forceAuctionButton={true}
               />
             ))}
