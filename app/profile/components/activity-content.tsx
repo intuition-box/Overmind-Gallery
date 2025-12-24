@@ -2,14 +2,32 @@
 "use client"
 
 import { Badge } from "@/components/ui/badge"
+import Link from "next/link"
+import UserLink from "@/components/UserLink"
+
+// Mock mapping of addresses to display names (for visualization)
+const addressToName: Record<string, string> = {
+  "0x742d35Cc6634C0532925a3b8D4C0532925a3b8D4": "Wolfgang",
+  "0x8D4C0532925a3b8D4C0532925a3b8D4C0532925a": "ShadowCaster",
+  "0x925a3b8D4C0532925a3b8D4C0532925a3b8D4C053": "MysticOracle",
+}
+
+// Mock collection slugs for artifacts
+const artifactToCollectionSlug: Record<string, string> = {
+  "Ethereal Void Walker": "void-walkers",
+  "Shadow Nexus Crystal": "shadow-crystals",
+  "Neon Sigil of Power": "neon-sigils",
+  "The Obsidian Codex": "ancient-codex",
+}
 
 const mockActivityData = [
   {
     id: 1,
     artifact: "Ethereal Void Walker",
+    collectionSlug: "void-walkers",
     amountBid: "1.8 TRUST",
     amountSold: "2.1 TRUST",
-    winningAddress: "0x742d35Cc6634C0532925a3b8D4C0532925a3b8D4",
+    winningAddress: "0x742d35Cc6634C0532925a3b8D4C0532925a3b8D4", // Wolfgang
     status: "Win" as const,
     isEnded: true,
     bidAmount: 1.8,
@@ -18,6 +36,7 @@ const mockActivityData = [
   {
     id: 2,
     artifact: "Shadow Nexus Crystal",
+    collectionSlug: "shadow-crystals",
     amountBid: "3.5 TRUST",
     amountSold: "4.1 TRUST",
     winningAddress: "0x8D4C0532925a3b8D4C0532925a3b8D4C0532925a",
@@ -29,6 +48,7 @@ const mockActivityData = [
   {
     id: 3,
     artifact: "Neon Sigil of Power",
+    collectionSlug: "neon-sigils",
     amountBid: "2.8 TRUST",
     amountSold: "-",
     winningAddress: "-",
@@ -40,6 +60,7 @@ const mockActivityData = [
   {
     id: 4,
     artifact: "The Obsidian Codex",
+    collectionSlug: "ancient-codex",
     amountBid: "2.2 TRUST",
     amountSold: "2.5 TRUST",
     winningAddress: "0x925a3b8D4C0532925a3b8D4C0532925a3b8D4C053",
@@ -91,6 +112,7 @@ export default function ActivityContent() {
               <th className="text-left py-3 px-4 font-semibold text-primary text-sm">Artifact</th>
               <th className="text-left py-3 px-4 font-semibold text-primary text-sm">Amount Bid</th>
               <th className="text-left py-3 px-4 font-semibold text-primary text-sm">Amount Sold</th>
+              <th className="text-left py-3 px-4 font-semibold text-primary text-sm">Winner</th>
               <th className="text-left py-3 px-4 font-semibold text-primary text-sm">Your Reward</th>
               <th className="text-left py-3 px-4 font-semibold text-primary text-sm">Status</th>
             </tr>
@@ -98,29 +120,45 @@ export default function ActivityContent() {
           <tbody>
             {mockActivityData.map((item) => {
               const reward = calculateReward(item)
+              const winnerName = item.winningAddress !== "-" ? addressToName[item.winningAddress] || item.winningAddress.slice(0, 6) + "..." + item.winningAddress.slice(-4) : "-"
+
               return (
                 <tr
                   key={item.id}
                   className="border-b border-primary/10 hover:bg-gradient-to-r hover:from-primary/5 hover:to-secondary/5 transition-all duration-300"
                 >
+                  {/* Artifact - Clickable to collection */}
                   <td className="py-4 px-4">
-                    <div className="font-medium text-sm text-primary-foreground">{item.artifact}</div>
+                    <Link 
+                      href={`/collections/${item.collectionSlug}`}
+                      className="font-medium text-sm text-primary-foreground hover:text-primary transition-colors"
+                    >
+                      {item.artifact}
+                    </Link>
                   </td>
+
                   <td className="py-4 px-4">
                     <div className="text-sm font-medium text-card-foreground">{item.amountBid}</div>
                   </td>
+
                   <td className="py-4 px-4">
-                    <div className="space-y-1">
-                      <div className="text-sm font-medium text-primary-foreground">
-                        {item.amountSold === "-" ? "N/A" : item.amountSold}
-                      </div>
-                      {item.winningAddress !== "-" && (
-                        <div className="text-xs text-muted-foreground font-mono break-all max-w-[150px]">
-                          {item.winningAddress}
-                        </div>
-                      )}
+                    <div className="text-sm font-medium text-primary-foreground">
+                      {item.amountSold === "-" ? "N/A" : item.amountSold}
                     </div>
                   </td>
+
+                  {/* Winner - Clickable username/profile */}
+                  <td className="py-4 px-4">
+                    {item.winningAddress !== "-" ? (
+                      <UserLink 
+                        address={item.winningAddress}
+                        displayName={winnerName}
+                      />
+                    ) : (
+                      <span className="text-sm text-muted-foreground">—</span>
+                    )}
+                  </td>
+
                   <td className="py-4 px-4">
                     {reward ? (
                       <div className="text-green-400 font-semibold text-sm">{reward}</div>
@@ -128,6 +166,7 @@ export default function ActivityContent() {
                       <div className="text-sm text-card-foreground">N/A</div>
                     )}
                   </td>
+
                   <td className="py-4 px-4">{getStatusBadge(item.status, item.isEnded)}</td>
                 </tr>
               )
