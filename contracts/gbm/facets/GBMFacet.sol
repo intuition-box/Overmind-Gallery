@@ -26,14 +26,18 @@ contract GBMFacet is IGBM, IERC1155TokenReceiver, IERC721TokenReceiver, Modifier
     /// @param _auctionId The auction you want to bid on
     /// @param _bidAmount The amount of the ERC20 token the bid is made of. They should be withdrawable by this contract.
     /// @param _highestBid The current higest bid. Throw if incorrect.
+    /// @param _deadline Deadline timestamp for signature validity (prevents replay attacks)
     /// @param _signature Signature
     function commitBid(
         uint256 _auctionId,
         uint256 _bidAmount,
         uint256 _highestBid,
+        uint256 _deadline,
         bytes memory _signature
     ) external {
-        bytes32 messageHash = keccak256(abi.encodePacked(msg.sender, _auctionId, _bidAmount, _highestBid));
+        require(block.timestamp <= _deadline, "commitBid: Signature expired");
+
+        bytes32 messageHash = keccak256(abi.encodePacked(msg.sender, _auctionId, _bidAmount, _highestBid, _deadline));
         require(LibSignature.isValid(messageHash, _signature, s.backendPubKey), "bid: Invalid signature");
 
         bid(_auctionId, _bidAmount, _highestBid);
@@ -48,10 +52,13 @@ contract GBMFacet is IGBM, IERC1155TokenReceiver, IERC721TokenReceiver, Modifier
         uint256 _bidAmount,
         uint256 _highestBid
     ) internal {
+        require(_auctionId != 0, "bid: auction ID cannot be zero");
+        require(msg.sender != address(0), "bid: invalid sender address");
+
         require(!s.paused, "bid: contract is paused");
         require(s.collections[s.tokenMapping[_auctionId].contractAddress].biddingAllowed, "bid: bidding is currently not allowed");
 
-        require(_bidAmount > 1, "bid: _bidAmount cannot be 0");
+        require(_bidAmount > 1, "bid: bid amount must be greater than 1");
 
         require(_highestBid == s.auctions[_auctionId].highestBid, "bid: current highest bid does not match the submitted transaction _highestBid");
 
@@ -69,9 +76,6 @@ contract GBMFacet is IGBM, IERC1155TokenReceiver, IERC721TokenReceiver, Modifier
             (_highestBid * (getAuctionBidDecimals(_auctionId) + getAuctionStepMin(_auctionId))) <= (_bidAmount * getAuctionBidDecimals(_auctionId)),
             "bid: _bidAmount must meet the minimum bid"
         );
-
-        //Transfer the money of the bidder to the GBM smart contract
-        IERC20(s.erc20Currency).transferFrom(msg.sender, address(this), _bidAmount);
 
         //Extend the duration time of the auction if we are close to the end
         if (getAuctionEndTime(_auctionId) < block.timestamp + getAuctionHammerTimeDuration(_auctionId)) {
@@ -94,10 +98,17 @@ contract GBMFacet is IGBM, IERC1155TokenReceiver, IERC721TokenReceiver, Modifier
             emit Auction_IncentivePaid(_auctionId, previousHighestBidder, duePay);
         }
 
-        emit Auction_BidPlaced(_auctionId, msg.sender, _bidAmount);
-
-        // Calculating incentives for the new bidder
+        // Calculating incentives for the new bidder BEFORE transfer
         s.auctions[_auctionId].dueIncentives = calculateIncentives(_auctionId, _bidAmount);
+
+        // Update auction state BEFORE transfer
+        s.auctions[_auctionId].highestBidder = msg.sender;
+        s.auctions[_auctionId].highestBid = _bidAmount;
+
+        // CRITICAL: Transfer AFTER all state updates (Checks-Effects-Interactions pattern)
+        IERC20(s.erc20Currency).transferFrom(msg.sender, address(this), _bidAmount);
+
+        emit Auction_BidPlaced(_auctionId, msg.sender, _bidAmount);
 
         //Setting the new bid/bidder as the highest bid/bidder
         s.auctions[_auctionId].highestBidder = msg.sender;

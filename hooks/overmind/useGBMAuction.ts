@@ -394,8 +394,6 @@ const SETTINGS_ABI = [
 const DIAMOND_ADDRESS = '0x0000000000000000000000000000000000000002' as `0x${string}`
 
 export function useGBMAuction() {
-  const { address } = useAccount()
-
   // GBM Diamond contract functions
   const { data: diamondOwner } = useReadContract({
     address: DIAMOND_ADDRESS,

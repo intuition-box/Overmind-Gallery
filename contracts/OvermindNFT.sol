@@ -34,7 +34,7 @@ contract OvermindNFT is ERC721URIStorage, Ownable {
     }
     
     /**
-     * @dev Mint a new sacred relic
+     * @dev Mint a new sacred relic (only verified creators or owner)
      * @param to The address to receive the relic
      * @param uri The metadata URI for the relic
      * @param power The mystical power level of the relic (0-1000)
@@ -44,6 +44,7 @@ contract OvermindNFT is ERC721URIStorage, Ownable {
         string memory uri,
         uint256 power
     ) public returns (uint256) {
+        require(verifiedCreators[msg.sender] || msg.sender == owner(), "Only verified creators can mint relics");
         require(power <= 1000, "Power level cannot exceed 1000");
         
         uint256 newTokenId = _nextTokenId;
