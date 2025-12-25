@@ -44,6 +44,8 @@ contract OvermindNFT is ERC721URIStorage, Ownable {
         string memory uri,
         uint256 power
     ) public returns (uint256) {
+        require(to != address(0), "Cannot mint to zero address");
+        require(bytes(uri).length > 0, "URI cannot be empty");
         require(verifiedCreators[msg.sender] || msg.sender == owner(), "Only verified creators can mint relics");
         require(power <= 1000, "Power level cannot exceed 1000");
         
