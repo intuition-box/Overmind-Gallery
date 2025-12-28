@@ -14,7 +14,7 @@ import Image from "next/image"
 const featuredCollections = [
   {
     id: 1,
-    name: "Ancient Codex Archive",
+    name: "Ancient Codex",
     creator: "Wolfgang",
     itemCount: 12,
     image: "/ancient-library-with-glowing-books-and-mystical-at.png",
@@ -22,7 +22,7 @@ const featuredCollections = [
   },
   {
     id: 2,
-    name: "Void Walker Spirits",
+    name: "Void Walkers",
     creator: "Wolfgang",
     itemCount: 8,
     image: "/dark-void-with-ethereal-figures-and-glowing-portal.png",
@@ -94,7 +94,7 @@ export default function HomePage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           {featuredCollections.map((collection) => (
-            <Link key={collection.id} href={`/collection/${collection.name.toLowerCase().replace(/\s+/g, '-')}`}>
+            <Link key={collection.id} href={`/collections/${collection.name.toLowerCase().replace(/\s+/g, '-')}`}>
               <Card className="group obsidian-texture border-border/30 overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:rune-glow">
                 <div className="aspect-[4/3] relative overflow-hidden">
                   <img

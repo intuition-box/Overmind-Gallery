@@ -36,7 +36,7 @@ const mockOwnedNFTs: NFT[] = [
     name: "Ethereal Void Walker",
     image: "/ethereal-void-walker-dark-figure-glowing-eyes-myst.png",
     collectionSlug: "void-walkers",
-    collectionName: "Void Walker Series",
+    collectionName: "Void Walkers",
   },
   {
     id: 3,

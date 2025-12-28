@@ -14,7 +14,7 @@ const addressToName: Record<string, string> = {
 
 // Mock collection slugs for artifacts
 const artifactToCollectionSlug: Record<string, string> = {
-  "Ethereal Void Walker": "void-walkers",
+  "Ethereal Void Walker": "void-walker-spirits",
   "Shadow Nexus Crystal": "shadow-crystals",
   "Neon Sigil of Power": "neon-sigils",
   "The Obsidian Codex": "ancient-codex",
@@ -24,7 +24,7 @@ const mockActivityData = [
   {
     id: 1,
     artifact: "Ethereal Void Walker",
-    collectionSlug: "void-walkers",
+    collectionSlug: "void-walker-spirits",
     amountBid: "1.8 TRUST",
     amountSold: "2.1 TRUST",
     winningAddress: "0x742d35Cc6634C0532925a3b8D4C0532925a3b8D4", // Wolfgang

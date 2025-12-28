@@ -37,7 +37,7 @@ export default function PublicNFTsContent({ address, isCreator }: { address: str
         {hasOwned ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {mockOwnedNFTs.map((nft, i) => (
-              <Link href={`/collection/${nft.collectionSlug}`} key={i}>
+              <Link href={`/collections/${nft.collectionSlug}`} key={i}>
                 <Card className="group obsidian-texture border-border/30 overflow-hidden cursor-pointer transition-all duration-300 hover:scale-105 hover:rune-glow-violet shadow-lg">
                   <div className="aspect-square overflow-hidden">
                     <img src={nft.image} alt={nft.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
@@ -70,7 +70,7 @@ export default function PublicNFTsContent({ address, isCreator }: { address: str
           {hasCreated ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
               {mockCreatedCollections.map((collection) => (
-                <Link href={`/collection/${collection.slug}`} key={collection.slug}>
+                <Link href={`/collections/${collection.slug}`} key={collection.slug}>
                   <Card className="group obsidian-texture border-border/30 overflow-hidden cursor-pointer transition-all duration-300 hover:scale-105 hover:rune-glow-cyan shadow-lg">
                     <div className="aspect-square overflow-hidden">
                       <img src={collection.coverImage} alt={collection.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
