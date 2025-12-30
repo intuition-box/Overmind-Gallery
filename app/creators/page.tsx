@@ -163,13 +163,13 @@ export default function CreatorsPage() {
     if (file && file.type.startsWith("image/")) {
       const reader = new FileReader()
       reader.onload = (e) => {
-        setCollectionImagePreview(e.target?.result as string)
+        setImagePreview(e.target?.result as string)
       }
       reader.readAsDataURL(file)
     }
   }
 
-  const handleCollectionFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) handleCollectionImageChange(file)
   }

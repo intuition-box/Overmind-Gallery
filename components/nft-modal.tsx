@@ -99,14 +99,14 @@ export function NFTModal({
   const calculateReward = () => {
     if (!bidAmount || !nft.currentBid) return null
 
-    const B_prev = parseFloat(nft.currentBid.split(" ")[0]) // current winning bid
+    const B_prev = parseFloat(nft.currentBid.split(" ")[0])
     const B_new = parseFloat(bidAmount)
 
     if (isNaN(B_prev) || isNaN(B_new) || B_new <= B_prev) return null
 
     const MAX_P = 0.10 // 10%
     const r = (B_new - B_prev) / B_prev
-    const p = Math.min(MAX_P * r, MAX_P) // cap at 10%
+    const p = Math.min(MAX_P * r, MAX_P)
     const R = p * B_new
 
     return R.toFixed(2)
@@ -115,7 +115,7 @@ export function NFTModal({
   const rewardAmount = calculateReward()
 
   const renderMedia = () => {
-    const containerClasses = "relative w-full max-w-[530px] aspect-square rounded-xl overflow-hidden shadow-2xl"
+    const containerClasses = "relative w-full max-w-[530px] aspect-square rounded-xl overflow-hidden shadow-2xl mx-auto"
     
     switch (mediaType) {
       case "3d":
@@ -181,200 +181,222 @@ export function NFTModal({
       className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200"
       onClick={handleBackdropClick}
     >
-      <div className={`relative w-full ${(is3D || isVideo) ? 'max-w-[1400px]' : 'max-w-[1200px]'} max-h-[95vh] bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-2xl border border-cyan-500/20 shadow-2xl shadow-cyan-500/10 overflow-hidden animate-in zoom-in-95 duration-300`}>
+      {/* Main Modal Container */}
+      <div className={`relative w-full ${is3D || isVideo ? 'max-w-[1400px]' : 'max-w-[1200px]'} 
+                      h-[95vh] max-h-[95vh] bg-gradient-to-br from-gray-900 via-black to-gray-900 
+                      rounded-2xl border border-cyan-500/20 shadow-2xl shadow-cyan-500/10 
+                      overflow-hidden flex flex-col lg:flex-row animate-in zoom-in-95 duration-300`}>
         
+        {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 z-10 p-2 rounded-full bg-black/50 hover:bg-black/80 border border-gray-700 hover:border-cyan-500/50 transition-all group"
+          className="absolute top-4 right-4 z-50 p-2.5 rounded-full bg-black/60 hover:bg-black/80 
+                     border border-gray-700 hover:border-cyan-500/50 transition-all group"
         >
-          <X className="w-5 h-5 text-gray-400 group-hover:text-cyan-400 transition-colors" />
+          <X className="w-6 h-6 text-gray-400 group-hover:text-cyan-400 transition-colors" />
         </button>
 
-        <div className={(is3D || isVideo)
-          ? "grid grid-cols-1 lg:grid-cols-[58%_42%] max-h-[95vh]"
-          : "grid grid-cols-1 lg:grid-cols-2 max-h-[95vh]"
-        }>
-          
-          <div className="relative bg-gradient-to-br from-gray-800 to-black p-4 sm:p-6 lg:p-8 flex items-center justify-center border-r border-gray-800 overflow-hidden">
-            {renderMedia()}
-          </div>
+        {/* Media Section - Top on mobile, left on desktop */}
+        <div className="relative flex-shrink-0 w-full lg:w-[58%] 
+                        bg-gradient-to-br from-gray-800 to-black 
+                        p-6 sm:p-8 flex items-center justify-center 
+                        border-b lg:border-b-0 lg:border-r border-gray-800">
+          {renderMedia()}
+        </div>
 
-          <div className="flex flex-col max-h-[95vh] overflow-y-auto">
-            <div className="p-4 sm:p-6 lg:p-8 space-y-4">
-              
-              <div className="space-y-2">
-                <div className="flex items-start justify-between gap-4">
-                  <h1 className="font-playfair text-2xl sm:text-3xl font-bold bg-gradient-to-r from-cyan-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent flex-1">
-                    {nft.title}
-                  </h1>
-                  <div className="flex flex-col items-end gap-2">
-                    <Button
-                      onClick={handleShare}
-                      variant="outline"
-                      size="sm"
-                      className="border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-500/50 transition-all"
-                    >
-                      <Share2 className="w-4 h-4 mr-2" />
-                      Share
-                    </Button>
-                    {shareSuccess && (
-                      <span className="text-green-400 text-xs font-medium animate-in fade-in duration-200">
-                        Link copied!
-                      </span>
-                    )}
-                  </div>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <User className="w-4 h-4 text-gray-400" />
-                  <UserLink address={nft.creatorAddress || "0x0000000000000000000000000000000000000000"} displayName={nft.creator} />
-                </div>
-              </div>
-
-              {nft.collection && (
-                <Badge variant="outline" className="border-cyan-500/30 text-cyan-400 px-3 py-1 text-xs">
-                  {nft.collection.replace(/-/g, ' ').toUpperCase()}
-                </Badge>
-              )}
-
-              <div className="space-y-2">
-                <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Description</h3>
-                <p className="text-gray-300 text-sm leading-relaxed">{nft.description}</p>
-              </div>
-
-              {isAuction ? (
-                <div className="space-y-3 bg-gradient-to-r from-cyan-500/10 to-violet-500/10 border border-cyan-500/20 rounded-xl p-4">
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <p className="text-gray-400 text-xs mb-1">Current Bid</p>
-                      <Badge className="bg-cyan-500/20 text-cyan-400 border-cyan-500/30 text-base px-3 py-1.5 font-bold">
-                        {nft.currentBid}
-                      </Badge>
-                    </div>
-                    <div>
-                      <p className="text-gray-400 text-xs mb-1">Min Next Bid</p>
-                      <span className="text-violet-400 font-semibold text-base">{nft.minNextBid}</span>
-                    </div>
-                  </div>
-                  
-                  {nft.totalBidders && (
-                    <div className="flex items-center space-x-2 text-gray-300">
-                      <TrendingUp className="w-4 h-4 text-cyan-400" />
-                      <span className="text-xs">{nft.totalBidders} bidders participating</span>
-                    </div>
+        {/* Info Section - Scrollable */}
+        <div className="flex-1 flex flex-col min-h-0">
+          <div className="flex-1 overflow-y-auto overscroll-contain p-6 sm:p-8 space-y-6">
+            
+            {/* Title & Share */}
+            <div className="space-y-4">
+              <div className="flex items-start justify-between gap-4">
+                <h1 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold 
+                               bg-gradient-to-r from-cyan-400 via-violet-400 to-cyan-400 
+                               bg-clip-text text-transparent flex-1">
+                  {nft.title}
+                </h1>
+                <div className="flex flex-col items-end gap-2">
+                  <Button
+                    onClick={handleShare}
+                    variant="outline"
+                    size="sm"
+                    className="border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-500/50"
+                  >
+                    <Share2 className="w-4 h-4 mr-2" />
+                    Share
+                  </Button>
+                  {shareSuccess && (
+                    <span className="text-green-400 text-xs font-medium animate-in fade-in">
+                      Link copied!
+                    </span>
                   )}
-
-                  <div className="space-y-2 pt-3 border-t border-gray-700">
-                    <div className="flex space-x-2">
-                      <Input
-                        type="number"
-                        placeholder={`Min: ${nft.minNextBid?.split(" ")[0] || "0"}`}
-                        value={bidAmount}
-                        onChange={(e) => setBidAmount(e.target.value)}
-                        className="flex-1 bg-black/50 border-gray-700 focus:border-cyan-500 text-white h-10"
-                      />
-                      <span className="flex items-center text-cyan-400 font-semibold text-sm">TRUST</span>
-                    </div>
-                    
-                    <div className="bg-violet-500/10 border border-violet-500/20 rounded-lg p-2.5">
-                      <div className="flex items-center space-x-2 mb-1">
-                        <Coins className="w-3.5 h-3.5 text-violet-400" />
-                        <span className="text-violet-400 font-semibold text-xs">Reward Guarantee</span>
-                      </div>
-                      <p className="text-gray-300 text-xs leading-tight">
-                        If outbid, receive{" "}
-                        {rewardAmount ? (
-                          <span className="text-violet-300 font-bold">{rewardAmount} TRUST</span>
-                        ) : (
-                          "up to 10% of your bid"
-                        )}{" "}
-                        as a divine reward
-                      </p>
-                    </div>
-                  </div>
                 </div>
-              ) : (
-                <div className="space-y-3 bg-gradient-to-r from-cyan-500/10 to-violet-500/10 border border-cyan-500/20 rounded-xl p-4">
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <User className="w-4 h-4 text-gray-400" />
+                <UserLink address={nft.creatorAddress || "0x0000000000000000000000000000000000000000"} displayName={nft.creator} />
+              </div>
+            </div>
+
+            {/* Collection Badge */}
+            {nft.collection && (
+              <Badge variant="outline" className="border-cyan-500/30 text-cyan-400 px-3 py-1 text-xs">
+                {nft.collection.replace(/-/g, ' ').toUpperCase()}
+              </Badge>
+            )}
+
+            {/* Description */}
+            <div className="space-y-2">
+              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Description</h3>
+              <p className="text-gray-300 text-sm leading-relaxed">{nft.description}</p>
+            </div>
+
+            {/* Auction or Fixed Price Info */}
+            {isAuction ? (
+              <div className="space-y-4 bg-gradient-to-r from-cyan-500/10 to-violet-500/10 
+                              border border-cyan-500/20 rounded-xl p-5">
+                <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="text-gray-400 text-xs mb-2">Price</p>
-                    <Badge className="bg-cyan-500/20 text-cyan-400 border-cyan-500/30 text-xl px-5 py-2 font-bold">
-                      {nft.price}
+                    <p className="text-gray-400 text-xs mb-1">Current Bid</p>
+                    <Badge className="bg-cyan-500/20 text-cyan-400 border-cyan-500/30 text-base px-3 py-1.5 font-bold">
+                      {nft.currentBid}
                     </Badge>
                   </div>
+                  <div>
+                    <p className="text-gray-400 text-xs mb-1">Min Next Bid</p>
+                    <span className="text-violet-400 font-semibold text-base">{nft.minNextBid}</span>
+                  </div>
                 </div>
-              )}
-
-              <div className="flex space-x-2 pt-2">
-                {isAuction ? (
-                  <>
-                    <Button
-                      onClick={handleBidSubmit}
-                      disabled={!bidAmount || parseFloat(bidAmount) < parseFloat(nft.minNextBid?.split(" ")[0] || "0")}
-                      className="flex-1 bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white py-4 text-base font-semibold shadow-lg shadow-cyan-500/20"
-                    >
-                      <Gavel className="w-4 h-4 mr-2" />
-                      Place Bid
-                    </Button>
-                    {onCalendar && (
-                      <Button
-                        variant="outline"
-                        onClick={onCalendar}
-                        className="border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10 py-4 px-3"
-                      >
-                        <Calendar className="w-4 h-4" />
-                      </Button>
-                    )}
-                  </>
-                ) : isComingSoon ? (
-                  <Button
-                    disabled
-                    className="flex-1 bg-gray-700/50 text-gray-400 py-4 text-base font-semibold cursor-not-allowed"
-                  >
-                    Not Available Yet
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={onBuy}
-                    className="flex-1 bg-gradient-to-r from-cyan-500 to-violet-500 hover:from-cyan-600 hover:to-violet-600 text-white py-4 text-base font-semibold shadow-lg shadow-cyan-500/20"
-                  >
-                    Buy Now
-                  </Button>
+                
+                {nft.totalBidders && (
+                  <div className="flex items-center space-x-2 text-gray-300">
+                    <TrendingUp className="w-4 h-4 text-cyan-400" />
+                    <span className="text-xs">{nft.totalBidders} bidders participating</span>
+                  </div>
                 )}
-              </div>
 
-              {isAuction && nft.bidHistory && (
-                <div className="space-y-2">
-                  <button
-                    onClick={() => setShowHistory(!showHistory)}
-                    className="w-full flex items-center justify-between p-3 bg-gray-800/50 hover:bg-gray-800 rounded-lg transition-colors"
-                  >
-                    <span className="font-semibold text-gray-300 text-sm">Bid History ({nft.bidHistory.length})</span>
-                    {showHistory ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
-                  </button>
+                <div className="space-y-3 pt-4 border-t border-gray-700">
+                  <div className="flex space-x-2">
+                    <Input
+                      type="number"
+                      placeholder={`Min: ${nft.minNextBid?.split(" ")[0] || "0"}`}
+                      value={bidAmount}
+                      onChange={(e) => setBidAmount(e.target.value)}
+                      className="flex-1 bg-black/50 border-gray-700 focus:border-cyan-500 text-white h-11"
+                    />
+                    <span className="flex items-center text-cyan-400 font-semibold px-3">TRUST</span>
+                  </div>
                   
-                  {showHistory && (
-                    <div className="p-3 bg-gray-800/30 rounded-lg space-y-2 max-h-48 overflow-y-auto animate-in slide-in-from-top-2 duration-200">
-                      {nft.bidHistory.map((bid: any, index: number) => (
-                        <div
-                          key={index}
-                          className="flex items-center justify-between p-2.5 bg-black/50 rounded-lg border border-gray-700"
-                        >
-                          <div>
-                            <UserLink 
-                              address={bid.bidderAddress} 
-                              displayName={bid.bidder} 
-                            />
-                            <p className="text-gray-500 text-xs">{bid.timestamp}</p>
-                          </div>
-                          <Badge className="bg-cyan-500/20 text-cyan-400 border-cyan-500/30 text-xs">
-                            {bid.amount}
-                          </Badge>
-                        </div>
-                      ))}
+                  <div className="bg-violet-500/10 border border-violet-500/20 rounded-lg p-3">
+                    <div className="flex items-center space-x-2 mb-1">
+                      <Coins className="w-4 h-4 text-violet-400" />
+                      <span className="text-violet-400 font-semibold text-xs">Reward Guarantee</span>
                     </div>
-                  )}
+                    <p className="text-gray-300 text-xs leading-tight">
+                      If outbid, receive{" "}
+                      {rewardAmount ? (
+                        <span className="text-violet-300 font-bold">{rewardAmount} TRUST</span>
+                      ) : (
+                        "up to 10% of your bid"
+                      )}{" "}
+                      as a divine reward
+                    </p>
+                  </div>
                 </div>
+              </div>
+            ) : (
+              <div className="space-y-3 bg-gradient-to-r from-cyan-500/10 to-violet-500/10 
+                              border border-cyan-500/20 rounded-xl p-5">
+                <p className="text-gray-400 text-xs mb-2">Price</p>
+                <Badge className="bg-cyan-500/20 text-cyan-400 border-cyan-500/30 text-2xl px-6 py-3 font-bold">
+                  {nft.price}
+                </Badge>
+              </div>
+            )}
+
+            {/* Action Buttons */}
+            <div className="flex space-x-3 pt-4">
+              {isAuction ? (
+                <>
+                  <Button
+                    onClick={handleBidSubmit}
+                    disabled={!bidAmount || parseFloat(bidAmount) < parseFloat(nft.minNextBid?.split(" ")[0] || "0")}
+                    className="flex-1 bg-gradient-to-r from-cyan-500 to-violet-500 
+                               hover:from-cyan-600 hover:to-violet-600 text-white 
+                               py-5 text-lg font-semibold shadow-lg shadow-cyan-500/20"
+                  >
+                    <Gavel className="w-5 h-5 mr-2" />
+                    Place Bid
+                  </Button>
+                  {onCalendar && (
+                    <Button
+                      variant="outline"
+                      onClick={onCalendar}
+                      className="border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10 px-4"
+                    >
+                      <Calendar className="w-5 h-5" />
+                    </Button>
+                  )}
+                </>
+              ) : isComingSoon ? (
+                <Button disabled className="flex-1 bg-gray-700/50 text-gray-400 py-5 text-lg cursor-not-allowed">
+                  Not Available Yet
+                </Button>
+              ) : (
+                <Button
+                  onClick={onBuy}
+                  className="flex-1 bg-gradient-to-r from-cyan-500 to-violet-500 
+                             hover:from-cyan-600 hover:to-violet-600 text-white 
+                             py-5 text-lg font-semibold shadow-lg shadow-cyan-500/20"
+                >
+                  Buy Now
+                </Button>
               )}
             </div>
+
+            {/* Bid History - Now Fully Scrollable & Reachable */}
+            {isAuction && nft.bidHistory && nft.bidHistory.length > 0 && (
+              <div className="space-y-3 pt-6 pb-12"> {/* Extra bottom padding for mobile comfort */}
+                <button
+                  onClick={() => setShowHistory(!showHistory)}
+                  className="w-full flex items-center justify-between p-4 
+                             bg-gray-800/50 hover:bg-gray-800 rounded-xl 
+                             transition-all duration-200 border border-gray-700"
+                >
+                  <span className="font-semibold text-gray-200">
+                    Bid History ({nft.bidHistory.length})
+                  </span>
+                  {showHistory ? (
+                    <ChevronUp className="w-5 h-5 text-gray-400" />
+                  ) : (
+                    <ChevronDown className="w-5 h-5 text-gray-400" />
+                  )}
+                </button>
+                
+                {showHistory && (
+                  <div className="bg-gray-800/30 rounded-xl p-4 space-y-3 
+                                  animate-in slide-in-from-top-4 duration-300">
+                    {nft.bidHistory.map((bid: any, index: number) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-3 
+                                   bg-black/50 rounded-lg border border-gray-700"
+                      >
+                        <div>
+                          <UserLink address={bid.bidderAddress} displayName={bid.bidder} />
+                          <p className="text-gray-500 text-xs mt-1">{bid.timestamp}</p>
+                        </div>
+                        <Badge className="bg-cyan-500/20 text-cyan-400 border-cyan-500/30 font-mono">
+                          {bid.amount}
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>

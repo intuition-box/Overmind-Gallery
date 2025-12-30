@@ -1,7 +1,8 @@
 "use client"
+
 import { useState } from "react"
 import { usePathname } from "next/navigation"
-import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { ConnectButton } from "@rainbow-me/rainbowkit"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
@@ -12,19 +13,17 @@ import { Search, User, Folder, Gem, X, Menu, Wallet, HelpCircle, ChevronDown } f
 import Link from "next/link"
 import ProfileDropdown from "@/components/profile-dropdown"
 import Image from "next/image"
-import { useAccount } from 'wagmi'
+import { useAccount } from "wagmi"
 
-// Updated mock data to match your real structure
+// Full mock data
 const mockCreators = [
   {
     id: 1,
-    address: "0x742d35Cc6634C0532925a3b8D4C0532925a3b8D4", // Wolfgang's address (lowercase for consistency)
+    address: "0x742d35Cc6634C0532925a3b8D4C0532925a3b8D4",
     name: "Wolfgang",
     avatar: "/cyber-oracle-mask-futuristic-mystical-glowing-eyes.png",
-    followers: "5.2K",
     verified: true,
   },
-  // Add more creators with their real addresses when available
 ]
 
 const mockCollections = [
@@ -37,7 +36,6 @@ const mockCollections = [
     itemCount: 8,
     floorPrice: "2.5 TRUST",
     image: "/dark-mystical-obsidian-codex-ancient-book-glowing-.png",
-    banner: "/ancient-library-with-glowing-books-and-mystical-at.png",
   },
   {
     id: 2,
@@ -48,7 +46,6 @@ const mockCollections = [
     itemCount: 8,
     floorPrice: "1.8 TRUST",
     image: "/ethereal-void-walker-dark-figure-glowing-eyes-myst.png",
-    banner: "/dark-void-with-ethereal-figures-and-glowing-portal.png",
   },
   {
     id: 3,
@@ -59,7 +56,6 @@ const mockCollections = [
     itemCount: 8,
     floorPrice: "3.2 TRUST",
     image: "/neon-sigil-glowing-cyan-violet-runes-mystical-symb.png",
-    banner: "/cyberpunk-temple-with-glowing-neon-runes-and-mysti.png",
   },
   {
     id: 4,
@@ -70,7 +66,6 @@ const mockCollections = [
     itemCount: 8,
     floorPrice: "4.1 TRUST",
     image: "/shadow-crystal-dark-mystical-glowing-purple-energy.png",
-    banner: "/dark-crystal-cave-with-purple-glowing-crystals-and.png",
   },
   {
     id: 5,
@@ -81,7 +76,6 @@ const mockCollections = [
     itemCount: 8,
     floorPrice: "2.9 TRUST",
     image: "/cyber-oracle-mask-futuristic-mystical-glowing-eyes.png",
-    banner: "/futuristic-temple-with-glowing-oracle-masks-and-di.png",
   },
   {
     id: 6,
@@ -92,11 +86,9 @@ const mockCollections = [
     itemCount: 8,
     floorPrice: "5.7 TRUST",
     image: "/digital-phoenix-feather-glowing-cyan-fire-mystical.png",
-    banner: "/digital-phoenix-nest-with-glowing-cyan-flames-and-.png",
   },
 ]
 
-// Sample artifacts linked to correct collections
 const mockArtifacts = [
   {
     id: 1,
@@ -161,15 +153,16 @@ export function SiteHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { address } = useAccount()
 
-  const isProfilePage = pathname?.startsWith('/profile') || pathname?.startsWith('/my-nfts')
+  const isProfilePage = pathname?.startsWith("/profile") || pathname?.startsWith("/my-nfts")
 
   const getSearchResults = () => {
     if (!searchQuery.trim()) return { creators: [], collections: [], artifacts: [] }
     const query = searchQuery.toLowerCase().trim()
 
-    const filteredCreators = mockCreators.filter((creator) =>
-      creator.name.toLowerCase().includes(query) ||
-      creator.address.toLowerCase().includes(query)
+    const filteredCreators = mockCreators.filter(
+      (creator) =>
+        creator.name.toLowerCase().includes(query) ||
+        creator.address.toLowerCase().includes(query)
     )
 
     const filteredCollections = mockCollections.filter(
@@ -193,7 +186,6 @@ export function SiteHeader() {
     searchResults.collections.length > 0 ||
     searchResults.artifacts.length > 0
 
-  // Helper to shorten address for display
   const shortenAddress = (addr: string) => `${addr.slice(0, 6)}...${addr.slice(-4)}`
 
   return (
@@ -255,7 +247,6 @@ export function SiteHeader() {
                   Stats
                 </Link>
 
-                {/* Help Dropdown */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button className="font-medium text-muted-foreground hover:text-primary transition-colors flex items-center gap-1">
@@ -286,11 +277,12 @@ export function SiteHeader() {
 
               {/* Right Side Actions */}
               <div className="flex items-center space-x-2 sm:space-x-4">
+                {/* Search only on desktop/tablet */}
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setIsSearchOpen(true)}
-                  className="hidden sm:flex text-muted-foreground hover:text-primary hover:bg-primary/10"
+                  className="hidden md:flex text-muted-foreground hover:text-primary hover:bg-primary/10"
                 >
                   <Search className="w-5 h-5" />
                 </Button>
@@ -298,11 +290,11 @@ export function SiteHeader() {
                 <div className="hidden sm:block relative z-10">
                   <ConnectButton.Custom>
                     {({ account, chain, openAccountModal, openChainModal, openConnectModal, authenticationStatus, mounted }) => {
-                      const ready = mounted && authenticationStatus !== 'loading'
-                      const connected = ready && account && chain && (!authenticationStatus || authenticationStatus === 'authenticated')
+                      const ready = mounted && authenticationStatus !== "loading"
+                      const connected = ready && account && chain && (!authenticationStatus || authenticationStatus === "authenticated")
 
                       return (
-                        <div {...(!ready && { 'aria-hidden': true, style: { opacity: 0, pointerEvents: 'none', userSelect: 'none' } })}>
+                        <div {...(!ready && { "aria-hidden": true, style: { opacity: 0, pointerEvents: "none", userSelect: "none" } })}>
                           {!connected ? (
                             <Button onClick={openConnectModal} className="bg-gradient-to-r from-primary to-secondary hover:from-primary/80 hover:to-secondary/80 text-primary-foreground font-medium transition-all duration-300">
                               Connect Wallet
@@ -315,7 +307,7 @@ export function SiteHeader() {
                           ) : (
                             <Button onClick={openChainModal} variant="outline" size="sm" className="font-medium border-border/30 hover:border-primary/50 transition-all">
                               {chain.hasIcon && chain.iconUrl && (
-                                <img alt={chain.name ?? 'Chain icon'} src={chain.iconUrl} className="w-4 h-4 mr-2" />
+                                <img alt={chain.name ?? "Chain icon"} src={chain.iconUrl} className="w-4 h-4 mr-2" />
                               )}
                               {chain.name}
                               <ChevronDown className="w-4 h-4 ml-1" />
@@ -332,11 +324,11 @@ export function SiteHeader() {
                 <div className="sm:hidden">
                   <ConnectButton.Custom>
                     {({ account, chain, openAccountModal, openConnectModal, authenticationStatus, mounted }) => {
-                      const ready = mounted && authenticationStatus !== 'loading'
-                      const connected = ready && account && chain && (!authenticationStatus || authenticationStatus === 'authenticated')
+                      const ready = mounted && authenticationStatus !== "loading"
+                      const connected = ready && account && chain && (!authenticationStatus || authenticationStatus === "authenticated")
 
                       return (
-                        <div {...(!ready && { 'aria-hidden': true, style: { opacity: 0, pointerEvents: 'none', userSelect: 'none' } })}>
+                        <div {...(!ready && { "aria-hidden": true, style: { opacity: 0, pointerEvents: "none", userSelect: "none" } })}>
                           <Button
                             onClick={connected ? openAccountModal : openConnectModal}
                             variant="ghost"
@@ -365,8 +357,142 @@ export function SiteHeader() {
         </header>
       )}
 
-      {/* Mobile Menu & Search Modal unchanged – same as before */}
-      {/* (Omitted for brevity – identical to previous version) */}
+      {/* Mobile Menu Sidebar with Search Inside */}
+      {isMobileMenuOpen && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+
+          <div className="fixed top-0 left-0 h-full w-80 bg-background border-r border-border/30 z-50 md:hidden shadow-2xl overflow-y-auto">
+            <div className="flex items-center justify-between p-6 border-b border-border/30">
+              <Link href="/" className="flex items-center space-x-3" onClick={() => setIsMobileMenuOpen(false)}>
+                <Image
+                  src="/The_Overmind_Gallery_Logo.png"
+                  alt="The Overmind Gallery"
+                  width={20}
+                  height={13}
+                  className="w-10 h-10 object-contain"
+                />
+                <span className="text-lg font-bold bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
+                  Overmind Gallery
+                </span>
+              </Link>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-muted-foreground hover:text-primary"
+              >
+                <X className="w-5 h-5" />
+              </Button>
+            </div>
+
+            {/* Search Button Inside Mobile Menu */}
+            <div className="px-6 py-4">
+              <Button
+                variant="ghost"
+                className="w-full justify-start text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-lg"
+                onClick={() => {
+                  setIsSearchOpen(true)
+                  setIsMobileMenuOpen(false)
+                }}
+              >
+                <Search className="w-5 h-5 mr-3" />
+                <span className="text-left">Search the Gallery...</span>
+              </Button>
+            </div>
+
+            {/* Navigation Links */}
+            <nav className="flex flex-col px-6 space-y-1">
+              <Link
+                href="/"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`px-4 py-3 rounded-lg font-medium transition-all ${
+                  pathname === "/" ? "bg-primary/20 text-primary" : "text-muted-foreground hover:text-primary hover:bg-primary/10"
+                }`}
+              >
+                Home
+              </Link>
+              <Link
+                href="/about"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`px-4 py-3 rounded-lg font-medium transition-all ${
+                  pathname === "/about" ? "bg-primary/20 text-primary" : "text-muted-foreground hover:text-primary hover:bg-primary/10"
+                }`}
+              >
+                About
+              </Link>
+              <Link
+                href="/explore"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`px-4 py-3 rounded-lg font-medium transition-all ${
+                  pathname === "/explore" ? "bg-primary/20 text-primary" : "text-muted-foreground hover:text-primary hover:bg-primary/10"
+                }`}
+              >
+                Explore
+              </Link>
+              <Link
+                href="/collections"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`px-4 py-3 rounded-lg font-medium transition-all ${
+                  pathname === "/collections" ? "bg-primary/20 text-primary" : "text-muted-foreground hover:text-primary hover:bg-primary/10"
+                }`}
+              >
+                Collections
+              </Link>
+              <Link
+                href="/creators"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`px-4 py-3 rounded-lg font-medium transition-all ${
+                  pathname === "/creators" ? "bg-primary/20 text-primary" : "text-muted-foreground hover:text-primary hover:bg-primary/10"
+                }`}
+              >
+                Creators
+              </Link>
+              <Link
+                href="/stats"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`px-4 py-3 rounded-lg font-medium transition-all ${
+                  pathname === "/stats" ? "bg-primary/20 text-primary" : "text-muted-foreground hover:text-primary hover:bg-primary/10"
+                }`}
+              >
+                Stats
+              </Link>
+            </nav>
+
+            {/* Help Section */}
+            <div className="mt-auto p-6 border-t border-border/30">
+              <h3 className="text-sm font-semibold text-muted-foreground mb-3 px-4">Help & Support</h3>
+              <div className="space-y-1">
+                <a
+                  href="https://discord.gg/uz29Em9REf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 px-4 py-3 rounded-lg text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all"
+                >
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
+                  </svg>
+                  <span className="font-medium">Discord</span>
+                </a>
+                <a
+                  href="https://x.com/OvermindGallery"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 px-4 py-3 rounded-lg text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all"
+                >
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  </svg>
+                  <span className="font-medium">X (Twitter)</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
 
       {/* Search Modal */}
       {!isProfilePage && (
@@ -401,7 +527,6 @@ export function SiteHeader() {
                     </div>
                   )}
 
-                  {/* Creators → /profile/0x742d35Cc6634C0532925a3b8D4C0532925a3b8D4 */}
                   {searchResults.creators.length > 0 && (
                     <div>
                       <h3 className="font-playfair text-lg font-bold text-primary mb-3 flex items-center space-x-2">
@@ -444,7 +569,6 @@ export function SiteHeader() {
                     </div>
                   )}
 
-                  {/* Collections → /collection/slug */}
                   {searchResults.collections.length > 0 && (
                     <div>
                       <h3 className="font-playfair text-lg font-bold text-secondary mb-3 flex items-center space-x-2">
@@ -483,7 +607,6 @@ export function SiteHeader() {
                     </div>
                   )}
 
-                  {/* Artifacts → go to parent collection */}
                   {searchResults.artifacts.length > 0 && (
                     <div>
                       <h3 className="font-playfair text-lg font-bold text-primary mb-3 flex items-center space-x-2">

@@ -9,7 +9,6 @@ import { Input } from "@/components/ui/input"
 import { Clock, Gavel, TrendingUp, Calendar, Coins, Search } from "lucide-react"
 import SiteHeader from "@/components/site-header"
 import FAQItem from "@/components/faq-item" // Import FAQItem component
-import GalleryFooter from "@/components/gallery-footer"
 
 // Mock auction data
 const auctionRelics = [
@@ -503,9 +502,6 @@ R = (p * B_new)`}
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <GalleryFooter />
 
       {/* Bidding Modal */}
       <Dialog open={!!selectedRelic} onOpenChange={() => setSelectedRelic(null)}>
