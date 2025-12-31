@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import UserLink from "@/components/UserLink"
+import Link from "next/link"
 import {
   X,
   Gavel,
@@ -14,10 +14,14 @@ import {
   Coins,
   ChevronDown,
   ChevronUp,
-  User,
   Share2,
 } from "lucide-react"
 import { NFT3DViewer } from "@/components/nft-3d-viewer"
+
+// Use only your real images from public folder
+const bidderAvatars: Record<string, string> = {
+"default": "/cyber-oracle-mask-futuristic-mystical-glowing-eyes.png",
+}
 
 interface NFTModalProps {
   nft: any
@@ -39,7 +43,6 @@ export function NFTModal({
   onCalendar
 }: NFTModalProps) {
   const [bidAmount, setBidAmount] = useState("")
-  const [showMetadata, setShowMetadata] = useState(false)
   const [showHistory, setShowHistory] = useState(false)
   const [shareSuccess, setShareSuccess] = useState(false)
 
@@ -77,7 +80,7 @@ export function NFTModal({
   const handleShare = () => {
     const shareUrl = window.location.href
     const shareText = `Check out ${nft.title} by ${nft.creator} on The Overmind Gallery`
-    
+
     if (navigator.share) {
       navigator.share({
         title: nft.title,
@@ -95,7 +98,6 @@ export function NFTModal({
     }
   }
 
-  // === CORRECT REWARD GUARANTEE CALCULATION ===
   const calculateReward = () => {
     if (!bidAmount || !nft.currentBid) return null
 
@@ -104,7 +106,7 @@ export function NFTModal({
 
     if (isNaN(B_prev) || isNaN(B_new) || B_new <= B_prev) return null
 
-    const MAX_P = 0.10 // 10%
+    const MAX_P = 0.10
     const r = (B_new - B_prev) / B_prev
     const p = Math.min(MAX_P * r, MAX_P)
     const R = p * B_new
@@ -176,27 +178,29 @@ export function NFTModal({
     }
   }
 
+  const getBidderAvatar = (bidderName: string) => {
+    return bidderAvatars[bidderName] || bidderAvatars["default"]
+  }
+
   return (
     <div 
       className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200"
       onClick={handleBackdropClick}
     >
-      {/* Main Modal Container */}
       <div className={`relative w-full ${is3D || isVideo ? 'max-w-[1400px]' : 'max-w-[1200px]'} 
                       h-[95vh] max-h-[95vh] bg-gradient-to-br from-gray-900 via-black to-gray-900 
                       rounded-2xl border border-cyan-500/20 shadow-2xl shadow-cyan-500/10 
                       overflow-hidden flex flex-col lg:flex-row animate-in zoom-in-95 duration-300`}>
         
-        {/* Close Button */}
+        {/* Clean Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-50 p-2.5 rounded-full bg-black/60 hover:bg-black/80 
-                     border border-gray-700 hover:border-cyan-500/50 transition-all group"
+          className="absolute top-4 right-4 z-50 text-gray-400 hover:text-cyan-400 transition-colors"
         >
-          <X className="w-6 h-6 text-gray-400 group-hover:text-cyan-400 transition-colors" />
+          <X className="w-6 h-6" />
         </button>
 
-        {/* Media Section - Top on mobile, left on desktop */}
+        {/* Media Section */}
         <div className="relative flex-shrink-0 w-full lg:w-[58%] 
                         bg-gradient-to-br from-gray-800 to-black 
                         p-6 sm:p-8 flex items-center justify-center 
@@ -204,40 +208,46 @@ export function NFTModal({
           {renderMedia()}
         </div>
 
-        {/* Info Section - Scrollable */}
+        {/* Info Section */}
         <div className="flex-1 flex flex-col min-h-0">
           <div className="flex-1 overflow-y-auto overscroll-contain p-6 sm:p-8 space-y-6">
             
-            {/* Title & Share */}
-            <div className="space-y-4">
-              <div className="flex items-start justify-between gap-4">
-                <h1 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold 
-                               bg-gradient-to-r from-cyan-400 via-violet-400 to-cyan-400 
-                               bg-clip-text text-transparent flex-1">
-                  {nft.title}
-                </h1>
-                <div className="flex flex-col items-end gap-2">
-                  <Button
-                    onClick={handleShare}
-                    variant="outline"
-                    size="sm"
-                    className="border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-500/50"
-                  >
-                    <Share2 className="w-4 h-4 mr-2" />
-                    Share
-                  </Button>
-                  {shareSuccess && (
-                    <span className="text-green-400 text-xs font-medium animate-in fade-in">
-                      Link copied!
-                    </span>
-                  )}
-                </div>
+            {/* Title + Share on Same Line */}
+            <div className="flex items-center justify-between">
+              <h1 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold 
+                             bg-gradient-to-r from-cyan-400 via-violet-400 to-cyan-400 
+                             bg-clip-text text-transparent">
+                {nft.title}
+              </h1>
+              <div className="flex items-center gap-3">
+                <Button
+                  onClick={handleShare}
+                  variant="outline"
+                  size="sm"
+                  className="border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-500/50"
+                >
+                  <Share2 className="w-4 h-4 mr-2" />
+                  Share
+                </Button>
+                {shareSuccess && (
+                  <span className="text-green-400 text-xs font-medium">Copied!</span>
+                )}
               </div>
+            </div>
 
-              <div className="flex items-center space-x-2">
-                <User className="w-4 h-4 text-gray-400" />
-                <UserLink address={nft.creatorAddress || "0x0000000000000000000000000000000000000000"} displayName={nft.creator} />
-              </div>
+            {/* Creator - Small PFP + "by" */}
+            <div className="flex items-center gap-3">
+              <span className="text-gray-500 text-sm">by</span>
+              <Link href={`/profile/${nft.creatorAddress}`} className="flex items-center gap-2 group">
+                <img
+                  src="/cyber-oracle-mask-futuristic-mystical-glowing-eyes.png"
+                  alt={nft.creator}
+                  className="w-8 h-8 rounded-full object-cover ring-2 ring-gray-700 group-hover:ring-cyan-500 transition-all"
+                />
+                <span className="text-white font-medium group-hover:text-cyan-400 transition-colors">
+                  {nft.creator}
+                </span>
+              </Link>
             </div>
 
             {/* Collection Badge */}
@@ -250,10 +260,10 @@ export function NFTModal({
             {/* Description */}
             <div className="space-y-2">
               <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Description</h3>
-              <p className="text-gray-300 text-sm leading-relaxed">{nft.description}</p>
+              <p className="text-gray-300 text-sm leading-relaxed">{nft.description || "No description available."}</p>
             </div>
 
-            {/* Auction or Fixed Price Info */}
+            {/* Auction Info */}
             {isAuction ? (
               <div className="space-y-4 bg-gradient-to-r from-cyan-500/10 to-violet-500/10 
                               border border-cyan-500/20 rounded-xl p-5">
@@ -317,7 +327,7 @@ export function NFTModal({
             )}
 
             {/* Action Buttons */}
-            <div className="flex space-x-3 pt-4">
+            <div className="flex space-x-3 pt-2">
               {isAuction ? (
                 <>
                   <Button
@@ -356,9 +366,9 @@ export function NFTModal({
               )}
             </div>
 
-            {/* Bid History - Now Fully Scrollable & Reachable */}
+            {/* Bid History with Real PFPs */}
             {isAuction && nft.bidHistory && nft.bidHistory.length > 0 && (
-              <div className="space-y-3 pt-6 pb-12"> {/* Extra bottom padding for mobile comfort */}
+              <div className="space-y-3 pt-6 pb-12">
                 <button
                   onClick={() => setShowHistory(!showHistory)}
                   className="w-full flex items-center justify-between p-4 
@@ -384,10 +394,19 @@ export function NFTModal({
                         className="flex items-center justify-between p-3 
                                    bg-black/50 rounded-lg border border-gray-700"
                       >
-                        <div>
-                          <UserLink address={bid.bidderAddress} displayName={bid.bidder} />
-                          <p className="text-gray-500 text-xs mt-1">{bid.timestamp}</p>
-                        </div>
+                        <Link href={`/profile/${bid.bidderAddress}`} className="flex items-center space-x-3 group">
+                          <img
+                            src={getBidderAvatar(bid.bidder)}
+                            alt={bid.bidder}
+                            className="w-10 h-10 rounded-full object-cover ring-2 ring-gray-700 group-hover:ring-cyan-500 transition-all"
+                          />
+                          <div>
+                            <p className="text-white font-medium group-hover:text-cyan-400 transition-colors">
+                              {bid.bidder}
+                            </p>
+                            <p className="text-gray-500 text-xs mt-1">{bid.timestamp}</p>
+                          </div>
+                        </Link>
                         <Badge className="bg-cyan-500/20 text-cyan-400 border-cyan-500/30 font-mono">
                           {bid.amount}
                         </Badge>

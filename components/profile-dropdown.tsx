@@ -5,14 +5,16 @@ import { createPortal } from "react-dom"
 import { useAccount, useDisconnect } from 'wagmi'
 import Link from "next/link"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
-import { User, LogOut } from "lucide-react"
+import { User, LogOut, Copy, Check, Settings } from "lucide-react"
 import { Balance } from "@/components/web3/Balance"
+import { ThemeToggle } from "@/components/ThemeToggle"
 
 export default function ProfileDropdown() {
   const [isOpen, setIsOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
   const buttonRef = useRef<HTMLButtonElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const [isCopied, setIsCopied] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -75,6 +77,20 @@ export default function ProfileDropdown() {
     disconnect()
   }
 
+  const handleCopyAddress = async () => {
+    if (!address) return
+    
+    try {
+      await navigator.clipboard.writeText(address)
+      setIsCopied(true)
+      setTimeout(() => {
+        setIsCopied(false)
+      }, 2000)
+    } catch (err) {
+      console.error('Failed to copy address:', err)
+    }
+  }
+
   const walletAddressDisplay = address ? `${address.slice(0, 6)}...${address.slice(-4)}` : "0x1234...5678"
 
   const DisconnectedDropdownMenu = () => (
@@ -95,6 +111,12 @@ export default function ProfileDropdown() {
             <span className="font-medium">Connect wallet to view profile</span>
           </p>
         </li>
+        <li role="none">
+          <div className="h-px bg-border mx-3 my-1" />
+        </li>
+        <li role="none">
+          <ThemeToggle />
+        </li>
       </ul>
     </div>
   )
@@ -102,7 +124,7 @@ export default function ProfileDropdown() {
   const ConnectedDropdownMenu = () => (
     <div
       ref={dropdownRef}
-      className="fixed w-64 bg-background border border-primary/30 rounded-lg shadow-2xl shadow-primary/20 overflow-hidden will-change-transform"
+      className="fixed w-72 bg-background border border-border/30 rounded-lg shadow-2xl overflow-hidden will-change-transform"
       style={{
         top: dropdownPosition.top,
         right: dropdownPosition.right,
@@ -111,13 +133,43 @@ export default function ProfileDropdown() {
       role="menu"
       aria-orientation="vertical"
     >
-      {/* Balance Section */}
-      <div className="px-4 py-4 border-b border-primary/20 bg-gradient-to-b from-primary/5 to-transparent">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-xs text-muted-foreground uppercase tracking-wider">Balance</span>
+      {/* Wallet Identity Section */}
+      <div className="px-4 py-4 border-b border-border/30 bg-background/50">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            <span className="text-xs text-muted-foreground uppercase tracking-wider font-medium">
+              Wallet
+            </span>
+          </div>
         </div>
-        <div className="flex items-center gap-2 font-bold text-primary text-xl tracking-wide">
-          <Balance />
+        
+        <div className="flex items-center justify-between gap-2 mb-3">
+          <span className="text-sm font-mono text-card-foreground tracking-wide">
+            {walletAddressDisplay}
+          </span>
+          <button
+            onClick={handleCopyAddress}
+            className="flex items-center justify-center p-1.5 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all duration-200 flex-shrink-0"
+            title="Copy address"
+            type="button"
+          >
+            {isCopied ? (
+              <Check className="w-4 h-4 text-green-500" />
+            ) : (
+              <Copy className="w-4 h-4" />
+            )}
+          </button>
+        </div>
+
+        <div className="pt-2 border-t border-border/20">
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-muted-foreground uppercase tracking-wider">
+              Balance
+            </span>
+            <div className="text-sm font-semibold text-primary">
+              <Balance />
+            </div>
+          </div>
         </div>
       </div>
 
@@ -133,6 +185,28 @@ export default function ProfileDropdown() {
             <User className="w-4 h-4 mr-3 flex-shrink-0 pointer-events-none group-hover:text-primary transition-colors" />
             <span className="font-medium">Profile</span>
           </Link>
+        </li>
+
+        {/* Profile Link */}
+        <li role="none">
+          <Link
+            href="/profile"
+            className="flex items-center w-full px-4 py-3 text-sm text-card-foreground hover:text-primary hover:bg-primary/10 transition-all duration-300 no-underline group"
+            role="menuitem"
+            onClick={handleNavigation}
+          >
+            <Settings className="w-4 h-4 mr-3 flex-shrink-0 pointer-events-none group-hover:text-primary transition-colors" />
+            <span className="font-medium">Settings</span>
+          </Link>
+        </li>
+
+        <li role="none">
+          <div className="h-px bg-border mx-3 my-1" />
+        </li>
+
+        {/* Theme Toggle */}
+        <li role="none">
+          <ThemeToggle />
         </li>
 
         <li role="none">

@@ -6,16 +6,17 @@ import { useRouter } from "next/navigation"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Copy, Check, User, Settings, Activity, BarChart3, Gem, ArrowLeft, Camera } from "lucide-react"
+import { Copy, Check, User, Settings, Activity, BarChart3, Gem, ArrowLeft, Camera, Star } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
 
-// Import existing tab content
+// Import tab content components
 import ProfileSettingsContent from "./components/profile-settings-content"
 import MyNFTsContent from "./components/my-nfts-content"
 import ActivityContent from "./components/activity-content"
 import UserStatsContent from "./components/user-stats-content"
+import FavoritesContent from "./components/favorites-content"
 
-type TabType = "settings" | "my-nfts" | "activity" | "user-stats"
+type TabType = "settings" | "my-nfts" | "favorites" | "activity" | "user-stats"
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState<TabType>("settings")
@@ -25,25 +26,25 @@ export default function ProfilePage() {
   const { address, isConnected } = useAccount()
   const router = useRouter()
 
-  // Avatar change states
   const [isHoveringAvatar, setIsHoveringAvatar] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const isCreator = true // Keep your current logic or replace with real detection later
+  const isCreator = true
 
-  // Load saved avatar and name from localStorage on mount (global for now, will be address-specific in PublicProfile)
+  // Bio without quotation marks
+  const bio = "A true disciple of the overmind"
+
   useEffect(() => {
-    const savedAvatar = localStorage.getItem('userAvatar')
-    const savedDisplayName = localStorage.getItem('userDisplayName')
+    const savedAvatar = localStorage.getItem("userAvatar")
+    const savedDisplayName = localStorage.getItem("userDisplayName")
     if (savedAvatar) setProfileImage(savedAvatar)
     if (savedDisplayName) setDisplayName(savedDisplayName)
   }, [])
 
-  // Save avatar and name to localStorage whenever they change
   useEffect(() => {
     if (address) {
-      localStorage.setItem('userAvatar', profileImage)
-      localStorage.setItem('userDisplayName', displayName)
+      localStorage.setItem("userAvatar", profileImage)
+      localStorage.setItem("userDisplayName", displayName)
     }
   }, [profileImage, displayName, address])
 
@@ -57,7 +58,7 @@ export default function ProfilePage() {
 
   const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
-    if (file && file.type.startsWith('image/')) {
+    if (file && file.type.startsWith("image/")) {
       const reader = new FileReader()
       reader.onload = (e) => {
         const result = e.target?.result as string
@@ -67,13 +68,14 @@ export default function ProfilePage() {
     }
   }
 
-  const walletAddressDisplay = address 
-    ? `${address.slice(0, 6)}...${address.slice(-4)}` 
+  const walletAddressDisplay = address
+    ? `${address.slice(0, 6)}...${address.slice(-4)}`
     : "0x1234...5678"
 
   const tabs = [
     { id: "settings" as TabType, label: "Settings", icon: Settings },
     { id: "my-nfts" as TabType, label: "My NFTs", icon: Gem },
+    { id: "favorites" as TabType, label: "Favorites", icon: Star },
     { id: "activity" as TabType, label: "Activity", icon: Activity },
     { id: "user-stats" as TabType, label: "User Stats", icon: BarChart3 },
   ]
@@ -84,6 +86,8 @@ export default function ProfilePage() {
         return <ProfileSettingsContent />
       case "my-nfts":
         return <MyNFTsContent isCreator={isCreator} />
+      case "favorites":
+        return <FavoritesContent />
       case "activity":
         return <ActivityContent />
       case "user-stats":
@@ -121,8 +125,9 @@ export default function ProfilePage() {
       <div className="relative z-10">
         <SiteHeader />
 
+        {/* Centered Container */}
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-          {/* Back Button */}
+          {/* Back Button - Left Aligned */}
           <Button
             onClick={() => router.back()}
             variant="ghost"
@@ -132,12 +137,12 @@ export default function ProfilePage() {
             Back
           </Button>
 
-          {/* Profile Header */}
+          {/* Profile Header - Perfectly Centered & Aligned */}
           <div className="bg-black/30 backdrop-blur-md border border-primary/20 rounded-2xl p-6 sm:p-8 mb-6 shadow-2xl shadow-primary/10">
-            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
-              {/* Avatar with Change Functionality */}
+            <div className="flex flex-col items-center text-center">
+              {/* Avatar */}
               <div
-                className="relative cursor-pointer"
+                className="relative cursor-pointer mb-6"
                 onClick={() => fileInputRef.current?.click()}
                 onMouseEnter={() => setIsHoveringAvatar(true)}
                 onMouseLeave={() => setIsHoveringAvatar(false)}
@@ -149,7 +154,6 @@ export default function ProfilePage() {
                   </AvatarFallback>
                 </Avatar>
 
-                {/* Hover Overlay */}
                 {isHoveringAvatar && (
                   <div className="absolute inset-0 flex items-center justify-center bg-black/70 rounded-full backdrop-blur-sm">
                     <div className="text-center">
@@ -159,7 +163,6 @@ export default function ProfilePage() {
                   </div>
                 )}
 
-                {/* Hidden File Input */}
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -169,9 +172,10 @@ export default function ProfilePage() {
                 />
               </div>
 
-              {/* Profile Info */}
-              <div className="flex-1 text-center sm:text-left">
-                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 mb-3">
+              {/* All Text Elements - Perfectly Centered Stack */}
+              <div className="space-y-4 w-full max-w-md">
+                {/* Name + Creator Badge */}
+                <div className="flex flex-col items-center gap-3">
                   <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-cyan-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent">
                     {displayName}
                   </h1>
@@ -183,7 +187,7 @@ export default function ProfilePage() {
                 </div>
 
                 {/* Wallet Address */}
-                <div className="flex items-center justify-center sm:justify-start gap-2 bg-background/50 rounded-lg px-3 py-2 w-fit mx-auto sm:mx-0 border border-primary/20">
+                <div className="flex items-center justify-center gap-2 bg-background/50 rounded-lg px-3 py-2 border border-primary/20">
                   <span className="text-sm font-mono text-primary">
                     {walletAddressDisplay}
                   </span>
@@ -192,20 +196,23 @@ export default function ProfilePage() {
                     className="text-muted-foreground hover:text-primary transition-colors p-1"
                     title="Copy address"
                   >
-                    {copied ? (
-                      <Check className="w-4 h-4 text-green-400" />
-                    ) : (
-                      <Copy className="w-4 h-4" />
-                    )}
+                    {copied ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
                   </button>
                 </div>
+
+                {/* Bio - No Quotes, Perfectly Centered */}
+                {bio && (
+                  <p className="text-base text-muted-foreground italic leading-relaxed">
+                    {bio}
+                  </p>
+                )}
               </div>
             </div>
           </div>
 
-          {/* Tabs Navigation */}
+          {/* Tabs - Centered */}
           <div className="bg-black/30 backdrop-blur-md border border-primary/20 rounded-2xl overflow-hidden mb-6 shadow-2xl shadow-primary/10">
-            <div className="flex overflow-x-auto no-scrollbar border-b border-primary/20">
+            <div className="flex justify-center overflow-x-auto no-scrollbar border-b border-primary/20">
               {tabs.map((tab) => {
                 const Icon = tab.icon
                 const isActive = activeTab === tab.id
@@ -214,15 +221,14 @@ export default function ProfilePage() {
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
                     className={`
-                      flex items-center gap-2 px-6 py-4 text-sm font-medium whitespace-nowrap transition-all duration-300 flex-1 sm:flex-none
-                      ${
-                        isActive
-                          ? "text-primary border-b-2 border-primary bg-primary/5"
-                          : "text-muted-foreground hover:text-primary hover:bg-primary/5"
+                      flex items-center gap-2 px-6 py-4 text-sm font-medium whitespace-nowrap transition-all duration-300
+                      ${isActive
+                        ? "text-primary border-b-2 border-primary bg-primary/5"
+                        : "text-muted-foreground hover:text-primary hover:bg-primary/5"
                       }
                     `}
                   >
-                    <Icon className="w-4 h-4" />
+                    <Icon className={`w-4 h-4 ${tab.id === "favorites" && isActive ? "fill-current" : ""}`} />
                     <span>{tab.label}</span>
                   </button>
                 )
