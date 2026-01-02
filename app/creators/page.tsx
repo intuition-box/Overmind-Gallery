@@ -47,7 +47,6 @@ const creators = [
     nftCount: 23,
     followerCount: "33",
     verified: true,
-    speciality: "Mystical Artifacts",
   },
 ]
 
@@ -124,8 +123,7 @@ export default function CreatorsPage() {
 
   const filteredCreators = creators.filter(
     (creator) =>
-      creator.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      creator.speciality.toLowerCase().includes(searchQuery.toLowerCase())
+      creator.name.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
   const handleFormChange = (field: string, value: string) => {
@@ -295,9 +293,6 @@ export default function CreatorsPage() {
                       <h3 className="font-playfair text-xl font-bold text-card-foreground group-hover:text-primary transition-colors">
                         {creator.name}
                       </h3>
-                      <Badge className="bg-cyan-500/30 text-cyan-100 border-cyan-400/50 text-xs font-semibold">
-                        {creator.speciality}
-                      </Badge>
                     </div>
                   </div>
 

@@ -1,10 +1,8 @@
 "use client"
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
 import { AlertTriangle, Shield, Lock, TrendingDown, FileWarning, Gavel, Scale, Mail } from "lucide-react"
 import SiteHeader from "@/components/site-header"
+import { Card } from "@/components/ui/card"
 
 export default function DisclaimerPage() {
   return (
@@ -33,10 +31,9 @@ export default function DisclaimerPage() {
         </div>
       </div>
 
-      {/* Hero Section - Reduced bottom padding */}
+      {/* Hero Section */}
       <header className="text-center relative z-10 pt-16 pb-8">
         <div className="container mx-auto px-6">
-          {/* Central Warning Symbol */}
           <div className="relative mb-8 flex justify-center">
             <div className="relative">
               <div className="w-24 h-24 rounded-full border-2 border-amber-400/30 flex items-center justify-center">
@@ -67,7 +64,7 @@ export default function DisclaimerPage() {
               <div>
                 <h3 className="font-semibold text-amber-400 mb-2 text-lg">Critical Notice</h3>
                 <p className="text-gray-300 leading-relaxed">
-                  NFT auctions involve significant financial, emotional, technical, and regulatory risks. Participate only with funds you can afford to lose entirely. By using this platform, you acknowledge and accept all risks outlined in this disclaimer.
+                  NFT auctions involve significant financial, emotional, technical, and regulatory risks. Participate only with funds you can afford to lose entirely. By using this platform, you acknowledge and accept all risks outlined below.
                 </p>
               </div>
             </div>
@@ -77,10 +74,13 @@ export default function DisclaimerPage() {
           <div className="space-y-4">
             <div className="pl-8 space-y-3 text-gray-300 leading-relaxed">
               <p>
-                The Overmind Gallery ("The Overmind Gallery," "we," "us," or "our") operates a blockchain-based NFT auction marketplace on the Intuition Network. The platform facilitates peer-to-peer interactions with NFTs and smart contracts. We do not provide custody, brokerage, or financial services.
+                The Overmind Gallery ("The Overmind Gallery," "we," "us," or "our") is a decentralized, non-custodial platform that facilitates peer-to-peer NFT auctions via smart contracts on the Intuition Network. We do not hold funds, provide brokerage services, or act as a financial intermediary.
               </p>
               <p>
-                By accessing or using the platform, you affirm that you are at least 18 years old (or the age of majority in your jurisdiction) and affirmatively accept this Disclaimer (including incorporated Terms of Service and Privacy Policy). Continued use after changes constitutes acceptance.
+                The platform is currently developed and maintained by an unincorporated team and is not operated by a registered legal entity.
+              </p>
+              <p>
+                By accessing or using the platform, you confirm that you are at least 18 years old (or the age of majority in your jurisdiction) and that you fully understand and accept this Disclaimer, together with our Terms of Service and Privacy Policy.
               </p>
             </div>
           </div>
@@ -95,7 +95,10 @@ export default function DisclaimerPage() {
             </h2>
             <div className="pl-8 space-y-3 text-gray-300 leading-relaxed">
               <p>
-                All content, information, and services are for informational and entertainment purposes only. They do not constitute financial, investment, legal, tax, or professional advice. You bear sole responsibility for evaluating risks and verifying information.
+                All content, information, and services provided on the platform are for informational and entertainment purposes only. They do not constitute financial, investment, legal, tax, or any other professional advice.
+              </p>
+              <p>
+                You are solely responsible for evaluating all risks and for independently verifying any information before acting on it.
               </p>
             </div>
           </div>
@@ -109,34 +112,31 @@ export default function DisclaimerPage() {
               <span>No Securities or Investment Advice</span>
             </h2>
             <div className="pl-8 space-y-3 text-gray-300 leading-relaxed">
-              <p>NFTs, digital assets, and blockchain auctions are high-risk and speculative.</p>
+              <p>NFTs and participation in blockchain auctions are highly speculative and carry substantial risk.</p>
               
               <Card className="bg-violet-500/10 border border-violet-400/20 p-4">
                 <ul className="space-y-2 text-gray-300">
                   <li className="flex items-start space-x-2">
                     <span className="text-violet-400 font-bold mt-1">•</span>
-                    <span>The Overmind Gallery provides no investment recommendations or advice.</span>
+                    <span>We provide no investment recommendations or financial advice of any kind.</span>
                   </li>
                   <li className="flex items-start space-x-2">
                     <span className="text-violet-400 font-bold mt-1">•</span>
-                    <span>No NFT, auction, bid, or mechanism (including outbid rewards) promises profit, guaranteed return, or appreciation.</span>
+                    <span>No aspect of the platform — including bids, auctions, or outbid reward mechanisms — constitutes a promise of profit, return, or value appreciation.</span>
                   </li>
                   <li className="flex items-start space-x-2">
                     <span className="text-violet-400 font-bold mt-1">•</span>
-                    <span>Past performance or outcomes do not indicate future results.</span>
+                    <span>Past results are not indicative of future performance.</span>
                   </li>
                   <li className="flex items-start space-x-2">
                     <span className="text-violet-400 font-bold mt-1">•</span>
-                    <span>NFTs on the platform are not intended as securities, investment contracts, or financial instruments under laws like the U.S. Securities Act of 1933.</span>
+                    <span>NFTs offered on the platform are not intended to be securities or investment contracts.</span>
                   </li>
                 </ul>
               </Card>
 
-              <p>
-                Participation offers no equity, governance rights, dividends, or profit expectation from The Overmind Gallery's efforts beyond automated smart contract mechanics.
-              </p>
-              <p className="text-amber-400 font-semibold">
-                Consult qualified professionals before decisions. If an NFT may qualify as a security in your jurisdiction, do not participate.
+              <p className="text-amber-400 font-semibold mt-4">
+                You should consult qualified professionals in your jurisdiction before making any decisions involving value or risk.
               </p>
             </div>
           </div>
@@ -151,13 +151,10 @@ export default function DisclaimerPage() {
             </h2>
             <div className="pl-8 space-y-3 text-gray-300 leading-relaxed">
               <p>
-                Purchasing an NFT grants a limited, non-exclusive, non-transferable, royalty-free license to display the associated digital asset for personal, non-commercial use only, unless the creator specifies otherwise.
+                Purchasing an NFT grants only a limited, non-exclusive, non-transferable license to display the associated digital asset for personal, non-commercial use, unless the creator explicitly states otherwise.
               </p>
               <p>
-                The Overmind Gallery makes no representations about underlying intellectual property ownership, non-infringement, or rights transferred. Creators and users must ensure content does not violate third-party rights.
-              </p>
-              <p className="text-cyan-400 font-semibold">
-                You indemnify The Overmind Gallery against claims from your content or use.
+                We make no representations or warranties regarding ownership, authenticity, or non-infringement of underlying intellectual property. You are responsible for ensuring that your actions do not violate third-party rights.
               </p>
             </div>
           </div>
@@ -172,28 +169,28 @@ export default function DisclaimerPage() {
             </h2>
             <div className="pl-8 space-y-3 text-gray-300 leading-relaxed">
               <p>
-                The platform enables auction bidding with potential outbid rewards up to 10% of bid amount, per smart contract logic.
+                Certain auctions may include automated outbid rewards of up to 10% of a bid amount, executed solely by smart contracts.
               </p>
               
               <Card className="bg-cyan-500/10 border border-cyan-400/20 p-4">
                 <ul className="space-y-2 text-gray-300">
                   <li className="flex items-start space-x-2">
                     <span className="text-cyan-400 font-bold mt-1">•</span>
-                    <span>Rewards are not guaranteed and depend on auction conditions, smart contract execution, and network factors.</span>
+                    <span>Rewards are not guaranteed and depend entirely on auction conditions and smart contract execution.</span>
                   </li>
                   <li className="flex items-start space-x-2">
                     <span className="text-cyan-400 font-bold mt-1">•</span>
-                    <span>Rewards execute automatically via smart contracts; The Overmind Gallery does not intervene.</span>
+                    <span>We have no control over or ability to intervene in reward calculations or payouts.</span>
                   </li>
                   <li className="flex items-start space-x-2">
                     <span className="text-cyan-400 font-bold mt-1">•</span>
-                    <span>Smart contracts may have bugs, vulnerabilities, or unexpected behavior, despite audits (if any).</span>
+                    <span>Smart contracts may contain bugs or behave unexpectedly.</span>
                   </li>
                 </ul>
               </Card>
 
-              <p className="text-amber-400 font-semibold">
-                You participate at your own risk.
+              <p className="text-amber-400 font-semibold mt-4">
+                All auction participation is at your own risk.
               </p>
             </div>
           </div>
@@ -208,10 +205,10 @@ export default function DisclaimerPage() {
             </h2>
             <div className="pl-8 space-y-3 text-gray-300 leading-relaxed">
               <p>
-                Auction mechanics involve competitive bidding, which may encourage repeated or impulsive participation. You acknowledge potential for excessive use impacting finances or well-being.
+                Competitive auction mechanics may encourage repeated or impulsive bidding. You acknowledge the potential for excessive use to affect your finances or well-being.
               </p>
               <p>
-                The Overmind Gallery is not responsible for losses from overuse. Practice responsible participation; seek support if needed.
+                We are not responsible for any losses resulting from overuse. Please participate responsibly and seek help if needed.
               </p>
             </div>
           </div>
@@ -226,7 +223,7 @@ export default function DisclaimerPage() {
             </h2>
             <div className="pl-8 space-y-3 text-gray-300 leading-relaxed">
               <p>
-                NFT prices are volatile, influenced by sentiment, liquidity, network activity, and external factors beyond our control. NFTs may become illiquid, valueless, or unsellable.
+                NFT values are highly volatile and may be affected by factors entirely outside our control. NFTs can become illiquid, lose substantial value, or become worthless.
               </p>
             </div>
           </div>
@@ -240,15 +237,15 @@ export default function DisclaimerPage() {
               <span>Blockchain & Technical Risks</span>
             </h2>
             <div className="pl-8 space-y-3 text-gray-300 leading-relaxed">
-              <p>You accept risks of blockchain technology, including:</p>
+              <p>By using the platform, you accept inherent risks of blockchain technology, including:</p>
               <ul className="space-y-2 list-disc list-inside ml-4">
-                <li>Smart contract vulnerabilities</li>
-                <li>Network congestion, failures, forks, or instability</li>
+                <li>Smart contract vulnerabilities or exploits</li>
+                <li>Network congestion, failures, forks, or upgrades</li>
                 <li>Irreversible transactions</li>
-                <li>Public, permanent data</li>
+                <li>Public and permanent on-chain data</li>
               </ul>
-              <p>
-                The platform operates "as is" and "as available" without guarantees of uninterrupted or error-free service.
+              <p className="mt-3">
+                The platform is provided "as is" with no guarantee of availability or error-free operation.
               </p>
             </div>
           </div>
@@ -263,10 +260,10 @@ export default function DisclaimerPage() {
             </h2>
             <div className="pl-8 space-y-3 text-gray-300 leading-relaxed">
               <p>
-                You alone secure your wallet, private keys, and seeds. Verify transactions before signing and ensure network compatibility.
+                You are solely responsible for securing your wallet, private keys, and seed phrases. Always verify transaction details before confirming.
               </p>
               <p className="text-cyan-400 font-semibold">
-                The Overmind Gallery never accesses private keys and cannot recover lost assets.
+                We never have access to your private keys and cannot recover lost or stolen assets.
               </p>
             </div>
           </div>
@@ -281,7 +278,7 @@ export default function DisclaimerPage() {
             </h2>
             <div className="pl-8 space-y-3 text-gray-300 leading-relaxed">
               <p>
-                Integrations or links to third-party services (wallets, explorers, etc.) are uncontrolled by The Overmind Gallery. We bear no responsibility for their availability, security, or practices.
+                The platform may connect to or display third-party services (wallets, block explorers, etc.). We do not control and are not responsible for their functionality, security, or availability.
               </p>
             </div>
           </div>
@@ -296,10 +293,10 @@ export default function DisclaimerPage() {
             </h2>
             <div className="pl-8 space-y-3 text-gray-300 leading-relaxed">
               <p>
-                You comply with all applicable laws, including tax obligations (NFT transactions may trigger taxable events). The Overmind Gallery may report as required by law.
+                You are solely responsible for determining and complying with all laws, regulations, and tax obligations that apply to you in your jurisdiction, including any reporting requirements related to NFT transactions.
               </p>
               <p>
-                We implement measures for anti-money laundering (AML) compliance and may require verification or suspend accounts for suspicious activity. Use is prohibited in sanctioned jurisdictions.
+                Laws regarding digital assets vary widely and are evolving. Access or use from jurisdictions where such activity is restricted or illegal is prohibited.
               </p>
             </div>
           </div>
@@ -314,40 +311,43 @@ export default function DisclaimerPage() {
             </h2>
             <div className="pl-8 space-y-3 text-gray-300 leading-relaxed">
               <p>
-                The platform is provided "as is" and "as available." To the maximum extent permitted by law, The Overmind Gallery disclaims all warranties, express or implied, including merchantability, fitness for a particular purpose, title, non-infringement, accuracy, or reliability.
+                The platform is provided strictly "as is" and "as available." To the maximum extent permitted by applicable law, we disclaim all warranties of any kind, whether express or implied.
               </p>
             </div>
           </div>
 
           <div className="h-px bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent"></div>
 
-          {/* Section 12: Limitation of Liability and Indemnification */}
+          {/* Section 12: Limitation of Liability */}
           <div className="space-y-4">
             <h2 className="font-playfair text-3xl font-bold text-card-foreground flex items-center space-x-3">
               <span className="text-violet-400">12.</span>
-              <span>Limitation of Liability and Indemnification</span>
+              <span>Limitation of Liability</span>
             </h2>
             <div className="pl-8 space-y-3 text-gray-300 leading-relaxed">
               <p>
-                To the fullest extent permitted by law (excluding gross negligence, willful misconduct, or mandatory protections), The Overmind Gallery, its affiliates, developers, and contributors shall not be liable for any losses (including financial, lost profits, digital assets, data, or emotional distress), indirect, incidental, consequential, or punitive damages arising from platform use.
+                To the fullest extent permitted by applicable law, we, our developers, contributors, and affiliates shall not be liable for any direct, indirect, incidental, consequential, or punitive damages arising from your use of the platform.
               </p>
               <p>
-                Your sole remedy for dissatisfaction is to stop using the platform. You indemnify and hold The Overmind Gallery harmless from claims arising from your use, violations, or third-party disputes.
+                Your sole remedy for any dissatisfaction is to cease using the platform.
               </p>
             </div>
           </div>
 
           <div className="h-px bg-gradient-to-r from-transparent via-violet-400/20 to-transparent"></div>
 
-          {/* Section 13: Governing Law and Dispute Resolution */}
+          {/* Section 13: Dispute Resolution (Jurisdictionally Neutral) */}
           <div className="space-y-4">
             <h2 className="font-playfair text-3xl font-bold text-card-foreground flex items-center space-x-3">
               <span className="text-violet-400">13.</span>
-              <span>Governing Law and Dispute Resolution</span>
+              <span>Dispute Resolution</span>
             </h2>
             <div className="pl-8 space-y-3 text-gray-300 leading-relaxed">
               <p>
-                This Disclaimer is governed by the laws of the State of Delaware, USA, without regard to conflicts of law. Any disputes shall be resolved exclusively through binding arbitration in Delaware under American Arbitration Association (AAA) rules, with no class actions permitted.
+                Any disputes arising from or relating to your use of the platform shall be resolved in accordance with the laws of your jurisdiction, to the extent required by mandatory local law.
+              </p>
+              <p>
+                Where permissible, we encourage informal resolution through direct communication. You may contact us at the email address below.
               </p>
             </div>
           </div>
@@ -362,7 +362,7 @@ export default function DisclaimerPage() {
             </h2>
             <div className="pl-8 space-y-3 text-gray-300 leading-relaxed">
               <p>
-                We may update this Disclaimer. Material changes will be notified via platform announcement or email (if provided). Continued use after 30 days constitutes acceptance.
+                We may update this Disclaimer from time to time. Material changes will be announced on the platform. Your continued use after any changes indicates acceptance of the updated terms.
               </p>
             </div>
           </div>
@@ -377,7 +377,7 @@ export default function DisclaimerPage() {
             </h2>
             <div className="pl-8 space-y-4">
               <p className="text-gray-300 leading-relaxed">
-                For questions:
+                For questions regarding this Disclaimer:
               </p>
               <Card className="bg-gradient-to-r from-violet-500/10 to-cyan-500/10 border border-violet-400/20 p-6">
                 <div className="flex items-center space-x-4">
@@ -385,7 +385,7 @@ export default function DisclaimerPage() {
                     <Mail className="w-6 h-6 text-violet-400" />
                   </div>
                   <div>
-                    <p className="font-semibold text-card-foreground mb-1">The Overmind Gallery Legal Team</p>
+                    <p className="font-semibold text-card-foreground mb-1">The Overmind Gallery Team</p>
                     <a 
                       href="mailto:legal@overmind.gallery" 
                       className="text-cyan-400 hover:text-cyan-300 transition-colors duration-200"
@@ -407,7 +407,7 @@ export default function DisclaimerPage() {
               <div>
                 <h3 className="font-semibold text-amber-400 mb-2 text-lg">Final Notice</h3>
                 <p className="text-gray-300 leading-relaxed">
-                  NFT auctions involve significant financial, emotional, technical, and regulatory risks. Participate only with funds you can afford to lose entirely.
+                  Participation in NFT auctions carries substantial risk. Only use funds you can afford to lose completely. You assume full responsibility for your actions on the platform.
                 </p>
               </div>
             </div>
@@ -416,7 +416,7 @@ export default function DisclaimerPage() {
           {/* Effective Date */}
           <div className="text-center pt-8">
             <p className="text-gray-400 text-sm">
-              Effective Date: January 1, 2026
+              Effective Date: January 02, 2026
             </p>
           </div>
         </div>
