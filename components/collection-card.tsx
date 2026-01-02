@@ -14,10 +14,9 @@ interface CollectionCardProps {
     description: string
     creator: string
     itemCount: number
-    biddersCount: number  // ← Changed from floorPrice
+    biddersCount: number
     image: string
     banner: string
-    // verified removed
   }
 }
 
@@ -34,11 +33,11 @@ export function CollectionCard({ collection }: CollectionCardProps) {
   }
 
   return (
-    <div className="relative">
-      <Link href={`/collections/${collection.slug}`}>
-        <div className="group relative bg-gradient-to-br from-gray-900/80 to-black/80 border border-gray-800/50 rounded-xl overflow-hidden hover:border-cyan-500/50 transition-all duration-500 hover:shadow-2xl hover:shadow-cyan-500/20 cursor-pointer">
-          {/* Banner */}
-          <div className="relative h-48 overflow-hidden">
+    <div className="relative h-full">
+      <Link href={`/collections/${collection.slug}`} className="block h-full">
+        <div className="group relative bg-gradient-to-br from-gray-900/80 to-black/80 border border-gray-800/50 rounded-xl overflow-hidden hover:border-cyan-500/50 transition-all duration-500 hover:shadow-2xl hover:shadow-cyan-500/20 cursor-pointer flex flex-col h-full">
+          {/* Fixed Height Banner */}
+          <div className="relative h-48 overflow-hidden flex-shrink-0">
             <img
               src={collection.banner}
               alt={collection.name}
@@ -59,32 +58,35 @@ export function CollectionCard({ collection }: CollectionCardProps) {
                 }`}
               />
             </button>
-
-            {/* Verified Badge REMOVED */}
           </div>
 
-          {/* Info */}
-          <div className="p-6">
+          {/* Content Section - Takes remaining space */}
+          <div className="p-6 flex flex-col flex-1">
+            {/* Top Info */}
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center space-x-3">
                 <img
                   src={collection.image}
                   alt={collection.name}
-                  className="w-12 h-12 rounded-lg object-cover border border-gray-700"
+                  className="w-12 h-12 rounded-lg object-cover border border-gray-700 flex-shrink-0"
                 />
                 <div>
-                  <h3 className="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">
+                  <h3 className="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors line-clamp-1">
                     {collection.name}
                   </h3>
-                  <p className="text-muted-foreground text-sm">
+                  <p className="text-muted-foreground text-sm line-clamp-1">
                     by {collection.creator} • {collection.itemCount} artifacts
                   </p>
                 </div>
               </div>
             </div>
 
-            <p className="text-gray-300 text-sm mb-6 line-clamp-2">{collection.description}</p>
+            {/* Description - Fixed 2 lines */}
+            <p className="text-gray-300 text-sm mb-6 line-clamp-2 flex-grow">
+              {collection.description}
+            </p>
 
+            {/* Stats Row */}
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-4 text-sm">
                 <div className="flex items-center space-x-1 text-gray-400">
@@ -98,11 +100,13 @@ export function CollectionCard({ collection }: CollectionCardProps) {
               </div>
             </div>
 
-            <Button className="w-full bg-cyan-500/30 border border-cyan-400/50 hover:bg-cyan-500/50 hover:text-white transition-all duration-300 text-cyan-100 font-semibold">
+            {/* Button - Pushes to bottom */}
+            <Button className="w-full mt-auto bg-cyan-500/30 border border-cyan-400/50 hover:bg-cyan-500/50 hover:text-white transition-all duration-300 text-cyan-100 font-semibold">
               Explore Collection
             </Button>
           </div>
 
+          {/* Hover Overlay */}
           <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
             <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-violet-500/5 rounded-xl" />
           </div>

@@ -546,7 +546,7 @@ export function SiteHeader() {
                         {searchResults.collections.map((collection) => (
                           <Link
                             key={collection.id}
-                            href={`/collection/${collection.slug}`}
+                            href={`/collections/${collection.slug}`}
                             onClick={() => setIsSearchOpen(false)}
                             className="block"
                           >
@@ -586,7 +586,7 @@ export function SiteHeader() {
                           return (
                             <Link
                               key={artifact.id}
-                              href={`/collection/${artifact.collectionSlug}`}
+                              href={`/collections/${artifact.collectionSlug}`}
                               onClick={() => setIsSearchOpen(false)}
                               className="block"
                             >
