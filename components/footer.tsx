@@ -131,7 +131,7 @@ export function Footer() {
               </li>
               <li>
                 <a 
-                  href="https://github.com/overmindgallery" 
+                  href="https://github.com/intuition-box/Overmind-Gallery" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-sm text-muted-foreground hover:text-violet-400 transition-colors flex items-center gap-2"

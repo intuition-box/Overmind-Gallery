@@ -76,9 +76,38 @@ export default function PublicProfile({ address }: PublicProfileProps) {
   }, [address])
 
   const handleCopyAddress = async () => {
-    await navigator.clipboard.writeText(address)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    if (!address) return
+
+    try {
+      await navigator.clipboard.writeText(address)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch (error) {
+      console.error('Failed to copy address:', error)
+      // Fallback pour navigateurs anciens ou contextes non sécurisés
+      fallbackCopy(address)
+    }
+  }
+
+  const fallbackCopy = (text: string) => {
+    const textArea = document.createElement('textarea')
+    textArea.value = text
+    textArea.style.position = 'fixed'
+    textArea.style.left = '-999999px'
+    textArea.style.top = '-999999px'
+    document.body.appendChild(textArea)
+    textArea.focus()
+    textArea.select()
+
+    try {
+      document.execCommand('copy')
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch (error) {
+      console.error('Fallback copy failed:', error)
+    } finally {
+      document.body.removeChild(textArea)
+    }
   }
 
   const tabs = [

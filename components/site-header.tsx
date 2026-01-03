@@ -153,7 +153,7 @@ export function SiteHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { address } = useAccount()
 
-  const isProfilePage = pathname?.startsWith("/profile") || pathname?.startsWith("/my-nfts")
+
 
   const getSearchResults = () => {
     if (!searchQuery.trim()) return { creators: [], collections: [], artifacts: [] }
@@ -190,8 +190,7 @@ export function SiteHeader() {
 
   return (
     <>
-      {!isProfilePage && (
-        <header>
+      <header>
           <div className="max-w-7xl mx-auto px-6 py-4">
             <div className="flex items-center justify-between">
               {/* Logo */}
@@ -322,7 +321,6 @@ export function SiteHeader() {
             </div>
           </div>
         </header>
-      )}
 
       {/* Mobile Menu Sidebar with Search Inside */}
       {isMobileMenuOpen && (
@@ -462,8 +460,7 @@ export function SiteHeader() {
       )}
 
       {/* Search Modal */}
-      {!isProfilePage && (
-        <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
+      <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
           <DialogContent className="max-w-4xl max-h-[80vh] obsidian-texture border-border/30 rune-glow-violet overflow-hidden">
             <DialogHeader className="pb-4">
               <div className="flex items-center justify-between">
@@ -619,7 +616,6 @@ export function SiteHeader() {
             </div>
           </DialogContent>
         </Dialog>
-      )}
     </>
   )
 }

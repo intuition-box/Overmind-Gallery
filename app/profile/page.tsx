@@ -19,7 +19,7 @@ import FavoritesContent from "./components/favorites-content"
 type TabType = "settings" | "my-nfts" | "favorites" | "activity" | "user-stats"
 
 export default function ProfilePage() {
-  const [activeTab, setActiveTab] = useState<TabType>("settings")
+  const [activeTab, setActiveTab] = useState<TabType>("my-nfts")
   const [copied, setCopied] = useState(false)
   const [profileImage, setProfileImage] = useState("/cyber-oracle-mask-futuristic-mystical-glowing-eyes.png")
   const [displayName, setDisplayName] = useState("Wolfgang")
@@ -36,9 +36,21 @@ export default function ProfilePage() {
 
   useEffect(() => {
     const savedAvatar = localStorage.getItem("userAvatar")
-    const savedDisplayName = localStorage.getItem("userDisplayName")
     if (savedAvatar) setProfileImage(savedAvatar)
-    if (savedDisplayName) setDisplayName(savedDisplayName)
+
+    // Charger depuis la même source que ProfileSettingsContent sauvegarde
+    const savedProfileData = localStorage.getItem("userProfileSettings")
+    if (savedProfileData) {
+      try {
+        const parsedData = JSON.parse(savedProfileData)
+        setDisplayName(parsedData.displayName || "Wolfgang")
+      } catch (error) {
+        console.error('Failed to load saved profile data:', error)
+        // Fallback to old key for backward compatibility
+        const savedDisplayName = localStorage.getItem("userDisplayName")
+        if (savedDisplayName) setDisplayName(savedDisplayName)
+      }
+    }
   }, [])
 
   useEffect(() => {
@@ -48,11 +60,38 @@ export default function ProfilePage() {
     }
   }, [profileImage, displayName, address])
 
+  const fallbackCopy = (text: string) => {
+    const textArea = document.createElement('textarea')
+    textArea.value = text
+    textArea.style.position = 'fixed'
+    textArea.style.left = '-999999px'
+    textArea.style.top = '-999999px'
+    document.body.appendChild(textArea)
+    textArea.focus()
+    textArea.select()
+
+    try {
+      document.execCommand('copy')
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch (error) {
+      console.error('Fallback copy failed:', error)
+    } finally {
+      document.body.removeChild(textArea)
+    }
+  }
+
   const handleCopyAddress = async () => {
-    if (address) {
+    if (!address) return
+
+    try {
       await navigator.clipboard.writeText(address)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
+    } catch (error) {
+      console.error('Failed to copy address:', error)
+      // Fallback pour navigateurs anciens ou contextes non sécurisés
+      fallbackCopy(address)
     }
   }
 
@@ -72,18 +111,24 @@ export default function ProfilePage() {
     ? `${address.slice(0, 6)}...${address.slice(-4)}`
     : "0x1234...5678"
 
+  const handleProfileUpdate = (newData: { displayName: string; bio: string }) => {
+    setDisplayName(newData.displayName)
+    // Sauvegarder dans localStorage pour persister entre les sessions
+    localStorage.setItem("userDisplayName", newData.displayName)
+  }
+
   const tabs = [
-    { id: "settings" as TabType, label: "Settings", icon: Settings },
     { id: "my-nfts" as TabType, label: "My NFTs", icon: Gem },
     { id: "favorites" as TabType, label: "Favorites", icon: Star },
     { id: "activity" as TabType, label: "Activity", icon: Activity },
     { id: "user-stats" as TabType, label: "User Stats", icon: BarChart3 },
+    { id: "settings" as TabType, label: "Settings", icon: Settings },
   ]
 
   const renderTabContent = () => {
     switch (activeTab) {
       case "settings":
-        return <ProfileSettingsContent />
+        return <ProfileSettingsContent onProfileUpdate={handleProfileUpdate} />
       case "my-nfts":
         return <MyNFTsContent isCreator={isCreator} />
       case "favorites":
