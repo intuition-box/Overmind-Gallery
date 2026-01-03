@@ -1,6 +1,6 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { WagmiProvider } from 'wagmi'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit'
@@ -69,6 +69,24 @@ interface Web3InnerProviderProps {
 }
 
 export function Web3InnerProvider({ children, config }: Web3InnerProviderProps) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // During SSR, provide a minimal WagmiProvider to prevent context errors
+  if (!mounted) {
+    return (
+      <WagmiProvider config={config}>
+        <QueryClientProvider client={queryClient}>
+          {children}
+        </QueryClientProvider>
+      </WagmiProvider>
+    )
+  }
+
+  // After mounting, provide full RainbowKit functionality
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
@@ -77,6 +95,7 @@ export function Web3InnerProvider({ children, config }: Web3InnerProviderProps) 
           appInfo={{
             appName: 'The Overmind Gallery',
           }}
+          locale="en-US"
         >
           {children}
         </RainbowKitProvider>
