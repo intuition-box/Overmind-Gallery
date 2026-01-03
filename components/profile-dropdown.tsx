@@ -77,9 +77,30 @@ export default function ProfileDropdown() {
     disconnect()
   }
 
+  const fallbackCopy = (text: string) => {
+    const textArea = document.createElement('textarea')
+    textArea.value = text
+    textArea.style.position = 'fixed'
+    textArea.style.left = '-999999px'
+    textArea.style.top = '-999999px'
+    document.body.appendChild(textArea)
+    textArea.focus()
+    textArea.select()
+
+    try {
+      document.execCommand('copy')
+      setIsCopied(true)
+      setTimeout(() => setIsCopied(false), 2000)
+    } catch (error) {
+      console.error('Fallback copy failed:', error)
+    } finally {
+      document.body.removeChild(textArea)
+    }
+  }
+
   const handleCopyAddress = async () => {
     if (!address) return
-    
+
     try {
       await navigator.clipboard.writeText(address)
       setIsCopied(true)
@@ -88,6 +109,8 @@ export default function ProfileDropdown() {
       }, 2000)
     } catch (err) {
       console.error('Failed to copy address:', err)
+      // Fallback pour navigateurs anciens ou contextes non sécurisés
+      fallbackCopy(address)
     }
   }
 
@@ -239,13 +262,9 @@ export default function ProfileDropdown() {
         aria-haspopup="true"
         type="button"
       >
-        {isConnected && (
-          <span className="hidden sm:inline text-sm font-mono text-primary bg-primary/10 px-2 py-1 rounded-md">
-            {walletAddressDisplay}
-          </span>
-        )}
         {isConnected ? (
-          <Avatar className="w-8 h-8 border-2 border-primary/30 hover:border-primary/50 transition-colors duration-200">
+
+          <Avatar className="w-12 h-12 border-2 border-primary/30 hover:border-primary/50 transition-colors duration-300">
             <AvatarImage
               src="/cyber-oracle-mask-futuristic-mystical-glowing-eyes.png"
               alt="Profile Avatar"
