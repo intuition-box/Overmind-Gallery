@@ -36,9 +36,21 @@ export default function ProfilePage() {
 
   useEffect(() => {
     const savedAvatar = localStorage.getItem("userAvatar")
-    const savedDisplayName = localStorage.getItem("userDisplayName")
     if (savedAvatar) setProfileImage(savedAvatar)
-    if (savedDisplayName) setDisplayName(savedDisplayName)
+
+    // Charger depuis la même source que ProfileSettingsContent sauvegarde
+    const savedProfileData = localStorage.getItem("userProfileSettings")
+    if (savedProfileData) {
+      try {
+        const parsedData = JSON.parse(savedProfileData)
+        setDisplayName(parsedData.displayName || "Wolfgang")
+      } catch (error) {
+        console.error('Failed to load saved profile data:', error)
+        // Fallback to old key for backward compatibility
+        const savedDisplayName = localStorage.getItem("userDisplayName")
+        if (savedDisplayName) setDisplayName(savedDisplayName)
+      }
+    }
   }, [])
 
   useEffect(() => {

@@ -262,13 +262,8 @@ export default function ProfileDropdown() {
         aria-haspopup="true"
         type="button"
       >
-        {isConnected && (
-          <span className="hidden sm:inline text-sm font-mono text-primary bg-primary/10 px-2 py-1 rounded-md">
-            {walletAddressDisplay}
-          </span>
-        )}
         {isConnected ? (
-          <Avatar className="w-8 h-8 border-2 border-primary/30 hover:border-primary/50 transition-colors duration-300">
+          <Avatar className="w-12 h-12 border-2 border-primary/30 hover:border-primary/50 transition-colors duration-300">
             <AvatarImage
               src="/cyber-oracle-mask-futuristic-mystical-glowing-eyes.png"
               alt="Profile Avatar"
