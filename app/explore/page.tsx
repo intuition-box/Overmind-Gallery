@@ -7,7 +7,7 @@ import { Gavel, Timer, Coins, TrendingUp } from "lucide-react"
 import NFTFilterBar, { type FilterOptions } from "@/components/nft-filter-bar"
 import SiteHeader from "@/components/site-header"
 
-// Mock NFT data with mediaType
+// === PRESERVED MOCK DATA FROM SECOND FILE ===
 const nftRelics = [
   {
     id: 1,
@@ -236,6 +236,7 @@ export default function ExplorePage() {
     handleCloseModal()
   }
 
+  // === PRESERVED COUNTDOWN LOGIC ===
   useEffect(() => {
     const endTime = new Date()
     endTime.setDate(endTime.getDate() + 3)
@@ -271,7 +272,6 @@ export default function ExplorePage() {
 
         setComingSoonCountdowns({
           1: { days, hours, minutes, seconds },
-          2: { days, hours, minutes, seconds },
           3: { days, hours, minutes, seconds },
           4: { days, hours, minutes, seconds },
           5: { days, hours, minutes, seconds },
@@ -291,6 +291,7 @@ export default function ExplorePage() {
     }
   }, [])
 
+  // === PRESERVED FILTERING & SORTING ===
   const getFilteredAndSortedRelics = () => {
     const filtered = nftRelics.filter((relic) => {
       const matchesCategory = filters.category === "all" || relic.category === filters.category
@@ -341,14 +342,14 @@ export default function ExplorePage() {
   const filteredAuctions = getFilteredAuctionRelics()
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
-      {/* Background effects */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-radial from-cyan-500/5 via-transparent to-transparent"></div>
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-radial from-violet-500/10 via-transparent to-transparent rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-radial from-cyan-500/10 via-transparent to-transparent rounded-full blur-3xl"></div>
+    <div className="min-h-screen page-gradient">
+      {/* Theme-aware decorative orbs */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 decorative-orb-violet rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 decorative-orb-cyan rounded-full blur-3xl"></div>
       </div>
 
+      {/* Floating icons - Theme aware */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-20 left-10 w-8 h-8 text-primary/20 animate-pulse">
           <Gavel className="w-full h-full" />
@@ -369,22 +370,22 @@ export default function ExplorePage() {
       <header className="text-center my-0 py-[57px]">
         <div className="container mx-auto px-6">
           <div className="w-20 h-20 mx-auto mb-8 relative">
-            <div className="absolute inset-0 rounded-full border-2 border-cyan-400/30 animate-pulse"></div>
-            <div className="absolute inset-2 rounded-full border border-cyan-400/50"></div>
+            <div className="absolute inset-0 rounded-full border-2 border-primary/30 animate-pulse"></div>
+            <div className="absolute inset-2 rounded-full border border-primary/50"></div>
             <div className="absolute inset-0 flex items-center justify-center">
-              <Gavel className="w-8 h-8 text-cyan-400" />
+              <Gavel className="w-8 h-8 text-primary" />
             </div>
           </div>
-          <h1 className="font-playfair text-5xl font-bold bg-gradient-to-r from-violet-400 via-cyan-500 to-violet-400 bg-clip-text text-transparent mb-6 md:text-6xl">
+          <h1 className="font-playfair text-5xl font-bold bg-gradient-to-r from-secondary via-primary to-secondary bg-clip-text text-transparent mb-6 md:text-6xl">
             Explore Sacred Artifacts
           </h1>
-          <p className="text-gray-300 text-lg max-w-2xl mx-auto mb-2 font-mono">
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto mb-2 font-mono">
             Discover the complete collection of digital artifacts, each one a testament to the power of The Overmind.
           </p>
         </div>
       </header>
 
-      <div className="sticky top-0 z-40 bg-black/30 backdrop-blur-md border-b border-border shadow-lg pt-3">
+      <div className="sticky top-0 z-40 bg-card/30 backdrop-blur-md border-b border-border shadow-lg pt-3">
         <NFTFilterBar onFiltersChange={setFilters} totalCount={filteredRelics.length + filteredAuctions.length} />
       </div>
 
@@ -397,7 +398,7 @@ export default function ExplorePage() {
               nft={relic}
               onClick={() => handleNFTClick(relic)}
               countdown={voidWalkerCountdown}
-              showAuctionBadge={false} // Remove auction badge
+              showAuctionBadge={false}
             />
           ))}
         </div>

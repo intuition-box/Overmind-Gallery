@@ -42,11 +42,11 @@ export default function HomePage() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-radial from-cyan-500/5 via-transparent to-transparent"></div>
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-radial from-violet-500/10 via-transparent to-transparent rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-radial from-cyan-500/10 via-transparent to-transparent rounded-full blur-3xl"></div>
+    <div className="min-h-screen page-gradient">
+      {/* Decorative atmospheric orbs */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 decorative-orb-violet rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 decorative-orb-cyan rounded-full blur-3xl"></div>
       </div>
 
       <SiteHeader />
@@ -70,10 +70,12 @@ export default function HomePage() {
           <h1 className="font-playfair text-5xl font-bold bg-gradient-to-r from-secondary via-primary to-secondary bg-clip-text text-transparent md:text-7xl mb-6">
             The Overmind Gallery
           </h1>
-          <p className="max-w-3xl mx-auto mb-8 leading-relaxed text-gray-400 font-mono text-lg">
+          <p className="max-w-3xl mx-auto mb-8 leading-relaxed text-muted-foreground font-mono text-lg">
             Where ancient wisdom meets digital artistry. Discover artifacts of the digital realm, guarded by the eternal gaze of The Overmind.
           </p>
-          <p className="text-lg font-semibold mb-12 tracking-[0.30em] text-emerald-200">$TRUST YOUR INTUITION</p>
+          <p className="text-lg font-semibold mb-12 tracking-[0.30em] text-primary">
+            $TRUST YOUR INTUITION
+          </p>
 
           <Link href="/explore">
             <Button className="bg-gradient-to-r from-primary to-secondary hover:from-primary/80 hover:to-secondary/80 text-primary-foreground font-bold text-lg px-12 py-4 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary/25">
@@ -102,12 +104,12 @@ export default function HomePage() {
                     alt={collection.name}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-card/90 via-card/30 to-transparent" />
                   <div className="absolute bottom-4 left-4 right-4">
-                    <h3 className="font-playfair text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">
+                    <h3 className="font-playfair text-xl font-bold text-card-foreground mb-2 group-hover:text-primary transition-colors">
                       {collection.name}
                     </h3>
-                    <p className="text-gray-300 text-sm mb-2">by {collection.creator}</p>
+                    <p className="text-muted-foreground text-sm mb-2">by {collection.creator}</p>
                     <p className="text-primary text-sm">{collection.itemCount} artifacts</p>
                   </div>
                 </div>

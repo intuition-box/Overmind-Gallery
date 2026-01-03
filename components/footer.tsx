@@ -62,7 +62,7 @@ export function Footer() {
 
           {/* Support & Legal */}
           <div>
-            <h3 className="text-sm font-semibold mb-3 bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">Support</h3>
+            <h3 className="text-sm font-semibold mb-3 bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">Support & Legal</h3>
             <ul className="space-y-1.5">
               <li>
                 <Link 

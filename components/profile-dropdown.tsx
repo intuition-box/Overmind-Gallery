@@ -96,7 +96,7 @@ export default function ProfileDropdown() {
   const DisconnectedDropdownMenu = () => (
     <div
       ref={dropdownRef}
-      className="fixed w-56 bg-background border border-border rounded-md shadow-xl overflow-hidden will-change-transform"
+      className="fixed w-56 bg-card border border-border rounded-lg shadow-2xl overflow-hidden will-change-transform"
       style={{
         top: dropdownPosition.top,
         right: dropdownPosition.right,
@@ -124,7 +124,7 @@ export default function ProfileDropdown() {
   const ConnectedDropdownMenu = () => (
     <div
       ref={dropdownRef}
-      className="fixed w-72 bg-background border border-border/30 rounded-lg shadow-2xl overflow-hidden will-change-transform"
+      className="fixed w-72 bg-card border border-border rounded-lg shadow-2xl overflow-hidden will-change-transform"
       style={{
         top: dropdownPosition.top,
         right: dropdownPosition.right,
@@ -134,7 +134,7 @@ export default function ProfileDropdown() {
       aria-orientation="vertical"
     >
       {/* Wallet Identity Section */}
-      <div className="px-4 py-4 border-b border-border/30 bg-background/50">
+      <div className="px-4 py-4 border-b border-border bg-accent/30">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2 flex-1 min-w-0">
             <span className="text-xs text-muted-foreground uppercase tracking-wider font-medium">
@@ -161,7 +161,7 @@ export default function ProfileDropdown() {
           </button>
         </div>
 
-        <div className="pt-2 border-t border-border/20">
+        <div className="pt-2 border-t border-border">
           <div className="flex items-center justify-between">
             <span className="text-xs text-muted-foreground uppercase tracking-wider">
               Balance
@@ -178,24 +178,24 @@ export default function ProfileDropdown() {
         <li role="none">
           <Link
             href="/profile"
-            className="flex items-center w-full px-4 py-3 text-sm text-card-foreground hover:text-primary hover:bg-primary/10 transition-all duration-300 no-underline group"
+            className="flex items-center w-full px-4 py-3 text-sm text-card-foreground hover:text-primary hover:bg-primary/10 transition-all duration-200 no-underline group"
             role="menuitem"
             onClick={handleNavigation}
           >
-            <User className="w-4 h-4 mr-3 flex-shrink-0 pointer-events-none group-hover:text-primary transition-colors" />
+            <User className="w-4 h-4 mr-3 flex-shrink-0 group-hover:text-primary transition-colors" />
             <span className="font-medium">Profile</span>
           </Link>
         </li>
 
-        {/* Profile Link */}
+        {/* Settings Link */}
         <li role="none">
           <Link
             href="/profile"
-            className="flex items-center w-full px-4 py-3 text-sm text-card-foreground hover:text-primary hover:bg-primary/10 transition-all duration-300 no-underline group"
+            className="flex items-center w-full px-4 py-3 text-sm text-card-foreground hover:text-primary hover:bg-primary/10 transition-all duration-200 no-underline group"
             role="menuitem"
             onClick={handleNavigation}
           >
-            <Settings className="w-4 h-4 mr-3 flex-shrink-0 pointer-events-none group-hover:text-primary transition-colors" />
+            <Settings className="w-4 h-4 mr-3 flex-shrink-0 group-hover:text-primary transition-colors" />
             <span className="font-medium">Settings</span>
           </Link>
         </li>
@@ -216,12 +216,12 @@ export default function ProfileDropdown() {
         {/* Disconnect Wallet */}
         <li role="none">
           <button
-            className="flex items-center w-full px-4 py-3 text-sm text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-300 text-left group"
+            className="flex items-center w-full px-4 py-3 text-sm text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200 text-left group"
             role="menuitem"
             onClick={handleDisconnectWallet}
             type="button"
           >
-            <LogOut className="w-4 h-4 mr-3 flex-shrink-0 pointer-events-none group-hover:text-destructive transition-colors" />
+            <LogOut className="w-4 h-4 mr-3 flex-shrink-0 group-hover:text-destructive transition-colors" />
             <span className="font-medium">Disconnect Wallet</span>
           </button>
         </li>
@@ -234,7 +234,7 @@ export default function ProfileDropdown() {
       <button
         ref={buttonRef}
         onClick={toggleDropdown}
-        className="flex items-center justify-center gap-2 p-2 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-full transition-all duration-300 min-h-[44px] hover:shadow-[0_0_20px_rgba(34,211,238,0.6)]"
+        className="flex items-center justify-center gap-2 p-2 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-full transition-all duration-200 min-h-[44px] focus-visible:outline-2 focus-visible:outline-primary"
         aria-expanded={isOpen}
         aria-haspopup="true"
         type="button"
@@ -245,7 +245,7 @@ export default function ProfileDropdown() {
           </span>
         )}
         {isConnected ? (
-          <Avatar className="w-8 h-8 border-2 border-primary/30 hover:border-primary/50 transition-colors duration-300">
+          <Avatar className="w-8 h-8 border-2 border-primary/30 hover:border-primary/50 transition-colors duration-200">
             <AvatarImage
               src="/cyber-oracle-mask-futuristic-mystical-glowing-eyes.png"
               alt="Profile Avatar"
@@ -256,7 +256,7 @@ export default function ProfileDropdown() {
             </AvatarFallback>
           </Avatar>
         ) : (
-          <div className="w-8 h-8 border-2 border-muted-foreground/30 hover:border-primary/50 transition-colors duration-300 rounded-full bg-muted flex items-center justify-center">
+          <div className="w-8 h-8 border-2 border-muted-foreground/30 hover:border-primary/50 transition-colors duration-200 rounded-full bg-muted flex items-center justify-center">
             <User className="w-4 h-4 text-muted-foreground" />
           </div>
         )}

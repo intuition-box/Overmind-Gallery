@@ -1,15 +1,10 @@
-// app/collections/page.tsx
 "use client"
 
 import { useState } from "react"
-import { Search } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import Link from "next/link"
+import { CollectionCard } from "@/components/collection-card"
 import SiteHeader from "@/components/site-header"
-import { CollectionCard } from "@/components/collection-card" // ← Your reusable card
 
+// === PRESERVED COLLECTIONS DATA FROM SECOND FILE ===
 const collections = [
   {
     id: 1,
@@ -19,7 +14,7 @@ const collections = [
     creator: "Wolfgang",
     creatorAddress: "0x742d35Cc6634C0532925a3b8D4C0532925a3b8D4",
     itemCount: 8,
-    biddersCount: 142, // ← Replaced floorPrice with number of bidders
+    biddersCount: 142,
     image: "/dark-mystical-obsidian-codex-ancient-book-glowing-.png",
     banner: "/ancient-library-with-glowing-books-and-mystical-at.png",
   },
@@ -97,11 +92,11 @@ export default function CollectionsPage() {
   )
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-radial from-cyan-500/5 via-transparent to-transparent"></div>
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-radial from-violet-500/10 via-transparent to-transparent rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-radial from-cyan-500/10 via-transparent to-transparent rounded-full blur-3xl"></div>
+    <div className="min-h-screen page-gradient">
+      {/* Theme-aware decorative orbs */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 decorative-orb-violet rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 decorative-orb-cyan rounded-full blur-3xl"></div>
       </div>
 
       <SiteHeader />
@@ -110,16 +105,16 @@ export default function CollectionsPage() {
       <main className="relative z-10 max-w-7xl mx-auto px-6 py-12">
         {/* Page Header */}
         <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent mb-6">
+          <h1 className="text-5xl font-bold bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent mb-6 md:text-6xl">
             Sacred Collections
           </h1>
-          <p className="text-gray-300 text-lg max-w-2xl mx-auto font-mono">
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto font-mono">
             Curated assemblages of digital artifacts, each collection a testament to the artistry and vision of The
             Overmind's chosen creators.
           </p>
         </div>
 
-        {/* Collections Grid using CollectionCard */}
+        {/* Collections Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredCollections.map((collection) => (
             <CollectionCard key={collection.id} collection={collection} />

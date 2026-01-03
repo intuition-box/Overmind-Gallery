@@ -14,14 +14,14 @@ export function FAQItem({ question, answer }: FAQItemProps) {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <div className="border border-cyan-400/20 rounded-lg overflow-hidden transition-all duration-300 hover:border-cyan-400/40 hover:shadow-[0_0_20px_rgba(34,211,238,0.2)]">
+    <div className="border border-primary/20 rounded-lg overflow-hidden transition-all duration-300 hover:border-primary/40 hover:rune-glow">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-6 py-4 flex items-center justify-between bg-black/30 hover:bg-black/50 transition-colors duration-200"
+        className="w-full px-6 py-4 flex items-center justify-between bg-card/30 hover:bg-card/50 transition-colors duration-200"
       >
-        <h3 className="font-playfair text-lg font-bold text-cyan-400 text-left">{question}</h3>
+        <h3 className="font-playfair text-lg font-bold text-primary text-left">{question}</h3>
         <ChevronDown
-          className={`w-5 h-5 text-cyan-400 transition-transform duration-300 flex-shrink-0 ml-4 ${
+          className={`w-5 h-5 text-primary transition-transform duration-300 flex-shrink-0 ml-4 ${
             isOpen ? "rotate-180" : ""
           }`}
         />
@@ -30,11 +30,11 @@ export function FAQItem({ question, answer }: FAQItemProps) {
       <div
         className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? "max-h-[500px]" : "max-h-0"}`}
       >
-        <div className="px-6 py-4 bg-gradient-to-b from-black/20 to-black/10 border-t border-cyan-400/10 max-h-[500px] overflow-y-auto">
+        <div className="px-6 py-4 bg-gradient-to-b from-card/20 to-card/10 border-t border-primary/10 max-h-[500px] overflow-y-auto">
           {typeof answer === "string" ? (
-            <p className="text-gray-300 leading-relaxed whitespace-pre-wrap">{answer}</p>
+            <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">{answer}</p>
           ) : (
-            <div className="text-gray-300 leading-relaxed">{answer}</div>
+            <div className="text-muted-foreground leading-relaxed">{answer}</div>
           )}
         </div>
       </div>
