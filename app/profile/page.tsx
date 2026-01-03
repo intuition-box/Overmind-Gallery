@@ -19,7 +19,7 @@ import FavoritesContent from "./components/favorites-content"
 type TabType = "settings" | "my-nfts" | "favorites" | "activity" | "user-stats"
 
 export default function ProfilePage() {
-  const [activeTab, setActiveTab] = useState<TabType>("settings")
+  const [activeTab, setActiveTab] = useState<TabType>("my-nfts")
   const [copied, setCopied] = useState(false)
   const [profileImage, setProfileImage] = useState("/cyber-oracle-mask-futuristic-mystical-glowing-eyes.png")
   const [displayName, setDisplayName] = useState("Wolfgang")
@@ -99,18 +99,24 @@ export default function ProfilePage() {
     ? `${address.slice(0, 6)}...${address.slice(-4)}`
     : "0x1234...5678"
 
+  const handleProfileUpdate = (newData: { displayName: string; bio: string }) => {
+    setDisplayName(newData.displayName)
+    // Sauvegarder dans localStorage pour persister entre les sessions
+    localStorage.setItem("userDisplayName", newData.displayName)
+  }
+
   const tabs = [
-    { id: "settings" as TabType, label: "Settings", icon: Settings },
     { id: "my-nfts" as TabType, label: "My NFTs", icon: Gem },
     { id: "favorites" as TabType, label: "Favorites", icon: Star },
     { id: "activity" as TabType, label: "Activity", icon: Activity },
     { id: "user-stats" as TabType, label: "User Stats", icon: BarChart3 },
+    { id: "settings" as TabType, label: "Settings", icon: Settings },
   ]
 
   const renderTabContent = () => {
     switch (activeTab) {
       case "settings":
-        return <ProfileSettingsContent />
+        return <ProfileSettingsContent onProfileUpdate={handleProfileUpdate} />
       case "my-nfts":
         return <MyNFTsContent isCreator={isCreator} />
       case "favorites":
