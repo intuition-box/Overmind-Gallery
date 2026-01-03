@@ -91,7 +91,7 @@ const calculateReward = (item: typeof mockActivityData[0]) => {
   return null
 }
 
-export default function ActivityContent() {
+export default function PublicActivityContent({ address }: { address: string }) {
   return (
     <div className="overflow-x-auto -mx-6 sm:-mx-8">
       <div className="inline-block min-w-full align-middle px-6 sm:px-8">
