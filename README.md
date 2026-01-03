@@ -175,10 +175,9 @@ R = (p * B_new)
 
 ## 👥 Authors
 
-**Paarroo** - Lead Developer, Smart Contract Specialist & UX Designer
-**ChiefAmadi** - Co-Lead Developer, Full-Stack Engineer & Project Architect
+**[@Paarroo](https://github.com/Paarroo)** - Lead Developer, Smart Contract Specialist & UX Designer 
 
-*Built by the Intuition.box team for the Web3 community.*
+**[@ChiefAmadi](https://github.com/ChiefAmadi)** - UX Designer 
 
 ## 📄 License
 
