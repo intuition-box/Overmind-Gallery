@@ -77,9 +77,30 @@ export default function ProfileDropdown() {
     disconnect()
   }
 
+  const fallbackCopy = (text: string) => {
+    const textArea = document.createElement('textarea')
+    textArea.value = text
+    textArea.style.position = 'fixed'
+    textArea.style.left = '-999999px'
+    textArea.style.top = '-999999px'
+    document.body.appendChild(textArea)
+    textArea.focus()
+    textArea.select()
+
+    try {
+      document.execCommand('copy')
+      setIsCopied(true)
+      setTimeout(() => setIsCopied(false), 2000)
+    } catch (error) {
+      console.error('Fallback copy failed:', error)
+    } finally {
+      document.body.removeChild(textArea)
+    }
+  }
+
   const handleCopyAddress = async () => {
     if (!address) return
-    
+
     try {
       await navigator.clipboard.writeText(address)
       setIsCopied(true)
@@ -88,6 +109,8 @@ export default function ProfileDropdown() {
       }, 2000)
     } catch (err) {
       console.error('Failed to copy address:', err)
+      // Fallback pour navigateurs anciens ou contextes non sécurisés
+      fallbackCopy(address)
     }
   }
 
