@@ -5,54 +5,56 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(0 0 0); /* Pure black background */
-  --foreground: oklch(0.6 0 0); /* Gray text */
-  --card: oklch(0.12 0 0); /* Dark gray cards (#1f1f1f) */
-  --card-foreground: oklch(1 0 0); /* White text on cards */
-  --popover: oklch(0 0.8 0); /* Dark popup background */
-  --popover-foreground: oklch(1 0 0); /* White text in popups */
-  --primary: oklch(0.65 0.15 200); /* Cyan primary (#0891b2) */
-  --primary-foreground: oklch(1 0 0); /* White text on primary */
-  --secondary: oklch(0.65 0.2 280); /* Violet secondary (#8b5cf6) */
-  --secondary-foreground: oklch(1 0 0); /* White text on secondary */
-  --muted: oklch(0.45 0 0); /* Muted gray */
-  --muted-foreground: oklch(1 0 0); /* White text for muted */
-  --accent: oklch(0.65 0.2 280); /* Violet accent */
-  --accent-foreground: oklch(1 0 0); /* White text on accent */
-  --destructive: oklch(0.55 0.25 25); /* Red for warnings */
-  --destructive-foreground: oklch(1 0 0); /* White text on destructive */
-  --border: oklch(0.45 0 0); /* Gray borders */
-  --input: oklch(0.12 0 0); /* Dark input background */
-  --ring: oklch(0.65 0.15 200 / 0.5); /* Cyan focus ring */
-  --chart-1: oklch(0.45 0 0);
-  --chart-2: oklch(0.65 0.15 200);
-  --chart-3: oklch(0.65 0.2 280);
-  --chart-4: oklch(0.55 0.25 25);
-  --chart-5: oklch(0.7 0.2 60);
+  /* IMPROVED Light Mode Colors - Better Contrast & Readability */
+  --background: oklch(0.98 0 0);
+  --foreground: oklch(0.15 0 0); /* Darker for better readability */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0 0);
+  --primary: oklch(0.55 0.2 200); /* Deeper cyan */
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.55 0.25 280); /* Deeper violet */
+  --secondary-foreground: oklch(1 0 0);
+  --muted: oklch(0.88 0 0);
+  --muted-foreground: oklch(0.35 0 0); /* Much darker */
+  --accent: oklch(0.92 0.08 240);
+  --accent-foreground: oklch(0.15 0 0);
+  --destructive: oklch(0.5 0.3 25);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.82 0 0);
+  --input: oklch(0.93 0 0);
+  --ring: oklch(0.55 0.2 200 / 0.5);
+  --chart-1: oklch(0.6 0.18 200);
+  --chart-2: oklch(0.55 0.2 200);
+  --chart-3: oklch(0.55 0.25 280);
+  --chart-4: oklch(0.5 0.3 25);
+  --chart-5: oklch(0.6 0.22 60);
   --radius: 0.5rem;
-  --sidebar: oklch(0.12 0 0);
-  --sidebar-foreground: oklch(1 0 0);
-  --sidebar-primary: oklch(0.65 0.15 200);
+  --sidebar: oklch(0.98 0 0);
+  --sidebar-foreground: oklch(0.15 0 0);
+  --sidebar-primary: oklch(0.55 0.2 200);
   --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.65 0.2 280);
-  --sidebar-accent-foreground: oklch(1 0 0);
-  --sidebar-border: oklch(0.45 0 0);
-  --sidebar-ring: oklch(0.65 0.15 200 / 0.5);
+  --sidebar-accent: oklch(0.92 0.08 240);
+  --sidebar-accent-foreground: oklch(0.15 0 0);
+  --sidebar-border: oklch(0.82 0 0);
+  --sidebar-ring: oklch(0.55 0.2 200 / 0.5);
 }
 
 .dark {
-  --background: oklch(0 0 0);
-  --foreground: oklch(0.6 0 0);
+  /* Enhanced Dark Mode Colors - Better Contrast */
+  --background: oklch(0.05 0 0); /* Slightly lighter than pure black */
+  --foreground: oklch(0.85 0 0); /* Brighter for readability */
   --card: oklch(0.12 0 0);
-  --card-foreground: oklch(1 0 0);
-  --popover: oklch(0 0.8 0);
-  --popover-foreground: oklch(1 0 0);
+  --card-foreground: oklch(0.95 0 0);
+  --popover: oklch(0.08 0 0);
+  --popover-foreground: oklch(0.95 0 0);
   --primary: oklch(0.65 0.15 200);
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.65 0.2 280);
   --secondary-foreground: oklch(1 0 0);
   --muted: oklch(0.45 0 0);
-  --muted-foreground: oklch(1 0 0);
+  --muted-foreground: oklch(0.88 0 0);
   --accent: oklch(0.65 0.2 280);
   --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.55 0.25 25);
@@ -66,7 +68,7 @@
   --chart-4: oklch(0.55 0.25 25);
   --chart-5: oklch(0.7 0.2 60);
   --sidebar: oklch(0.12 0 0);
-  --sidebar-foreground: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.95 0 0);
   --sidebar-primary: oklch(0.65 0.15 200);
   --sidebar-primary-foreground: oklch(1 0 0);
   --sidebar-accent: oklch(0.65 0.2 280);
@@ -118,8 +120,37 @@
   * {
     @apply border-border outline-ring/50;
   }
+  
   body {
     @apply bg-background text-foreground;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Ensure all content respects theme */
+  main,
+  section,
+  article,
+  div,
+  header,
+  footer,
+  aside,
+  nav {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  }
+
+  /* Typography contrast fixes */
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-foreground;
+  }
+
+  p, span, label {
+    @apply text-foreground;
+  }
+
+  /* Link styles with proper contrast */
+  a {
+    @apply text-primary;
+    transition: color 0.3s ease, background-color 0.3s ease;
   }
 
   /* Enhanced custom styles for occult aesthetic with improved gradients */
@@ -135,6 +166,10 @@
     background: linear-gradient(135deg, oklch(0.08 0 0) 0%, oklch(0.12 0 0) 50%, oklch(0.08 0 0) 100%);
   }
 
+  /* Light mode variant for obsidian texture */
+  :root:not(.dark) .obsidian-texture {
+    background: linear-gradient(135deg, oklch(0.96 0 0) 0%, oklch(0.98 0 0) 50%, oklch(0.96 0 0) 100%);
+  }
   /* Enhanced smoky gradient background with multiple animated fog layers */
   .smoky-gradient {
     background: radial-gradient(ellipse 80% 50% at 50% 0%, oklch(0.1 0.05 240 / 0.1) 0%, transparent 50%),
@@ -149,6 +184,21 @@
       );
     position: relative;
     overflow: hidden;
+    transition: background 0.3s ease;
+  }
+
+  /* Light mode variant for smoky gradient */
+  :root:not(.dark) .smoky-gradient {
+    background: radial-gradient(ellipse 80% 50% at 50% 0%, oklch(0.92 0.02 240 / 0.3) 0%, transparent 50%),
+      radial-gradient(ellipse 100% 80% at 80% 50%, oklch(0.94 0.02 200 / 0.2) 0%, transparent 50%),
+      linear-gradient(
+        135deg,
+        oklch(0.97 0 0) 0%,
+        oklch(0.96 0 0) 25%,
+        oklch(0.95 0 0) 50%,
+        oklch(0.96 0 0) 75%,
+        oklch(0.98 0 0) 100%
+      );
   }
 
   /* Primary fog layer with slow drifting motion */
@@ -166,6 +216,15 @@
     animation: smoky-drift-primary 25s ease-in-out infinite;
     pointer-events: none;
     z-index: 1;
+    transition: background 0.3s ease;
+  }
+
+  /* Light mode variant for fog layer */
+  :root:not(.dark) .smoky-gradient::before {
+    background: radial-gradient(circle at 20% 80%, oklch(0.9 0.02 240 / 0.15) 0%, transparent 40%),
+      radial-gradient(circle at 80% 20%, oklch(0.92 0.02 200 / 0.12) 0%, transparent 45%),
+      radial-gradient(circle at 40% 40%, oklch(0.95 0.01 280 / 0.1) 0%, transparent 35%),
+      radial-gradient(circle at 60% 70%, oklch(0.93 0.02 190 / 0.13) 0%, transparent 50%);
   }
 
   /* Secondary fog layer with different timing and direction */
@@ -182,6 +241,14 @@
     animation: smoky-drift-secondary 30s ease-in-out infinite reverse;
     pointer-events: none;
     z-index: 2;
+    transition: background 0.3s ease;
+  }
+
+  /* Light mode variant for secondary fog */
+  :root:not(.dark) .smoky-gradient::after {
+    background: radial-gradient(circle at 70% 30%, oklch(0.92 0.02 260 / 0.12) 0%, transparent 45%),
+      radial-gradient(circle at 30% 80%, oklch(0.93 0.02 180 / 0.1) 0%, transparent 40%),
+      radial-gradient(circle at 90% 60%, oklch(0.95 0.01 220 / 0.08) 0%, transparent 35%);
   }
 
   /* Additional floating fog particles for enhanced atmosphere */
@@ -205,6 +272,12 @@
     background: radial-gradient(circle, oklch(0.07 0.08 200 / 0.08) 0%, transparent 70%);
     border-radius: 50%;
     animation: float-particle-1 20s ease-in-out infinite;
+    transition: background 0.3s ease;
+  }
+
+  /* Light mode variant for particles */
+  :root:not(.dark) .smoky-particles::before {
+    background: radial-gradient(circle, oklch(0.93 0.02 200 / 0.1) 0%, transparent 70%);
   }
 
   .smoky-particles::after {
@@ -217,11 +290,16 @@
     background: radial-gradient(circle, oklch(0.05 0.06 280 / 0.06) 0%, transparent 70%);
     border-radius: 50%;
     animation: float-particle-2 25s ease-in-out infinite;
+    transition: background 0.3s ease;
+  }
+
+  /* Light mode variant for particles */
+  :root:not(.dark) .smoky-particles::after {
+    background: radial-gradient(circle, oklch(0.95 0.01 280 / 0.08) 0%, transparent 70%);
   }
 
   @keyframes smoky-drift-primary {
-    0%,
-    100% {
+    0%, 100% {
       transform: translateX(0) translateY(0) rotate(0deg) scale(1);
       opacity: 0.4;
     }
@@ -239,10 +317,8 @@
     }
   }
 
-  /* Secondary fog animation with different pattern */
   @keyframes smoky-drift-secondary {
-    0%,
-    100% {
+    0%, 100% {
       transform: translateX(0) translateY(0) rotate(0deg) scale(1);
       opacity: 0.3;
     }
@@ -256,7 +332,7 @@
     }
   }
 
-  /* Enhanced gradient text utilities for cyan-blue gradients matching the screenshot */
+  /* Enhanced gradient text utilities for cyan-blue gradients */
   .gradient-text-cyan {
     background: linear-gradient(135deg, #22d3ee 0%, #3b82f6 50%, #22d3ee 100%);
     -webkit-background-clip: text;
@@ -267,8 +343,7 @@
   }
 
   @keyframes gradient-shift {
-    0%,
-    100% {
+    0%, 100% {
       background-position: 0% 50%;
     }
     50% {
@@ -276,7 +351,7 @@
     }
   }
 
-  /* Enhanced button gradient styles to match the Connect button in screenshot */
+  /* Enhanced button gradient styles */
   .btn-gradient-cyan {
     background: linear-gradient(135deg, #0891b2 0%, #3b82f6 100%);
     transition: all 0.3s ease;
@@ -287,61 +362,74 @@
     box-shadow: 0 4px 20px rgba(34, 211, 238, 0.3);
   }
 
-  /* Global scrollbar styles with cyan-violet gradient for all pages and popups */
-  * {
+  /* Global scrollbar styles - Dark Mode */
+  .dark * {
     scrollbar-width: thin;
     scrollbar-color: oklch(67.527% 0.17967 249.044 / 0.5) oklch(0.12 0 0);
   }
 
-  *::-webkit-scrollbar {
+  .dark *::-webkit-scrollbar {
     width: 10px;
     height: 10px;
   }
 
-  *::-webkit-scrollbar-track {
+  .dark *::-webkit-scrollbar-track {
     background: oklch(0.12 0 0);
     border-radius: 5px;
   }
 
-  *::-webkit-scrollbar-thumb {
+  .dark *::-webkit-scrollbar-thumb {
     background: linear-gradient(135deg, oklch(0.65 0.15 200 / 0.7) 0%, oklch(0.65 0.2 280 / 0.7) 100%);
     border-radius: 5px;
     border: 1px solid oklch(0.65 0.15 200 / 0.4);
     transition: all 0.3s ease;
   }
 
-  *::-webkit-scrollbar-thumb:hover {
+  .dark *::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(135deg, oklch(0.65 0.15 200) 0%, oklch(0.65 0.2 280) 100%);
     box-shadow: 0 0 12px oklch(0.65 0.15 200 / 0.6), 0 0 20px oklch(0.65 0.2 280 / 0.4);
   }
 
-  *::-webkit-scrollbar-corner {
+  .dark *::-webkit-scrollbar-corner {
     background: oklch(0.12 0 0);
   }
 
-  /* Keep custom-scrollbar class for specific overrides if needed */
-  .custom-scrollbar {
+  /* Global scrollbar styles - Light Mode */
+  :root:not(.dark) * {
     scrollbar-width: thin;
-    scrollbar-color: oklch(0.65 0.15 200 / 0.5) oklch(0.12 0 0);
+    scrollbar-color: oklch(0.7 0.1 200 / 0.6) oklch(0.92 0 0);
   }
 
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 8px;
+  :root:not(.dark) *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
   }
 
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: oklch(0.12 0 0);
-    border-radius: 4px;
+  :root:not(.dark) *::-webkit-scrollbar-track {
+    background: oklch(0.92 0 0);
+    border-radius: 5px;
   }
 
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, oklch(0.65 0.15 200 / 0.6) 0%, oklch(0.65 0.2 280 / 0.6) 100%);
-    border-radius: 4px;
-    border: 1px solid oklch(0.65 0.15 200 / 0.3);
+  :root:not(.dark) *::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, oklch(0.7 0.12 200 / 0.5) 0%, oklch(0.7 0.15 280 / 0.5) 100%);
+    border-radius: 5px;
+    border: 1px solid oklch(0.7 0.1 200 / 0.3);
+    transition: all 0.3s ease;
   }
 
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, oklch(0.65 0.15 200 / 0.8) 0%, oklch(0.65 0.2 280 / 0.8) 100%);
+  :root:not(.dark) *::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, oklch(0.65 0.15 200 / 0.7) 0%, oklch(0.65 0.2 280 / 0.7) 100%);
     box-shadow: 0 0 8px oklch(0.65 0.15 200 / 0.4);
+  }
+
+  :root:not(.dark) *::-webkit-scrollbar-corner {
+    background: oklch(0.92 0 0);
+  }
+
+  /* Smooth transitions for all color-based properties */
+  * {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
   }
 }

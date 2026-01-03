@@ -2,15 +2,13 @@
 "use client"
 
 import { useState } from "react"
-import { Search, Eye, Users, Sparkles, X, Gavel, Copy, Check, User, Gem, Activity, BarChart3, Share2, ArrowLeft } from "lucide-react"
+import { Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import Link from "next/link"
 import SiteHeader from "@/components/site-header"
-
+import { CollectionCard } from "@/components/collection-card" // ← Your reusable card
 
 const collections = [
   {
@@ -21,10 +19,9 @@ const collections = [
     creator: "Wolfgang",
     creatorAddress: "0x742d35Cc6634C0532925a3b8D4C0532925a3b8D4",
     itemCount: 8,
-    floorPrice: "2.5 TRUST",
+    biddersCount: 142, // ← Replaced floorPrice with number of bidders
     image: "/dark-mystical-obsidian-codex-ancient-book-glowing-.png",
     banner: "/ancient-library-with-glowing-books-and-mystical-at.png",
-    verified: true,
   },
   {
     id: 2,
@@ -34,10 +31,9 @@ const collections = [
     creator: "Wolfgang",
     creatorAddress: "0x742d35Cc6634C0532925a3b8D4C0532925a3b8D4",
     itemCount: 8,
-    floorPrice: "1.8 TRUST",
+    biddersCount: 89,
     image: "/ethereal-void-walker-dark-figure-glowing-eyes-myst.png",
     banner: "/dark-void-with-ethereal-figures-and-glowing-portal.png",
-    verified: true,
   },
   {
     id: 3,
@@ -47,10 +43,9 @@ const collections = [
     creator: "Wolfgang",
     creatorAddress: "0x742d35Cc6634C0532925a3b8D4C0532925a3b8D4",
     itemCount: 8,
-    floorPrice: "3.2 TRUST",
+    biddersCount: 217,
     image: "/neon-sigil-glowing-cyan-violet-runes-mystical-symb.png",
     banner: "/cyberpunk-temple-with-glowing-neon-runes-and-mysti.png",
-    verified: true,
   },
   {
     id: 4,
@@ -60,10 +55,9 @@ const collections = [
     creator: "Wolfgang",
     creatorAddress: "0x742d35Cc6634C0532925a3b8D4C0532925a3b8D4",
     itemCount: 8,
-    floorPrice: "4.1 TRUST",
+    biddersCount: 104,
     image: "/shadow-crystal-dark-mystical-glowing-purple-energy.png",
     banner: "/dark-crystal-cave-with-purple-glowing-crystals-and.png",
-    verified: false,
   },
   {
     id: 5,
@@ -73,10 +67,9 @@ const collections = [
     creator: "Wolfgang",
     creatorAddress: "0x742d35Cc6634C0532925a3b8D4C0532925a3b8D4",
     itemCount: 8,
-    floorPrice: "2.9 TRUST",
+    biddersCount: 156,
     image: "/cyber-oracle-mask-futuristic-mystical-glowing-eyes.png",
     banner: "/futuristic-temple-with-glowing-oracle-masks-and-di.png",
-    verified: true,
   },
   {
     id: 6,
@@ -86,10 +79,9 @@ const collections = [
     creator: "Wolfgang",
     creatorAddress: "0x742d35Cc6634C0532925a3b8D4C0532925a3b8D4",
     itemCount: 8,
-    floorPrice: "5.7 TRUST",
+    biddersCount: 203,
     image: "/digital-phoenix-feather-glowing-cyan-fire-mystical.png",
     banner: "/digital-phoenix-nest-with-glowing-cyan-flames-and-.png",
-    verified: true,
   },
 ]
 
@@ -127,89 +119,12 @@ export default function CollectionsPage() {
           </p>
         </div>
 
-        {/* Collections Grid - Now with proper navigation */}
+        {/* Collections Grid using CollectionCard */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredCollections.map((collection) => (
-            <Link href={`/collections/${collection.slug}`} key={collection.id}>
-              <div className="group relative bg-gradient-to-br from-gray-900/80 to-black/80 border border-gray-800/50 rounded-xl overflow-hidden hover:border-cyan-500/50 transition-all duration-500 hover:shadow-2xl hover:shadow-cyan-500/20 cursor-pointer">
-                {/* Collection Banner */}
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={collection.banner || "/placeholder.svg"}
-                    alt={collection.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-
-                  {/* Verified Badge */}
-                  {collection.verified && (
-                    <div className="absolute top-4 right-4 bg-cyan-500/20 border border-cyan-500/50 rounded-full p-2">
-                      <Sparkles className="w-4 h-4 text-cyan-400" />
-                    </div>
-                  )}
-                </div>
-
-                {/* Collection Info */}
-                <div className="p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center space-x-3">
-                      <img
-                        src={collection.image || "/placeholder.svg"}
-                        alt={collection.name}
-                        className="w-12 h-12 rounded-lg object-cover border border-gray-700"
-                      />
-                      <div>
-                        <h3 className="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">
-                          {collection.name}
-                        </h3>
-                        <p className="text-muted-foreground text-sm">
-                          by {collection.creator} • {collection.itemCount} artifacts
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <p className="text-gray-300 text-sm mb-6 line-clamp-2">{collection.description}</p>
-
-                  {/* Stats */}
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center space-x-4 text-sm">
-                      <div className="flex items-center space-x-1 text-gray-400">
-                        <Users className="w-4 h-4" />
-                        <span>{collection.itemCount}</span>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-xs text-gray-400">Floor Price</p>
-                      <p className="text-cyan-400 font-bold">{collection.floorPrice}</p>
-                    </div>
-                  </div>
-
-                  {/* Action Button */}
-                  <Button className="w-full bg-cyan-500/30 border border-cyan-400/50 hover:bg-cyan-500/50 hover:text-white transition-all duration-300 text-cyan-100 font-semibold">
-                    Explore Collection
-                  </Button>
-                </div>
-
-                {/* Hover Glow Effect */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-violet-500/5 rounded-xl"></div>
-                </div>
-              </div>
-            </Link>
+            <CollectionCard key={collection.id} collection={collection} />
           ))}
         </div>
-
-        {/* No Results */}
-        {filteredCollections.length === 0 && searchQuery && (
-          <div className="text-center py-16">
-            <div className="text-gray-400 mb-4">
-              <Search className="w-16 h-16 mx-auto mb-4 opacity-50" />
-              <p className="text-xl">No collections found</p>
-              <p className="text-sm">Try adjusting your search terms</p>
-            </div>
-          </div>
-        )}
       </main>
     </div>
   )

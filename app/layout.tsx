@@ -1,10 +1,10 @@
-
 import './globals.css'
 import type React from "react"
 import type { Metadata } from "next"
 import { Playfair_Display, Source_Sans_3 } from "next/font/google"
-import "./globals.css"
 import { Web3Wrapper } from "@/components/Web3Wrapper"
+import { Footer } from "@/components/footer"
+import { ThemeProvider } from "@/components/theme-provider"
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -32,11 +32,14 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${playfair.variable} ${sourceSans.variable} font-sans antialiased`}>
-        <Web3Wrapper>
-          {children}
-        </Web3Wrapper>
+        <ThemeProvider>
+          <Web3Wrapper>
+            {children}
+            <Footer />
+          </Web3Wrapper>
+        </ThemeProvider>
       </body>
     </html>
   )

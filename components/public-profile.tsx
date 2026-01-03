@@ -118,7 +118,7 @@ export default function PublicProfile({ address }: PublicProfileProps) {
         </Button>
 
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-          {/* Back Button */}
+          {/* Back Button - Left Aligned */}
           <Button
             onClick={() => router.back()}
             variant="ghost"
@@ -130,30 +130,33 @@ export default function PublicProfile({ address }: PublicProfileProps) {
 
           {/* Profile Header */}
           <div className="bg-black/30 backdrop-blur-md border border-primary/20 rounded-2xl p-6 sm:p-8 mb-6 shadow-2xl shadow-primary/10">
-            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
               {/* Avatar */}
-              <Avatar className="w-24 h-24 sm:w-28 sm:h-28 border-4 border-primary/30 hover:border-primary/50 hover:shadow-[0_0_25px_rgba(34,211,238,0.6)] transition-all duration-300">
+              <Avatar className="w-24 h-24 sm:w-28 sm:h-28 border-4 border-primary/30 hover:border-primary/50 hover:shadow-[0_0_25px_rgba(34,211,238,0.6)] transition-all duration-300 flex-shrink-0">
                 <AvatarImage src={avatarSrc} alt={displayName} className="object-cover" />
                 <AvatarFallback className="bg-primary/20 text-primary">
                   <User className="w-12 h-12" />
                 </AvatarFallback>
               </Avatar>
 
-              {/* Profile Info + Follow */}
-              <div className="flex-1 flex flex-col lg:flex-row lg:justify-between items-center lg:items-start gap-6 w-full text-center lg:text-left">
-                <div>
-                  <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 mb-3">
+              {/* Info + Follow Section */}
+              <div className="flex-1 w-full flex flex-col md:flex-row md:justify-between md:items-start gap-8">
+                {/* Left: Name, Badge, Wallet */}
+                <div className="text-center md:text-left">
+                  {/* Name + Creator Badge - Same horizontal line, badge smaller */}
+                  <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-4">
                     <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-cyan-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent">
                       {displayName}
                     </h1>
                     {isCreator && (
-                      <Badge className="bg-gradient-to-r from-cyan-500/20 to-violet-500/20 border-cyan-400/30 text-cyan-400 px-3 py-1">
+                      <Badge className="bg-gradient-to-r from-cyan-500/20 to-violet-500/20 border-cyan-400/30 text-cyan-400 px-3 py-0.5 text-xs">
                         Creator
                       </Badge>
                     )}
                   </div>
 
-                  <div className="flex items-center justify-center lg:justify-start gap-2 bg-background/50 rounded-lg px-3 py-2 w-fit mx-auto lg:mx-0 border border-primary/20">
+                  {/* Wallet Address */}
+                  <div className="flex items-center justify-center md:justify-start gap-3 bg-background/50 rounded-lg px-4 py-2 border border-primary/20">
                     <span className="text-sm font-mono text-primary">
                       {address.slice(0, 6)}...{address.slice(-4)}
                     </span>
@@ -167,22 +170,23 @@ export default function PublicProfile({ address }: PublicProfileProps) {
                   </div>
                 </div>
 
-                {/* Follow Button - Only for other users */}
+                {/* Right: Follow Button + Followers Count */}
                 {!isOwnProfile && (
-                  <div className="flex flex-col items-center lg:items-end">
-                    <Button className="bg-green-500/20 hover:bg-green-500/30 text-green-400 border border-green-500/30 px-8 py-3 text-base font-semibold shadow-lg hover:shadow-green-500/20 transition-all duration-300">
+                  <div className="flex flex-col items-center">
+                    <Button className="bg-green-500/20 hover:bg-green-500/30 text-green-400 border border-green-500/30 px-10 py-3 text-base font-semibold shadow-lg hover:shadow-green-500/20 transition-all duration-300">
                       Follow
                     </Button>
-                    <span className="text-cyan-400 text-sm font-medium mt-2">33 Followers</span>
+                    {/* Followers count centered under the button */}
+                    <span className="text-cyan-400 text-sm font-medium mt-3">33 Followers</span>
                   </div>
                 )}
               </div>
             </div>
           </div>
 
-          {/* Tabs */}
+          {/* Tabs - Perfectly Centered */}
           <div className="bg-black/30 backdrop-blur-md border border-primary/20 rounded-2xl overflow-hidden mb-6 shadow-2xl shadow-primary/10">
-            <div className="flex overflow-x-auto no-scrollbar border-b border-primary/20">
+            <div className="flex justify-center overflow-x-auto no-scrollbar border-b border-primary/20">
               {tabs.map((tab) => {
                 const Icon = tab.icon
                 const isActive = activeTab === tab.id
@@ -191,7 +195,7 @@ export default function PublicProfile({ address }: PublicProfileProps) {
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
                     className={`
-                      flex items-center gap-2 px-6 py-4 text-sm font-medium whitespace-nowrap transition-all duration-300 flex-1 sm:flex-none
+                      flex items-center gap-3 px-8 py-4 text-sm font-medium whitespace-nowrap transition-all duration-300
                       ${isActive
                         ? "text-primary border-b-2 border-primary bg-primary/5"
                         : "text-muted-foreground hover:text-primary hover:bg-primary/5"
