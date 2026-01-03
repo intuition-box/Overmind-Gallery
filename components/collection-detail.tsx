@@ -19,7 +19,7 @@ const COLLECTIONS: Record<string, {
   banner: string
   cover: string
   itemCount: number
-  totalBidRewards: string   // Total rewards paid to outbid bidders
+  totalBidRewards: string
   totalVolume: string
   nfts: Array<{
     id: number
@@ -458,7 +458,7 @@ export default function CollectionDetail({ slug }: CollectionDetailProps) {
   const [copied, setCopied] = useState(false)
   const [countdown, setCountdown] = useState("")
 
-  const collection = COLLECTIONS[slug]
+  const collection = COLLECTIONS[slug as keyof typeof COLLECTIONS]
 
   useEffect(() => {
     const endTime = new Date()
@@ -484,9 +484,9 @@ export default function CollectionDetail({ slug }: CollectionDetailProps) {
 
   if (!collection) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center">
+      <div className="min-h-screen page-gradient flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-card-foreground mb-4">Collection Not Found</h2>
+          <h2 className="text-3xl font-bold text-foreground mb-4">Collection Not Found</h2>
           <Button onClick={() => router.back()} variant="outline">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Go Back
@@ -537,12 +537,11 @@ export default function CollectionDetail({ slug }: CollectionDetailProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
-      {/* Background Effects */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-radial from-cyan-500/5 via-transparent to-transparent" />
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-radial from-violet-500/10 via-transparent to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-radial from-cyan-500/10 via-transparent to-transparent rounded-full blur-3xl" />
+    <div className="min-h-screen page-gradient">
+      {/* Background Effects - Theme-aware decorative orbs */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 decorative-orb-violet rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 decorative-orb-cyan rounded-full blur-3xl" />
       </div>
 
       <SiteHeader />
@@ -556,12 +555,12 @@ export default function CollectionDetail({ slug }: CollectionDetailProps) {
               alt={`${collection.name} banner`}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
           </div>
 
           {/* Collection Header */}
           <div className="relative -mt-16 md:-mt-20 mx-4 mb-8">
-            <div className="bg-black/60 backdrop-blur-xl border border-primary/30 rounded-2xl p-6 shadow-2xl">
+            <div className="bg-card/60 backdrop-blur-xl border border-primary/30 rounded-2xl p-6 shadow-2xl">
               <div className="flex flex-col md:flex-row items-start gap-6">
                 <div className="relative -mt-16 md:-mt-20">
                   <div className="w-24 h-24 md:w-32 md:h-32 rounded-xl overflow-hidden border-4 border-primary/40 shadow-2xl">
@@ -575,20 +574,20 @@ export default function CollectionDetail({ slug }: CollectionDetailProps) {
 
                 <div className="flex-1 flex flex-col md:flex-row md:justify-between items-start gap-6 w-full">
                   <div className="flex-1">
-                    <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-cyan-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent mb-3">
+                    <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent mb-3">
                       {collection.name}
                     </h1>
                     <div className="flex items-center gap-3 mb-4">
                       <span className="text-muted-foreground text-sm">Created by</span>
                       <UserLink address={collection.creatorAddress} displayName={collection.creator} />
                     </div>
-                    <p className="text-gray-300 text-sm max-w-2xl mb-4">{collection.description}</p>
+                    <p className="text-muted-foreground text-sm max-w-2xl mb-4">{collection.description}</p>
 
                     {/* Stats */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                       <div>
                         <p className="text-muted-foreground text-xs">Items</p>
-                        <p className="text-lg font-bold text-card-foreground">{collection.itemCount}</p>
+                        <p className="text-lg font-bold text-foreground">{collection.itemCount}</p>
                       </div>
                       <div>
                         <p className="text-muted-foreground text-xs">Total Bid Rewards</p>
@@ -596,16 +595,16 @@ export default function CollectionDetail({ slug }: CollectionDetailProps) {
                       </div>
                       <div>
                         <p className="text-muted-foreground text-xs">Total Volume</p>
-                        <p className="text-lg font-bold text-card-foreground">{collection.totalVolume}</p>
+                        <p className="text-lg font-bold text-foreground">{collection.totalVolume}</p>
                       </div>
                       <div>
                         <p className="text-muted-foreground text-xs">Unique Bidders</p>
-                        <p className="text-lg font-bold text-card-foreground">72</p>
+                        <p className="text-lg font-bold text-foreground">72</p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex flex-col items-center md:items-end">
+                  <div className="flex flex-col items-center md:items-end gap-3">
                     <Button
                       onClick={handleShare}
                       className="bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30 px-6 py-3 text-sm font-semibold shadow-lg hover:shadow-primary/20 transition-all duration-300"
@@ -613,8 +612,12 @@ export default function CollectionDetail({ slug }: CollectionDetailProps) {
                       <Share2 className="w-4 h-4 mr-2" />
                       Share
                     </Button>
+
+                    {/* Fully theme-aware toast notification */}
                     {copied && (
-                      <span className="text-green-400 text-xs font-medium mt-2">Link copied!</span>
+                      <div className="bg-card/90 backdrop-blur-md border border-primary/30 rounded-lg px-5 py-3 shadow-lg shadow-primary/20 animate-in slide-in-from-top duration-300">
+                        <span className="text-primary font-medium text-sm">Link copied to clipboard!</span>
+                      </div>
                     )}
                   </div>
                 </div>

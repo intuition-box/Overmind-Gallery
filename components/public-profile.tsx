@@ -130,10 +130,12 @@ export default function PublicProfile({ address }: PublicProfileProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-cyan-900/20 via-transparent to-transparent" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-violet-900/20 via-transparent to-transparent" />
+    <div className="min-h-screen page-gradient">
+      {/* Background Effects - Theme-aware decorative orbs */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 decorative-orb-cyan rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 decorative-orb-violet rounded-full blur-3xl"></div>
+      </div>
 
       <div className="relative z-10">
         {/* Mobile Close Button */}
@@ -141,7 +143,7 @@ export default function PublicProfile({ address }: PublicProfileProps) {
           onClick={() => router.back()}
           variant="ghost"
           size="icon"
-          className="fixed top-4 right-4 z-50 md:hidden text-gray-400 hover:text-cyan-400"
+          className="fixed top-4 right-4 z-50 md:hidden text-muted-foreground hover:text-primary"
         >
           <X className="w-6 h-6" />
         </Button>
@@ -151,17 +153,17 @@ export default function PublicProfile({ address }: PublicProfileProps) {
           <Button
             onClick={() => router.back()}
             variant="ghost"
-            className="mb-6 text-muted-foreground hover:text-primary transition-all duration-300 group hover:bg-transparent hover:shadow-[0_0_20px_rgba(34,211,238,0.5)]"
+            className="mb-6 text-muted-foreground hover:text-primary transition-all duration-300 group hover:bg-transparent rune-glow"
           >
             <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
             Back
           </Button>
 
           {/* Profile Header */}
-          <div className="bg-black/30 backdrop-blur-md border border-primary/20 rounded-2xl p-6 sm:p-8 mb-6 shadow-2xl shadow-primary/10">
+          <div className="bg-card/30 backdrop-blur-md border border-primary/20 rounded-2xl p-6 sm:p-8 mb-6 shadow-2xl shadow-primary/10">
             <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
               {/* Avatar */}
-              <Avatar className="w-24 h-24 sm:w-28 sm:h-28 border-4 border-primary/30 hover:border-primary/50 hover:shadow-[0_0_25px_rgba(34,211,238,0.6)] transition-all duration-300 flex-shrink-0">
+              <Avatar className="w-24 h-24 sm:w-28 sm:h-28 border-4 border-primary/30 hover:border-primary/50 rune-glow transition-all duration-300 flex-shrink-0">
                 <AvatarImage src={avatarSrc} alt={displayName} className="object-cover" />
                 <AvatarFallback className="bg-primary/20 text-primary">
                   <User className="w-12 h-12" />
@@ -174,18 +176,18 @@ export default function PublicProfile({ address }: PublicProfileProps) {
                 <div className="text-center md:text-left">
                   {/* Name + Creator Badge - Same horizontal line, badge smaller */}
                   <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-4">
-                    <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-cyan-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent">
+                    <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent">
                       {displayName}
                     </h1>
                     {isCreator && (
-                      <Badge className="bg-gradient-to-r from-cyan-500/20 to-violet-500/20 border-cyan-400/30 text-cyan-400 px-3 py-0.5 text-xs">
+                      <Badge className="bg-gradient-to-r from-primary/20 to-secondary/20 border-primary/30 text-primary px-3 py-0.5 text-xs">
                         Creator
                       </Badge>
                     )}
                   </div>
 
                   {/* Wallet Address */}
-                  <div className="flex items-center justify-center md:justify-start gap-3 bg-background/50 rounded-lg px-4 py-2 border border-primary/20">
+                  <div className="flex items-center justify-center md:justify-start gap-3 bg-card/50 rounded-lg px-4 py-2 border border-primary/20">
                     <span className="text-sm font-mono text-primary">
                       {address.slice(0, 6)}...{address.slice(-4)}
                     </span>
@@ -206,7 +208,7 @@ export default function PublicProfile({ address }: PublicProfileProps) {
                       Follow
                     </Button>
                     {/* Followers count centered under the button */}
-                    <span className="text-cyan-400 text-sm font-medium mt-3">33 Followers</span>
+                    <span className="text-primary text-sm font-medium mt-3">33 Followers</span>
                   </div>
                 )}
               </div>
@@ -214,7 +216,7 @@ export default function PublicProfile({ address }: PublicProfileProps) {
           </div>
 
           {/* Tabs - Perfectly Centered */}
-          <div className="bg-black/30 backdrop-blur-md border border-primary/20 rounded-2xl overflow-hidden mb-6 shadow-2xl shadow-primary/10">
+          <div className="bg-card/30 backdrop-blur-md border border-primary/20 rounded-2xl overflow-hidden mb-6 shadow-2xl shadow-primary/10">
             <div className="flex justify-center overflow-x-auto no-scrollbar border-b border-primary/20">
               {tabs.map((tab) => {
                 const Icon = tab.icon

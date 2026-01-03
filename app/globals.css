@@ -5,76 +5,88 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* IMPROVED Light Mode Colors - Better Contrast & Readability */
-  --background: oklch(0.98 0 0);
-  --foreground: oklch(0.15 0 0); /* Darker for better readability */
+  /* Light Mode - Professional & Easy on Eyes */
+  --background: oklch(0.98 0.005 240);
+  --foreground: oklch(0.20 0.015 240);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.15 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.15 0 0);
-  --primary: oklch(0.55 0.2 200); /* Deeper cyan */
+  --card-foreground: oklch(0.20 0.015 240);
+  --popover: oklch(0.99 0.005 240);
+  --popover-foreground: oklch(0.20 0.015 240);
+  --primary: oklch(0.50 0.18 220);
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.55 0.25 280); /* Deeper violet */
+  --secondary: oklch(0.55 0.20 280);
   --secondary-foreground: oklch(1 0 0);
-  --muted: oklch(0.88 0 0);
-  --muted-foreground: oklch(0.35 0 0); /* Much darker */
-  --accent: oklch(0.92 0.08 240);
-  --accent-foreground: oklch(0.15 0 0);
-  --destructive: oklch(0.5 0.3 25);
+  --muted: oklch(0.94 0.008 240);
+  --muted-foreground: oklch(0.45 0.02 240);
+  --accent: oklch(0.96 0.01 240);
+  --accent-foreground: oklch(0.20 0.015 240);
+  --destructive: oklch(0.55 0.25 25);
   --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.82 0 0);
-  --input: oklch(0.93 0 0);
-  --ring: oklch(0.55 0.2 200 / 0.5);
-  --chart-1: oklch(0.6 0.18 200);
-  --chart-2: oklch(0.55 0.2 200);
-  --chart-3: oklch(0.55 0.25 280);
-  --chart-4: oklch(0.5 0.3 25);
-  --chart-5: oklch(0.6 0.22 60);
+  --border: oklch(0.88 0.01 240);
+  --input: oklch(0.96 0.008 240);
+  --ring: oklch(0.50 0.18 220 / 0.4);
+  --chart-1: oklch(0.55 0.18 220);
+  --chart-2: oklch(0.50 0.20 200);
+  --chart-3: oklch(0.55 0.22 280);
+  --chart-4: oklch(0.55 0.25 25);
+  --chart-5: oklch(0.60 0.20 60);
   --radius: 0.5rem;
-  --sidebar: oklch(0.98 0 0);
-  --sidebar-foreground: oklch(0.15 0 0);
-  --sidebar-primary: oklch(0.55 0.2 200);
+  
+  /* Surface colors for layering */
+  --surface: oklch(0.99 0.005 240);
+  --surface-foreground: oklch(0.20 0.015 240);
+  
+  /* Sidebar */
+  --sidebar: oklch(0.99 0.005 240);
+  --sidebar-foreground: oklch(0.20 0.015 240);
+  --sidebar-primary: oklch(0.50 0.18 220);
   --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.92 0.08 240);
-  --sidebar-accent-foreground: oklch(0.15 0 0);
-  --sidebar-border: oklch(0.82 0 0);
-  --sidebar-ring: oklch(0.55 0.2 200 / 0.5);
+  --sidebar-accent: oklch(0.96 0.01 240);
+  --sidebar-accent-foreground: oklch(0.20 0.015 240);
+  --sidebar-border: oklch(0.88 0.01 240);
+  --sidebar-ring: oklch(0.50 0.18 220 / 0.4);
 }
 
 .dark {
-  /* Enhanced Dark Mode Colors - Better Contrast */
-  --background: oklch(0.05 0 0); /* Slightly lighter than pure black */
-  --foreground: oklch(0.85 0 0); /* Brighter for readability */
-  --card: oklch(0.12 0 0);
-  --card-foreground: oklch(0.95 0 0);
-  --popover: oklch(0.08 0 0);
-  --popover-foreground: oklch(0.95 0 0);
-  --primary: oklch(0.65 0.15 200);
+  /* Dark Mode - Preserved Original Design */
+  --background: oklch(0.08 0.01 240);
+  --foreground: oklch(0.92 0.01 240);
+  --card: oklch(0.12 0.01 240);
+  --card-foreground: oklch(0.95 0.01 240);
+  --popover: oklch(0.10 0.01 240);
+  --popover-foreground: oklch(0.95 0.01 240);
+  --primary: oklch(0.65 0.15 220);
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.65 0.2 280);
+  --secondary: oklch(0.65 0.20 280);
   --secondary-foreground: oklch(1 0 0);
-  --muted: oklch(0.45 0 0);
-  --muted-foreground: oklch(0.88 0 0);
-  --accent: oklch(0.65 0.2 280);
-  --accent-foreground: oklch(1 0 0);
+  --muted: oklch(0.20 0.02 240);
+  --muted-foreground: oklch(0.70 0.02 240);
+  --accent: oklch(0.25 0.03 240);
+  --accent-foreground: oklch(0.95 0.01 240);
   --destructive: oklch(0.55 0.25 25);
   --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.45 0 0);
-  --input: oklch(0.12 0 0);
-  --ring: oklch(0.65 0.15 200 / 0.5);
-  --chart-1: oklch(0.45 0 0);
-  --chart-2: oklch(0.65 0.15 200);
-  --chart-3: oklch(0.65 0.2 280);
+  --border: oklch(0.30 0.02 240);
+  --input: oklch(0.15 0.02 240);
+  --ring: oklch(0.65 0.15 220 / 0.5);
+  --chart-1: oklch(0.50 0.02 240);
+  --chart-2: oklch(0.65 0.15 220);
+  --chart-3: oklch(0.65 0.20 280);
   --chart-4: oklch(0.55 0.25 25);
-  --chart-5: oklch(0.7 0.2 60);
-  --sidebar: oklch(0.12 0 0);
-  --sidebar-foreground: oklch(0.95 0 0);
-  --sidebar-primary: oklch(0.65 0.15 200);
+  --chart-5: oklch(0.70 0.20 60);
+  
+  /* Surface colors for layering */
+  --surface: oklch(0.10 0.01 240);
+  --surface-foreground: oklch(0.92 0.01 240);
+  
+  /* Sidebar */
+  --sidebar: oklch(0.12 0.01 240);
+  --sidebar-foreground: oklch(0.95 0.01 240);
+  --sidebar-primary: oklch(0.65 0.15 220);
   --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.65 0.2 280);
-  --sidebar-accent-foreground: oklch(1 0 0);
-  --sidebar-border: oklch(0.45 0 0);
-  --sidebar-ring: oklch(0.65 0.15 200 / 0.5);
+  --sidebar-accent: oklch(0.25 0.03 240);
+  --sidebar-accent-foreground: oklch(0.95 0.01 240);
+  --sidebar-border: oklch(0.30 0.02 240);
+  --sidebar-ring: oklch(0.65 0.15 220 / 0.5);
 }
 
 @theme inline {
@@ -102,6 +114,8 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+  --color-surface: var(--surface);
+  --color-surface-foreground: var(--surface-foreground);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -121,24 +135,19 @@
     @apply border-border outline-ring/50;
   }
   
+  html {
+    @apply bg-background text-foreground;
+  }
+  
   body {
     @apply bg-background text-foreground;
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
-  /* Ensure all content respects theme */
-  main,
-  section,
-  article,
-  div,
-  header,
-  footer,
-  aside,
-  nav {
+  main, section, article, div, header, footer, aside, nav {
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
   }
 
-  /* Typography contrast fixes */
   h1, h2, h3, h4, h5, h6 {
     @apply text-foreground;
   }
@@ -147,61 +156,88 @@
     @apply text-foreground;
   }
 
-  /* Link styles with proper contrast */
   a {
-    @apply text-primary;
-    transition: color 0.3s ease, background-color 0.3s ease;
+    @apply text-primary hover:text-primary/80;
+    transition: color 0.3s ease;
   }
 
-  /* Enhanced custom styles for occult aesthetic with improved gradients */
+  /* Theme-aware page gradient backgrounds */
+  .page-gradient {
+    background: radial-gradient(ellipse 80% 50% at 50% 0%, oklch(0.15 0.08 240 / 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse 100% 80% at 20% 100%, oklch(0.12 0.10 220 / 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse 100% 80% at 80% 50%, oklch(0.10 0.08 280 / 0.10) 0%, transparent 50%),
+                var(--background);
+    transition: background 0.3s ease;
+  }
+
+  :root:not(.dark) .page-gradient {
+    background: radial-gradient(ellipse 80% 50% at 50% 0%, oklch(0.92 0.02 240 / 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse 100% 80% at 20% 100%, oklch(0.94 0.02 220 / 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse 100% 80% at 80% 50%, oklch(0.96 0.02 280 / 0.25) 0%, transparent 50%),
+                var(--background);
+  }
+
+  /* Decorative orbs that respect theme */
+  .decorative-orb-cyan {
+    background: radial-gradient(circle, oklch(0.65 0.15 220 / 0.15) 0%, transparent 70%);
+  }
+
+  :root:not(.dark) .decorative-orb-cyan {
+    background: radial-gradient(circle, oklch(0.50 0.18 220 / 0.12) 0%, transparent 70%);
+  }
+
+  .decorative-orb-violet {
+    background: radial-gradient(circle, oklch(0.65 0.20 280 / 0.15) 0%, transparent 70%);
+  }
+
+  :root:not(.dark) .decorative-orb-violet {
+    background: radial-gradient(circle, oklch(0.55 0.20 280 / 0.12) 0%, transparent 70%);
+  }
+
+  /* Theme-aware glow effects */
   .rune-glow {
-    box-shadow: 0 0 20px oklch(0.65 0.15 200 / 0.3), 0 0 40px oklch(0.65 0.15 200 / 0.1);
+    box-shadow: 0 0 20px oklch(0.65 0.15 220 / 0.3), 0 0 40px oklch(0.65 0.15 220 / 0.1);
+  }
+
+  :root:not(.dark) .rune-glow {
+    box-shadow: 0 2px 8px oklch(0.50 0.18 220 / 0.15), 0 4px 16px oklch(0.50 0.18 220 / 0.08);
   }
 
   .rune-glow-violet {
-    box-shadow: 0 0 20px oklch(0.65 0.2 280 / 0.3), 0 0 40px oklch(0.65 0.2 280 / 0.1);
+    box-shadow: 0 0 20px oklch(0.65 0.20 280 / 0.3), 0 0 40px oklch(0.65 0.20 280 / 0.1);
   }
 
+  :root:not(.dark) .rune-glow-violet {
+    box-shadow: 0 2px 8px oklch(0.55 0.20 280 / 0.15), 0 4px 16px oklch(0.55 0.20 280 / 0.08);
+  }
+
+  /* Texture backgrounds */
   .obsidian-texture {
-    background: linear-gradient(135deg, oklch(0.08 0 0) 0%, oklch(0.12 0 0) 50%, oklch(0.08 0 0) 100%);
+    background: linear-gradient(135deg, oklch(0.10 0.01 240) 0%, oklch(0.14 0.01 240) 50%, oklch(0.10 0.01 240) 100%);
   }
 
-  /* Light mode variant for obsidian texture */
   :root:not(.dark) .obsidian-texture {
-    background: linear-gradient(135deg, oklch(0.96 0 0) 0%, oklch(0.98 0 0) 50%, oklch(0.96 0 0) 100%);
+    background: linear-gradient(135deg, oklch(0.97 0.005 240) 0%, oklch(0.99 0.005 240) 50%, oklch(0.97 0.005 240) 100%);
   }
-  /* Enhanced smoky gradient background with multiple animated fog layers */
+
+  /* Atmospheric gradient - Dark Mode */
   .smoky-gradient {
-    background: radial-gradient(ellipse 80% 50% at 50% 0%, oklch(0.1 0.05 240 / 0.1) 0%, transparent 50%),
-      radial-gradient(ellipse 100% 80% at 80% 50%, oklch(0.08 0.08 200 / 0.08) 0%, transparent 50%),
-      linear-gradient(
-        135deg,
-        oklch(0.03 0 0) 0%,
-        oklch(0.05 0 0) 25%,
-        oklch(0.08 0 0) 50%,
-        oklch(0.05 0 0) 75%,
-        oklch(0.02 0 0) 100%
-      );
+    background: radial-gradient(ellipse 80% 50% at 50% 0%, oklch(0.15 0.08 240 / 0.12) 0%, transparent 50%),
+      radial-gradient(ellipse 100% 80% at 80% 50%, oklch(0.12 0.10 220 / 0.10) 0%, transparent 50%),
+      linear-gradient(135deg, oklch(0.06 0.01 240) 0%, oklch(0.08 0.01 240) 25%, oklch(0.10 0.01 240) 50%, oklch(0.08 0.01 240) 75%, oklch(0.05 0.01 240) 100%);
     position: relative;
     overflow: hidden;
     transition: background 0.3s ease;
   }
 
-  /* Light mode variant for smoky gradient */
+  /* Atmospheric gradient - Light Mode */
   :root:not(.dark) .smoky-gradient {
-    background: radial-gradient(ellipse 80% 50% at 50% 0%, oklch(0.92 0.02 240 / 0.3) 0%, transparent 50%),
-      radial-gradient(ellipse 100% 80% at 80% 50%, oklch(0.94 0.02 200 / 0.2) 0%, transparent 50%),
-      linear-gradient(
-        135deg,
-        oklch(0.97 0 0) 0%,
-        oklch(0.96 0 0) 25%,
-        oklch(0.95 0 0) 50%,
-        oklch(0.96 0 0) 75%,
-        oklch(0.98 0 0) 100%
-      );
+    background: radial-gradient(ellipse 80% 50% at 50% 0%, oklch(0.92 0.02 240 / 0.4) 0%, transparent 50%),
+      radial-gradient(ellipse 100% 80% at 80% 50%, oklch(0.94 0.02 220 / 0.3) 0%, transparent 50%),
+      linear-gradient(135deg, oklch(0.98 0.005 240) 0%, oklch(0.97 0.005 240) 25%, oklch(0.96 0.005 240) 50%, oklch(0.97 0.005 240) 75%, oklch(0.99 0.005 240) 100%);
   }
 
-  /* Primary fog layer with slow drifting motion */
+  /* Animated fog - Dark Mode */
   .smoky-gradient::before {
     content: "";
     position: absolute;
@@ -209,25 +245,24 @@
     left: -50%;
     right: -50%;
     bottom: -50%;
-    background: radial-gradient(circle at 20% 80%, oklch(0.1 0.05 240 / 0.2) 0%, transparent 40%),
-      radial-gradient(circle at 80% 20%, oklch(0.08 0.08 200 / 0.15) 0%, transparent 45%),
-      radial-gradient(circle at 40% 40%, oklch(0.05 0.03 280 / 0.12) 0%, transparent 35%),
-      radial-gradient(circle at 60% 70%, oklch(0.07 0.06 190 / 0.18) 0%, transparent 50%);
+    background: radial-gradient(circle at 20% 80%, oklch(0.15 0.08 240 / 0.20) 0%, transparent 40%),
+      radial-gradient(circle at 80% 20%, oklch(0.12 0.10 220 / 0.15) 0%, transparent 45%),
+      radial-gradient(circle at 40% 40%, oklch(0.08 0.05 280 / 0.12) 0%, transparent 35%),
+      radial-gradient(circle at 60% 70%, oklch(0.10 0.08 200 / 0.18) 0%, transparent 50%);
     animation: smoky-drift-primary 25s ease-in-out infinite;
     pointer-events: none;
     z-index: 1;
     transition: background 0.3s ease;
   }
 
-  /* Light mode variant for fog layer */
+  /* Animated fog - Light Mode */
   :root:not(.dark) .smoky-gradient::before {
-    background: radial-gradient(circle at 20% 80%, oklch(0.9 0.02 240 / 0.15) 0%, transparent 40%),
-      radial-gradient(circle at 80% 20%, oklch(0.92 0.02 200 / 0.12) 0%, transparent 45%),
-      radial-gradient(circle at 40% 40%, oklch(0.95 0.01 280 / 0.1) 0%, transparent 35%),
-      radial-gradient(circle at 60% 70%, oklch(0.93 0.02 190 / 0.13) 0%, transparent 50%);
+    background: radial-gradient(circle at 20% 80%, oklch(0.92 0.02 240 / 0.20) 0%, transparent 40%),
+      radial-gradient(circle at 80% 20%, oklch(0.94 0.02 220 / 0.15) 0%, transparent 45%),
+      radial-gradient(circle at 40% 40%, oklch(0.96 0.01 280 / 0.12) 0%, transparent 35%),
+      radial-gradient(circle at 60% 70%, oklch(0.95 0.02 200 / 0.15) 0%, transparent 50%);
   }
 
-  /* Secondary fog layer with different timing and direction */
   .smoky-gradient::after {
     content: "";
     position: absolute;
@@ -235,67 +270,19 @@
     left: -30%;
     right: -30%;
     bottom: -30%;
-    background: radial-gradient(circle at 70% 30%, oklch(0.08 0.04 260 / 0.15) 0%, transparent 45%),
-      radial-gradient(circle at 30% 80%, oklch(0.07 0.07 180 / 0.12) 0%, transparent 40%),
-      radial-gradient(circle at 90% 60%, oklch(0.05 0.05 220 / 0.1) 0%, transparent 35%);
+    background: radial-gradient(circle at 70% 30%, oklch(0.12 0.06 260 / 0.15) 0%, transparent 45%),
+      radial-gradient(circle at 30% 80%, oklch(0.10 0.09 200 / 0.12) 0%, transparent 40%),
+      radial-gradient(circle at 90% 60%, oklch(0.08 0.07 220 / 0.10) 0%, transparent 35%);
     animation: smoky-drift-secondary 30s ease-in-out infinite reverse;
     pointer-events: none;
     z-index: 2;
     transition: background 0.3s ease;
   }
 
-  /* Light mode variant for secondary fog */
   :root:not(.dark) .smoky-gradient::after {
-    background: radial-gradient(circle at 70% 30%, oklch(0.92 0.02 260 / 0.12) 0%, transparent 45%),
-      radial-gradient(circle at 30% 80%, oklch(0.93 0.02 180 / 0.1) 0%, transparent 40%),
-      radial-gradient(circle at 90% 60%, oklch(0.95 0.01 220 / 0.08) 0%, transparent 35%);
-  }
-
-  /* Additional floating fog particles for enhanced atmosphere */
-  .smoky-particles {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    pointer-events: none;
-    z-index: 3;
-  }
-
-  .smoky-particles::before {
-    content: "";
-    position: absolute;
-    top: 10%;
-    left: 15%;
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, oklch(0.07 0.08 200 / 0.08) 0%, transparent 70%);
-    border-radius: 50%;
-    animation: float-particle-1 20s ease-in-out infinite;
-    transition: background 0.3s ease;
-  }
-
-  /* Light mode variant for particles */
-  :root:not(.dark) .smoky-particles::before {
-    background: radial-gradient(circle, oklch(0.93 0.02 200 / 0.1) 0%, transparent 70%);
-  }
-
-  .smoky-particles::after {
-    content: "";
-    position: absolute;
-    top: 60%;
-    right: 20%;
-    width: 150px;
-    height: 150px;
-    background: radial-gradient(circle, oklch(0.05 0.06 280 / 0.06) 0%, transparent 70%);
-    border-radius: 50%;
-    animation: float-particle-2 25s ease-in-out infinite;
-    transition: background 0.3s ease;
-  }
-
-  /* Light mode variant for particles */
-  :root:not(.dark) .smoky-particles::after {
-    background: radial-gradient(circle, oklch(0.95 0.01 280 / 0.08) 0%, transparent 70%);
+    background: radial-gradient(circle at 70% 30%, oklch(0.94 0.02 260 / 0.15) 0%, transparent 45%),
+      radial-gradient(circle at 30% 80%, oklch(0.95 0.02 200 / 0.12) 0%, transparent 40%),
+      radial-gradient(circle at 90% 60%, oklch(0.96 0.01 220 / 0.10) 0%, transparent 35%);
   }
 
   @keyframes smoky-drift-primary {
@@ -332,9 +319,9 @@
     }
   }
 
-  /* Enhanced gradient text utilities for cyan-blue gradients */
+  /* Gradient text utilities */
   .gradient-text-cyan {
-    background: linear-gradient(135deg, #22d3ee 0%, #3b82f6 50%, #22d3ee 100%);
+    background: linear-gradient(135deg, oklch(0.50 0.18 220) 0%, oklch(0.55 0.20 200) 50%, oklch(0.50 0.18 220) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -343,29 +330,25 @@
   }
 
   @keyframes gradient-shift {
-    0%, 100% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
   }
 
-  /* Enhanced button gradient styles */
+  /* Button gradients */
   .btn-gradient-cyan {
-    background: linear-gradient(135deg, #0891b2 0%, #3b82f6 100%);
+    background: linear-gradient(135deg, oklch(0.50 0.18 220) 0%, oklch(0.55 0.20 200) 100%);
     transition: all 0.3s ease;
   }
 
   .btn-gradient-cyan:hover {
-    background: linear-gradient(135deg, #0e7490 0%, #2563eb 100%);
-    box-shadow: 0 4px 20px rgba(34, 211, 238, 0.3);
+    background: linear-gradient(135deg, oklch(0.45 0.20 220) 0%, oklch(0.50 0.22 200) 100%);
+    box-shadow: 0 4px 20px oklch(0.50 0.18 220 / 0.3);
   }
 
-  /* Global scrollbar styles - Dark Mode */
+  /* Scrollbar - Dark Mode */
   .dark * {
     scrollbar-width: thin;
-    scrollbar-color: oklch(67.527% 0.17967 249.044 / 0.5) oklch(0.12 0 0);
+    scrollbar-color: oklch(0.65 0.15 220 / 0.5) oklch(0.12 0.01 240);
   }
 
   .dark *::-webkit-scrollbar {
@@ -374,30 +357,26 @@
   }
 
   .dark *::-webkit-scrollbar-track {
-    background: oklch(0.12 0 0);
+    background: oklch(0.12 0.01 240);
     border-radius: 5px;
   }
 
   .dark *::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, oklch(0.65 0.15 200 / 0.7) 0%, oklch(0.65 0.2 280 / 0.7) 100%);
+    background: linear-gradient(135deg, oklch(0.65 0.15 220 / 0.7) 0%, oklch(0.65 0.20 280 / 0.7) 100%);
     border-radius: 5px;
-    border: 1px solid oklch(0.65 0.15 200 / 0.4);
+    border: 1px solid oklch(0.65 0.15 220 / 0.4);
     transition: all 0.3s ease;
   }
 
   .dark *::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, oklch(0.65 0.15 200) 0%, oklch(0.65 0.2 280) 100%);
-    box-shadow: 0 0 12px oklch(0.65 0.15 200 / 0.6), 0 0 20px oklch(0.65 0.2 280 / 0.4);
+    background: linear-gradient(135deg, oklch(0.65 0.15 220) 0%, oklch(0.65 0.20 280) 100%);
+    box-shadow: 0 0 12px oklch(0.65 0.15 220 / 0.6);
   }
 
-  .dark *::-webkit-scrollbar-corner {
-    background: oklch(0.12 0 0);
-  }
-
-  /* Global scrollbar styles - Light Mode */
+  /* Scrollbar - Light Mode */
   :root:not(.dark) * {
     scrollbar-width: thin;
-    scrollbar-color: oklch(0.7 0.1 200 / 0.6) oklch(0.92 0 0);
+    scrollbar-color: oklch(0.70 0.12 220 / 0.6) oklch(0.94 0.008 240);
   }
 
   :root:not(.dark) *::-webkit-scrollbar {
@@ -406,29 +385,25 @@
   }
 
   :root:not(.dark) *::-webkit-scrollbar-track {
-    background: oklch(0.92 0 0);
+    background: oklch(0.94 0.008 240);
     border-radius: 5px;
   }
 
   :root:not(.dark) *::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, oklch(0.7 0.12 200 / 0.5) 0%, oklch(0.7 0.15 280 / 0.5) 100%);
+    background: linear-gradient(135deg, oklch(0.70 0.12 220 / 0.5) 0%, oklch(0.70 0.15 280 / 0.5) 100%);
     border-radius: 5px;
-    border: 1px solid oklch(0.7 0.1 200 / 0.3);
+    border: 1px solid oklch(0.70 0.10 220 / 0.3);
     transition: all 0.3s ease;
   }
 
   :root:not(.dark) *::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, oklch(0.65 0.15 200 / 0.7) 0%, oklch(0.65 0.2 280 / 0.7) 100%);
-    box-shadow: 0 0 8px oklch(0.65 0.15 200 / 0.4);
+    background: linear-gradient(135deg, oklch(0.60 0.15 220 / 0.7) 0%, oklch(0.60 0.18 280 / 0.7) 100%);
+    box-shadow: 0 0 8px oklch(0.50 0.18 220 / 0.4);
   }
 
-  :root:not(.dark) *::-webkit-scrollbar-corner {
-    background: oklch(0.92 0 0);
-  }
-
-  /* Smooth transitions for all color-based properties */
+  /* Smooth transitions */
   * {
-    transition-property: background-color, border-color, color, fill, stroke;
+    transition-property: background-color, border-color, color, fill, stroke, box-shadow;
     transition-duration: 0.3s;
     transition-timing-function: ease;
   }

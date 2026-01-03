@@ -32,12 +32,16 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${playfair.variable} ${sourceSans.variable} font-sans antialiased`}>
+    <html lang="en" suppressHydrationWarning className="h-full">
+      <body className={`${playfair.variable} ${sourceSans.variable} font-sans antialiased h-full`}>
         <ThemeProvider>
           <Web3Wrapper>
-            {children}
-            <Footer />
+            <div className="min-h-screen flex flex-col bg-background text-foreground">
+              <main className="flex-1">
+                {children}
+              </main>
+              <Footer />
+            </div>
           </Web3Wrapper>
         </ThemeProvider>
       </body>

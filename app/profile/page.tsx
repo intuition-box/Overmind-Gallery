@@ -30,10 +30,9 @@ export default function ProfilePage() {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const isCreator = true
-
-  // Bio without quotation marks
   const bio = "A true disciple of the overmind"
 
+  // === PRESERVED useEffect & HANDLER FUNCTIONS ===
   useEffect(() => {
     const savedAvatar = localStorage.getItem("userAvatar")
     if (savedAvatar) setProfileImage(savedAvatar)
@@ -144,7 +143,7 @@ export default function ProfilePage() {
 
   if (!isConnected) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
+      <div className="min-h-screen page-gradient">
         <SiteHeader />
         <div className="relative z-10 flex items-center justify-center min-h-[calc(100vh-80px)]">
           <div className="text-center">
@@ -162,17 +161,19 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-cyan-900/20 via-transparent to-transparent" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-violet-900/20 via-transparent to-transparent" />
+    <div className="min-h-screen page-gradient">
+      {/* Theme-aware decorative orbs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 right-0 w-96 h-96 decorative-orb-cyan rounded-full blur-3xl opacity-60" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 decorative-orb-violet rounded-full blur-3xl opacity-60" />
+      </div>
 
       <div className="relative z-10">
         <SiteHeader />
 
         {/* Centered Container */}
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-          {/* Back Button - Left Aligned */}
+          {/* Back Button */}
           <Button
             onClick={() => router.back()}
             variant="ghost"
@@ -182,8 +183,8 @@ export default function ProfilePage() {
             Back
           </Button>
 
-          {/* Profile Header - Perfectly Centered & Aligned */}
-          <div className="bg-black/30 backdrop-blur-md border border-primary/20 rounded-2xl p-6 sm:p-8 mb-6 shadow-2xl shadow-primary/10">
+          {/* Profile Header */}
+          <div className="bg-card/30 backdrop-blur-md border border-primary/20 rounded-2xl p-6 sm:p-8 mb-6 shadow-2xl shadow-primary/10">
             <div className="flex flex-col items-center text-center">
               {/* Avatar */}
               <div
@@ -200,10 +201,10 @@ export default function ProfilePage() {
                 </Avatar>
 
                 {isHoveringAvatar && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/70 rounded-full backdrop-blur-sm">
+                  <div className="absolute inset-0 flex items-center justify-center bg-card/70 rounded-full backdrop-blur-sm">
                     <div className="text-center">
-                      <Camera className="w-8 h-8 text-cyan-400 mx-auto mb-1" />
-                      <span className="text-xs font-semibold text-cyan-400">Change avatar</span>
+                      <Camera className="w-8 h-8 text-primary mx-auto mb-1" />
+                      <span className="text-xs font-semibold text-primary">Change avatar</span>
                     </div>
                   </div>
                 )}
@@ -217,15 +218,15 @@ export default function ProfilePage() {
                 />
               </div>
 
-              {/* All Text Elements - Perfectly Centered Stack */}
+              {/* Text Elements */}
               <div className="space-y-4 w-full max-w-md">
                 {/* Name + Creator Badge */}
                 <div className="flex flex-col items-center gap-3">
-                  <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-cyan-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent">
+                  <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent">
                     {displayName}
                   </h1>
                   {isCreator && (
-                    <Badge className="bg-gradient-to-r from-cyan-500/20 to-violet-500/20 border-cyan-400/30 text-cyan-400 px-3 py-1">
+                    <Badge className="bg-gradient-to-r from-primary/20 to-secondary/20 border-primary/30 text-primary px-3 py-1">
                       Creator
                     </Badge>
                   )}
@@ -245,7 +246,7 @@ export default function ProfilePage() {
                   </button>
                 </div>
 
-                {/* Bio - No Quotes, Perfectly Centered */}
+                {/* Bio */}
                 {bio && (
                   <p className="text-base text-muted-foreground italic leading-relaxed">
                     {bio}
@@ -255,8 +256,8 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          {/* Tabs - Centered */}
-          <div className="bg-black/30 backdrop-blur-md border border-primary/20 rounded-2xl overflow-hidden mb-6 shadow-2xl shadow-primary/10">
+          {/* Tabs */}
+          <div className="bg-card/30 backdrop-blur-md border border-primary/20 rounded-2xl overflow-hidden mb-6 shadow-2xl shadow-primary/10">
             <div className="flex justify-center overflow-x-auto no-scrollbar border-b border-primary/20">
               {tabs.map((tab) => {
                 const Icon = tab.icon

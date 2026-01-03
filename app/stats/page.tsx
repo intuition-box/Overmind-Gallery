@@ -6,6 +6,8 @@ import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { TrendingUp, Gem, Users, DollarSign, Activity } from "lucide-react"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
+import { useTheme } from "next-themes"
+import { useEffect, useState } from "react"
 
 // Monthly volume data (last 12 months)
 const monthlyVolumeData = [
@@ -24,13 +26,30 @@ const monthlyVolumeData = [
 ]
 
 export default function StatsPage() {
+  const { resolvedTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Theme-aware colors
+  const isDark = resolvedTheme === "dark"
+  const chartColors = {
+    grid: isDark ? "#333" : "#e5e5e5",
+    axis: isDark ? "#666" : "#666",
+    tooltipBg: isDark ? "#111" : "#fff",
+    tooltipBorder: isDark ? "#333" : "#e5e5e5",
+    tooltipLabel: "#22d3ee", // primary color
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black relative">
+    <div className="min-h-screen page-gradient relative">
       
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-radial from-cyan-500/5 via-transparent to-transparent" />
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-radial from-violet-500/10 via-transparent to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-radial from-cyan-500/10 via-transparent to-transparent rounded-full blur-3xl" />
+      {/* Background Effects - Theme-aware decorative orbs */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 decorative-orb-violet rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 decorative-orb-cyan rounded-full blur-3xl" />
       </div>
 
       {/* SiteHeader*/}
@@ -41,59 +60,59 @@ export default function StatsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
           {/* Page Title */}
           <div className="text-center mb-12">
-            <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-cyan-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent font-playfair mb-4">
+            <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent font-playfair mb-4">
               Marketplace Stats
             </h1>
-            <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               Live insights into The Overmind Gallery ecosystem
             </p>
           </div>
 
           {/* Core Stats Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-            <Card className="bg-black/40 backdrop-blur-md border-primary/20 p-8 shadow-2xl shadow-primary/10 hover:shadow-primary/20 transition-all duration-300">
+            <Card className="bg-card/40 backdrop-blur-md border-primary/20 p-8 shadow-2xl shadow-primary/10 hover:shadow-primary/20 transition-all duration-300">
               <div className="flex items-center justify-between mb-4">
-                <DollarSign className="w-8 h-8 text-cyan-400" />
+                <DollarSign className="w-8 h-8 text-primary" />
                 <TrendingUp className="w-5 h-5 text-green-400" />
               </div>
               <p className="text-muted-foreground text-sm mb-2">Total Volume Traded</p>
-              <p className="text-4xl font-bold text-card-foreground">127.4K TRUST</p>
+              <p className="text-4xl font-bold text-foreground">127.4K TRUST</p>
               <Badge className="mt-3 bg-green-500/20 text-green-400 border-green-500/30">
                 +24.3% this year
               </Badge>
             </Card>
 
-            <Card className="bg-black/40 backdrop-blur-md border-primary/20 p-8 shadow-2xl shadow-primary/10 hover:shadow-primary/20 transition-all duration-300">
+            <Card className="bg-card/40 backdrop-blur-md border-primary/20 p-8 shadow-2xl shadow-primary/10 hover:shadow-primary/20 transition-all duration-300">
               <div className="flex items-center justify-between mb-4">
-                <Gem className="w-8 h-8 text-violet-400" />
+                <Gem className="w-8 h-8 text-secondary" />
                 <TrendingUp className="w-5 h-5 text-green-400" />
               </div>
               <p className="text-muted-foreground text-sm mb-2">Total NFTs Sold</p>
-              <p className="text-4xl font-bold text-card-foreground">8,421</p>
+              <p className="text-4xl font-bold text-foreground">503</p>
               <Badge className="mt-3 bg-green-500/20 text-green-400 border-green-500/30">
                 +18.7% this year
               </Badge>
             </Card>
 
-            <Card className="bg-black/40 backdrop-blur-md border-primary/20 p-8 shadow-2xl shadow-primary/10 hover:shadow-primary/20 transition-all duration-300">
+            <Card className="bg-card/40 backdrop-blur-md border-primary/20 p-8 shadow-2xl shadow-primary/10 hover:shadow-primary/20 transition-all duration-300">
               <div className="flex items-center justify-between mb-4">
-                <Users className="w-8 h-8 text-cyan-400" />
+                <Users className="w-8 h-8 text-primary" />
                 <TrendingUp className="w-5 h-5 text-green-400" />
               </div>
               <p className="text-muted-foreground text-sm mb-2">No. of Users</p>
-              <p className="text-4xl font-bold text-card-foreground">3,892</p>
+              <p className="text-4xl font-bold text-foreground">3,892</p>
               <Badge className="mt-3 bg-green-500/20 text-green-400 border-green-500/30">
                 +31.2% this year
               </Badge>
             </Card>
 
-            <Card className="bg-black/40 backdrop-blur-md border-primary/20 p-8 shadow-2xl shadow-primary/10 hover:shadow-primary/20 transition-all duration-300">
+            <Card className="bg-card/40 backdrop-blur-md border-primary/20 p-8 shadow-2xl shadow-primary/10 hover:shadow-primary/20 transition-all duration-300">
               <div className="flex items-center justify-between mb-4">
-                <Activity className="w-8 h-8 text-violet-400" />
+                <Activity className="w-8 h-8 text-secondary" />
                 <TrendingUp className="w-5 h-5 text-green-400" />
               </div>
               <p className="text-muted-foreground text-sm mb-2">Total Transactions</p>
-              <p className="text-4xl font-bold text-card-foreground">1,247</p>
+              <p className="text-4xl font-bold text-foreground">1,247</p>
               <Badge className="mt-3 bg-green-500/20 text-green-400 border-green-500/30">
                 +42.1% this month
               </Badge>
@@ -101,71 +120,78 @@ export default function StatsPage() {
           </div>
 
           {/* Volume Chart */}
-          <Card className="bg-black/40 backdrop-blur-md border-primary/20 p-8 shadow-2xl shadow-primary/10">
-            <h2 className="text-2xl font-bold text-card-foreground mb-6">Volume Over Time (Monthly)</h2>
+          <Card className="bg-card/40 backdrop-blur-md border-primary/20 p-8 shadow-2xl shadow-primary/10">
+            <h2 className="text-2xl font-bold text-foreground mb-6">Volume Over Time (Monthly)</h2>
             <div className="h-96 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={monthlyVolumeData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-                  <XAxis dataKey="month" stroke="#666" />
-                  <YAxis stroke="#666" />
-                  <Tooltip 
-                    contentStyle={{ backgroundColor: "#111", border: "1px solid #333" }}
-                    labelStyle={{ color: "#22d3ee" }}
-                    formatter={(value: number) => `${(value / 1000).toFixed(1)}K TRUST`}
-                  />
-                  <Line
-                type="monotone"
-                dataKey="volume"
-                stroke="url(#colorGradient)"
-                strokeWidth={3}
-                dot={{ fill: "#22d3ee", r: 4 }}
-                activeDot={{ r: 6, fill: "#a78bfa" }}
-              />
-              <defs>
-                <linearGradient id="colorGradient" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stopColor="#22d3ee" />
-                  <stop offset="100%" stopColor="#a78bfa" />
-                </linearGradient>
-              </defs>
-                </LineChart>
-              </ResponsiveContainer>
+              {mounted && (
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={monthlyVolumeData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke={chartColors.grid} />
+                    <XAxis dataKey="month" stroke={chartColors.axis} />
+                    <YAxis stroke={chartColors.axis} />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: chartColors.tooltipBg, 
+                        border: `1px solid ${chartColors.tooltipBorder}`,
+                        borderRadius: "8px"
+                      }}
+                      labelStyle={{ color: chartColors.tooltipLabel }}
+                      itemStyle={{ color: isDark ? "#fff" : "#000" }}
+                      formatter={(value: number) => `${(value / 1000).toFixed(1)}K TRUST`}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="volume"
+                      stroke="url(#colorGradient)"
+                      strokeWidth={3}
+                      dot={{ fill: "#22d3ee", r: 4 }}
+                      activeDot={{ r: 6, fill: "#a78bfa" }}
+                    />
+                    <defs>
+                      <linearGradient id="colorGradient" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stopColor="#22d3ee" />
+                        <stop offset="100%" stopColor="#a78bfa" />
+                      </linearGradient>
+                    </defs>
+                  </LineChart>
+                </ResponsiveContainer>
+              )}
             </div>
           </Card>
 
           {/* Additional Stats */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-12">
-            <Card className="bg-black/40 backdrop-blur-md border-primary/20 p-8 shadow-2xl">
-              <h3 className="text-2xl font-bold text-card-foreground mb-6">Top Collections</h3>
+            <Card className="bg-card/40 backdrop-blur-md border-primary/20 p-8 shadow-2xl">
+              <h3 className="text-2xl font-bold text-foreground mb-6">Top Collections</h3>
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-300">Mystical Artifacts</span>
+                  <span className="text-muted-foreground">Mystical Artifacts</span>
                   <span className="text-primary font-semibold text-xl">32.1K TRUST</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-300">Void Walker Series</span>
+                  <span className="text-muted-foreground">Void Walker Series</span>
                   <span className="text-primary font-semibold text-xl">28.7K TRUST</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-300">Power Sigils Archive</span>
+                  <span className="text-muted-foreground">Power Sigils Archive</span>
                   <span className="text-primary font-semibold text-xl">21.4K TRUST</span>
                 </div>
               </div>
             </Card>
 
-            <Card className="bg-black/40 backdrop-blur-md border-primary/20 p-8 shadow-2xl">
-              <h3 className="text-2xl font-bold text-card-foreground mb-6">Market Activity</h3>
+            <Card className="bg-card/40 backdrop-blur-md border-primary/20 p-8 shadow-2xl">
+              <h3 className="text-2xl font-bold text-foreground mb-6">Market Activity</h3>
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-300">24h Volume</span>
+                  <span className="text-muted-foreground">24h Volume</span>
                   <span className="text-primary font-semibold text-xl">12.8K TRUST</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-300">Average Bid Price</span>
-                  <span className="text-primary font-semibold text-xl">2.1 TRUST</span>
+                  <span className="text-muted-foreground">Total Bid Rewards</span>
+                  <span className="text-primary font-semibold text-xl">61K TRUST</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-300">Listed NFTs</span>
+                  <span className="text-muted-foreground">Listed NFTs</span>
                   <span className="text-primary font-semibold text-xl">1,892</span>
                 </div>
               </div>
