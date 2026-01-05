@@ -5,6 +5,7 @@ import { Playfair_Display, Source_Sans_3 } from "next/font/google"
 import { Web3Wrapper } from "@/components/Web3Wrapper"
 import { Footer } from "@/components/footer"
 import { ThemeProvider } from "@/components/theme-provider"
+import { FavoritesProvider } from "@/contexts/FavoritesContext"
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -36,12 +37,14 @@ export default function RootLayout({
       <body className={`${playfair.variable} ${sourceSans.variable} font-sans antialiased h-full`}>
         <ThemeProvider>
           <Web3Wrapper>
-            <div className="min-h-screen flex flex-col bg-background text-foreground">
-              <main className="flex-1">
-                {children}
-              </main>
-              <Footer />
-            </div>
+            <FavoritesProvider>
+              <div className="min-h-screen flex flex-col bg-background text-foreground">
+                <main className="flex-1">
+                  {children}
+                </main>
+                <Footer />
+              </div>
+            </FavoritesProvider>
           </Web3Wrapper>
         </ThemeProvider>
       </body>

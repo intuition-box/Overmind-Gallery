@@ -6,7 +6,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Card } from "@/components/ui/card"
+import { BidHistory } from "@/components/web3/BidHistory"
 import {
   ArrowLeft,
   Heart,
@@ -57,6 +57,7 @@ interface NFTDetailPageProps {
 export default function NFTDetailPage({ nft }: NFTDetailPageProps) {
   const router = useRouter()
   const [isLiked, setIsLiked] = useState(false)
+  const [isFullscreen, setIsFullscreen] = useState(false)
 
   const handleShare = () => {
     const shareUrl = window.location.href
@@ -83,6 +84,20 @@ export default function NFTDetailPage({ nft }: NFTDetailPageProps) {
   const handleSell = () => {
     // TODO: Implement sell functionality
     console.log('Sell NFT:', nft.id)
+  }
+
+  const handleImageClick = () => {
+    setIsFullscreen(true)
+  }
+
+  const handleCloseModal = () => {
+    setIsFullscreen(false)
+  }
+
+  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      handleCloseModal()
+    }
   }
 
   return (
@@ -118,16 +133,17 @@ export default function NFTDetailPage({ nft }: NFTDetailPageProps) {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:h-[80vh]">
 
-          {/* Left Column - Image */}
-          <div className="space-y-6">
+          {/* Left Column - Image (Sticky) */}
+          <div className="lg:sticky lg:top-8 lg:self-start space-y-6">
             {/* NFT Image */}
-            <div className="relative aspect-square bg-gradient-to-br from-gray-800 to-black rounded-2xl overflow-hidden border border-gray-700">
+            <div className="relative w-full bg-gradient-to-br from-gray-800 to-black rounded-2xl overflow-hidden border border-gray-700 cursor-pointer hover:opacity-90 transition-opacity"
+                 onClick={handleImageClick}>
               <img
                 src={nft.image}
                 alt={nft.name}
-                className="w-full h-full object-cover"
+                className="w-full h-auto object-contain"
               />
 
               {/* Rarity Badge */}
@@ -150,73 +166,57 @@ export default function NFTDetailPage({ nft }: NFTDetailPageProps) {
               </button>
             </div>
 
-            {/* Quick Actions */}
-            <Card className="bg-gray-900/50 border-gray-700 p-6">
-              <h3 className="text-lg font-semibold text-white mb-4">Quick Actions</h3>
-              <div className="grid grid-cols-2 gap-3">
-                <Button
-                  onClick={handleTransfer}
-                  className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white py-3"
-                >
-                  <ArrowRightLeft className="w-4 h-4 mr-2" />
-                  Transfer
-                </Button>
-                <Button
-                  onClick={handleSell}
-                  className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white py-3"
-                >
-                  <DollarSign className="w-4 h-4 mr-2" />
-                  Sell
-                </Button>
-              </div>
-            </Card>
+
           </div>
 
-          {/* Right Column - Details */}
-          <div className="space-y-8">
+          {/* Right Column - Details (Scrollable) */}
+          <div className="lg:max-h-[calc(80vh-4rem)] lg:overflow-y-auto lg:pr-4 space-y-6">
 
-            {/* Title & Collection */}
-            <div className="space-y-4">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <h1 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-cyan-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent leading-tight">
-                    {nft.name}
-                  </h1>
-                  <Link
-                    href={`/collections/${nft.collectionSlug}`}
-                    className="inline-flex items-center gap-2 text-gray-400 hover:text-cyan-400 transition-colors mt-2 group"
+            {/* Sticky Header */}
+            <div className="lg:sticky lg:top-0 lg:bg-gradient-to-b lg:from-gray-900 lg:to-gray-900/95 lg:backdrop-blur-sm lg:border-b lg:border-gray-700/50 lg:pb-4 lg:mb-6 lg:-mx-4 lg:px-4 lg:z-10">
+              {/* Title & Collection */}
+              <div className="space-y-2">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <h1 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-cyan-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent leading-tight">
+                      {nft.name}
+                    </h1>
+                    <Link
+                      href={`/collections/${nft.collectionSlug}`}
+                      className="inline-flex items-center gap-2 text-gray-400 hover:text-cyan-400 transition-colors mt-1 group"
+                    >
+                      <span className="text-sm">{nft.collection}</span>
+                      <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                  </div>
+
+                  {/* Share Button */}
+                  <Button
+                    onClick={handleShare}
+                    variant="outline"
+                    size="sm"
+                    className="border-gray-600 text-gray-400 hover:bg-gray-700 hover:border-gray-500 ml-4"
                   >
-                    <span className="text-sm">{nft.collection}</span>
-                    <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </Link>
+                    <Share2 className="w-4 h-4 mr-2" />
+                    Share
+                  </Button>
                 </div>
 
-                {/* Share Button */}
-                <Button
-                  onClick={handleShare}
-                  variant="outline"
-                  size="sm"
-                  className="border-gray-600 text-gray-400 hover:bg-gray-700 hover:border-gray-500 ml-4"
-                >
-                  <Share2 className="w-4 h-4 mr-2" />
-                  Share
-                </Button>
-              </div>
-
-              {/* Creator */}
-              <div className="flex items-center gap-3">
-                <span className="text-gray-500 text-sm">Created by</span>
-                <UserLink address={nft.creatorAddress} displayName={nft.creator} />
+                {/* Creator */}
+                <div className="flex items-center gap-2 text-sm text-gray-400">
+                  <span>Created by</span>
+                  <UserLink address={nft.creatorAddress} displayName={nft.creator} />
+                </div>
               </div>
             </div>
 
             {/* Price & Stats */}
-            <Card className="bg-gray-900/50 border-gray-700 p-6">
+            <div className="bg-gray-800/40 rounded-xl p-4 border border-gray-700/50">
               <div className="grid grid-cols-2 gap-6">
                 <div>
                   <p className="text-gray-400 text-sm mb-2">Current Value</p>
                   <div className="flex items-center gap-2">
-                    <span className="text-2xl font-bold text-white">-- ETH</span>
+                    <span className="text-2xl font-bold text-white">-- TRUST</span>
                     <TrendingUp className="w-5 h-5 text-green-400" />
                   </div>
                 </div>
@@ -228,47 +228,75 @@ export default function NFTDetailPage({ nft }: NFTDetailPageProps) {
                   </div>
                 </div>
               </div>
-            </Card>
+            </div>
 
             {/* Description */}
-            <Card className="bg-gray-900/50 border-gray-700 p-6">
-              <h3 className="text-lg font-semibold text-white mb-4">Description</h3>
-              <p className="text-gray-300 leading-relaxed">{nft.description}</p>
-            </Card>
+            <div className="space-y-2">
+              <h3 className="text-base font-semibold text-white">Description</h3>
+              <p className="text-gray-300 leading-relaxed text-sm">{nft.description}</p>
+            </div>
 
             {/* Attributes */}
-            <Card className="bg-gray-900/50 border-gray-700 p-6">
-              <h3 className="text-lg font-semibold text-white mb-4">Attributes</h3>
-              <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-3">
+              <h3 className="text-base font-semibold text-white">Attributes</h3>
+              <div className="grid grid-cols-2 gap-2">
                 {nft.attributes.map((attr, index) => (
-                  <div key={index} className="bg-black/30 rounded-lg p-3 border border-gray-700">
+                  <div key={index} className="bg-gray-800/30 rounded-lg p-3 border border-gray-700/50">
                     <p className="text-gray-400 text-xs uppercase tracking-wide mb-1">{attr.trait_type}</p>
-                    <p className="text-white font-medium">{attr.value}</p>
+                    <p className="text-white font-medium text-sm">{attr.value}</p>
                     <p className="text-cyan-400 text-xs">{attr.rarity} have this trait</p>
                   </div>
                 ))}
               </div>
-            </Card>
+            </div>
 
-            {/* Price History */}
-            <Card className="bg-gray-900/50 border-gray-700 p-6">
-              <h3 className="text-lg font-semibold text-white mb-4">Price History</h3>
-              <div className="space-y-3">
-                {nft.priceHistory.map((entry, index) => (
-                  <div key={index} className="flex items-center justify-between py-2 border-b border-gray-700 last:border-b-0">
-                    <div className="flex items-center gap-3">
-                      <Calendar className="w-4 h-4 text-gray-400" />
-                      <span className="text-gray-300 text-sm">{entry.date}</span>
-                    </div>
-                    <span className="text-white font-medium">{entry.price} ETH</span>
-                  </div>
-                ))}
+            {/* Quick Actions */}
+            <div className="bg-gray-800/30 rounded-xl p-4 border border-gray-700/50">
+              <h3 className="text-base font-semibold text-white mb-3">Quick Actions</h3>
+              <div className="grid grid-cols-2 gap-3">
+                <Button
+                  onClick={handleTransfer}
+                  className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white py-3 text-sm"
+                >
+                  <ArrowRightLeft className="w-4 h-4 mr-2" />
+                  Transfer
+                </Button>
+                <Button
+                  onClick={handleSell}
+                  className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white py-3 text-sm"
+                >
+                  <DollarSign className="w-4 h-4 mr-2" />
+                  Sell
+                </Button>
               </div>
-            </Card>
+            </div>
+
+            {/* Bid History */}
+            <BidHistory tokenId={nft.id} />
 
           </div>
         </div>
       </div>
+
+      {/* Fullscreen Modal */}
+      {isFullscreen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={handleOverlayClick}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') {
+              handleCloseModal()
+            }
+          }}
+          tabIndex={-1}
+        >
+          <img
+            src={nft.image}
+            alt={nft.name}
+            className="max-w-[90vw] max-h-[80vh] object-contain rounded-lg"
+          />
+        </div>
+      )}
     </div>
   )
 }

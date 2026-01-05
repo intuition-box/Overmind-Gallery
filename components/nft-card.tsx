@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Calendar, Clock, TrendingUp, Gavel, Star } from "lucide-react"
+import { useFavoritesContext } from "@/contexts/FavoritesContext"
 
 // NFT Type Badge Component – now fully theme-aware
 function NFTTypeBadge({ mediaType }: { mediaType: "2d" | "3d" | "video" | undefined }) {
@@ -41,8 +42,9 @@ function NFTTypeBadge({ mediaType }: { mediaType: "2d" | "3d" | "video" | undefi
 
 interface NFTCardProps {
   nft: {
-    id: number
-    title: string
+    id: string | number
+    name?: string
+    title?: string
     creator?: string
     image: string
     price?: string
@@ -53,6 +55,9 @@ interface NFTCardProps {
     timeRemaining?: string
     totalBidders?: number
     createdAt?: Date
+    collectionSlug?: string
+    collectionName?: string
+    collection?: string
   }
   onClick: () => void
   countdown?: string
@@ -66,18 +71,20 @@ interface NFTCardProps {
   showAuctionBadge?: boolean
 }
 
-export function NFTCard({ 
-  nft, 
-  onClick, 
-  countdown, 
-  comingSoonCountdown, 
-  forceAuctionButton = false, 
-  showAuctionBadge = true 
+export function NFTCard({
+  nft,
+  onClick,
+  countdown,
+  comingSoonCountdown,
+  forceAuctionButton = false,
+  showAuctionBadge = true
 }: NFTCardProps) {
-  const [isFavorite, setIsFavorite] = useState(false)
+  const { addFavorite, removeFavorite, isFavorite } = useFavoritesContext()
   const [showToast, setShowToast] = useState(false)
   const [toastMessage, setToastMessage] = useState("")
 
+  const nftId = String(nft.id)
+  const isNftFavorite = isFavorite(nftId)
   const isAuction = nft.status === "in-auction"
   const isComingSoon = nft.status === "coming-soon"
 
@@ -85,12 +92,20 @@ export function NFTCard({
     e.preventDefault()
     e.stopPropagation()
 
-    setIsFavorite(prev => !prev)
-    
-    if (!isFavorite) {
-      setToastMessage("Artifact added to Favorites")
-    } else {
+    const favoriteItem = {
+      id: nftId,
+      type: 'nft' as const,
+      name: nft.name || nft.title || 'Unknown NFT',
+      image: nft.image,
+      collection: nft.collectionSlug || nft.collection || nft.collectionName || 'unknown'
+    }
+
+    if (isNftFavorite) {
+      removeFavorite(nftId)
       setToastMessage("Artifact removed from Favorites")
+    } else {
+      addFavorite(favoriteItem)
+      setToastMessage("Artifact added to Favorites")
     }
 
     setShowToast(true)
@@ -178,7 +193,7 @@ export function NFTCard({
           >
             <Star
               className={`w-4 h-4 transition-all duration-300 ${
-                isFavorite
+                isNftFavorite
                   ? "text-primary fill-primary"
                   : "text-muted-foreground"
               }`}
