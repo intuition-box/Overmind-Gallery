@@ -5,10 +5,11 @@ import { useState } from "react"
 import { Star, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { useFavoritesContext } from "@/contexts/FavoritesContext"
 
 interface CollectionCardProps {
   collection: {
-    id: number
+    id: string | number
     slug: string
     name: string
     description: string
@@ -21,20 +22,31 @@ interface CollectionCardProps {
 }
 
 export function CollectionCard({ collection }: CollectionCardProps) {
-  const [isFavorite, setIsFavorite] = useState(false)
+  const { addFavorite, removeFavorite, isFavorite } = useFavoritesContext()
   const [showToast, setShowToast] = useState(false)
   const [toastMessage, setToastMessage] = useState("")
+
+  const collectionId = String(collection.id)
+  const isCollectionFavorite = isFavorite(collectionId)
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
 
-    setIsFavorite(prev => !prev)
+    const favoriteItem = {
+      id: collectionId,
+      type: 'collection' as const,
+      name: collection.name,
+      image: collection.image,
+      collection: collection.slug
+    }
 
-    if (!isFavorite) {
-      setToastMessage("Collection added to Favorites")
-    } else {
+    if (isCollectionFavorite) {
+      removeFavorite(collectionId)
       setToastMessage("Collection removed from Favorites")
+    } else {
+      addFavorite(favoriteItem)
+      setToastMessage("Collection added to Favorites")
     }
 
     setShowToast(true)
@@ -61,7 +73,7 @@ export function CollectionCard({ collection }: CollectionCardProps) {
             >
               <Star
                 className={`w-4 h-4 transition-all duration-300 ${
-                  isFavorite
+                  isCollectionFavorite
                     ? "text-primary fill-primary drop-shadow-glow-cyan"
                     : "text-muted-foreground"
                 }`}

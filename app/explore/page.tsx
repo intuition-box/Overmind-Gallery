@@ -7,6 +7,22 @@ import { Gavel, Timer, Coins, TrendingUp } from "lucide-react"
 import NFTFilterBar, { type FilterOptions } from "@/components/nft-filter-bar"
 import SiteHeader from "@/components/site-header"
 
+// Helper function to map collection values to slugs and names
+const getCollectionInfo = (collectionValue: string) => {
+  const collectionMap: Record<string, { slug: string; name: string }> = {
+    "coming-soon": { slug: "coming-soon", name: "Coming Soon" },
+    "void-walkers": { slug: "void-walkers", name: "Void Walkers" },
+    "neon-sigils": { slug: "neon-sigils", name: "Neon Sigils" },
+    "shadow-crystals": { slug: "shadow-crystals", name: "Shadow Crystals" },
+    "cyber-oracles": { slug: "cyber-oracles", name: "Cyber Oracles" },
+    "phoenix-feathers": { slug: "phoenix-feathers", name: "Phoenix Feathers" },
+    "ancient-codex": { slug: "ancient-codex", name: "Ancient Codex" },
+    "quantum-runes": { slug: "quantum-runes", name: "Quantum Runes" },
+    "mystical-artifacts": { slug: "mystical-artifacts", name: "Mystical Artifacts" },
+  }
+  return collectionMap[collectionValue] || { slug: collectionValue, name: collectionValue }
+}
+
 // === PRESERVED MOCK DATA FROM SECOND FILE ===
 const nftRelics = [
   {
@@ -395,7 +411,11 @@ export default function ExplorePage() {
           {filteredAuctions.map((relic) => (
             <NFTCard
               key={relic.id}
-              nft={relic}
+              nft={{
+                ...relic,
+                collectionSlug: getCollectionInfo(relic.collection).slug,
+                collectionName: getCollectionInfo(relic.collection).name,
+              }}
               onClick={() => handleNFTClick(relic)}
               countdown={voidWalkerCountdown}
               showAuctionBadge={false}
@@ -410,7 +430,11 @@ export default function ExplorePage() {
           {filteredRelics.map((relic) => (
             <NFTCard
               key={relic.id}
-              nft={relic}
+              nft={{
+                ...relic,
+                collectionSlug: getCollectionInfo(relic.collection).slug,
+                collectionName: getCollectionInfo(relic.collection).name,
+              }}
               onClick={() => handleNFTClick(relic)}
               comingSoonCountdown={comingSoonCountdowns[relic.id]}
             />
