@@ -216,7 +216,7 @@ export default function NFTDetailPage({ nft }: NFTDetailPageProps) {
                 <div>
                   <p className="text-gray-400 text-sm mb-2">Current Value</p>
                   <div className="flex items-center gap-2">
-                    <span className="text-2xl font-bold text-white">-- ETH</span>
+                    <span className="text-2xl font-bold text-white">-- TRUST</span>
                     <TrendingUp className="w-5 h-5 text-green-400" />
                   </div>
                 </div>
@@ -260,7 +260,7 @@ export default function NFTDetailPage({ nft }: NFTDetailPageProps) {
                       <Calendar className="w-4 h-4 text-gray-400" />
                       <span className="text-gray-300 text-sm">{entry.date}</span>
                     </div>
-                    <span className="text-white font-medium">{entry.price} ETH</span>
+                     <span className="text-white font-medium">{entry.price} TRUST</span>
                   </div>
                 ))}
               </div>

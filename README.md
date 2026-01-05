@@ -91,7 +91,7 @@ npm start
 - Metadata URI storage for IPFS integration
 
 ### OvermindMarketplace
-- Buy/sell sacred relics with ETH
+- Buy/sell sacred relics with $TRUST
 - Configurable marketplace fees
 - Secure listing and transaction handling
 
