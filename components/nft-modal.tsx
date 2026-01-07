@@ -16,6 +16,7 @@ import {
   ChevronUp,
   Share2,
   CheckCircle,
+  ExternalLink,
 } from "lucide-react"
 import { NFT3DViewer } from "@/components/nft-3d-viewer"
 
@@ -45,12 +46,9 @@ export function NFTModal({
   const [bidAmount, setBidAmount] = useState("")
   const [showHistory, setShowHistory] = useState(false)
   const [shareSuccess, setShareSuccess] = useState(false)
-
-  // Local state for success popup — completely isolated
   const [bidSuccess, setBidSuccess] = useState(false)
   const [bidSuccessAmount, setBidSuccessAmount] = useState("")
 
-  // Reset when modal opens
   useEffect(() => {
     if (isOpen) {
       setBidSuccess(false)
@@ -74,10 +72,8 @@ export function NFTModal({
   const isVideo = mediaType === "video" && nft.videoUrl
 
   const handleBackdropClick = (e: React.MouseEvent) => {
-    if (bidSuccess) return // Prevent closing while success is visible
-    if (e.target === e.currentTarget) {
-      onClose()
-    }
+    if (bidSuccess) return
+    if (e.target === e.currentTarget) onClose()
   }
 
   const handleBidSubmit = () => {
@@ -85,12 +81,9 @@ export function NFTModal({
     const bidValue = parseFloat(bidAmount)
 
     if (bidAmount && bidValue >= minNextValue) {
-      // Save bid and show success popup
       setBidSuccessAmount(bidAmount)
       setBidAmount("")
       setBidSuccess(true)
-
-      // Call parent's onBid (for real transaction later)
       onBid?.(bidAmount)
     }
   }
@@ -100,11 +93,7 @@ export function NFTModal({
     const shareText = `Check out ${nft.title} by ${nft.creator} on The Overmind Gallery`
 
     if (navigator.share) {
-      navigator.share({
-        title: nft.title,
-        text: shareText,
-        url: shareUrl,
-      }).catch(() => {
+      navigator.share({ title: nft.title, text: shareText, url: shareUrl }).catch(() => {
         navigator.clipboard.writeText(shareUrl)
         setShareSuccess(true)
         setTimeout(() => setShareSuccess(false), 2000)
@@ -129,6 +118,15 @@ export function NFTModal({
   }
 
   const rewardAmount = calculateReward()
+
+  const formatAddress = (address: string) => {
+    if (!address) return "Unknown"
+    return `${address.slice(0, 6)}...${address.slice(-4)}`
+  }
+
+  const getBidderAvatar = (bidderName: string) => {
+    return bidderAvatars[bidderName] || bidderAvatars["default"]
+  }
 
   const renderMedia = () => {
     const containerClasses = "relative w-full max-w-[530px] aspect-square rounded-xl overflow-hidden shadow-2xl mx-auto"
@@ -158,7 +156,6 @@ export function NFTModal({
             <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent pointer-events-none rounded-xl" />
           </div>
         )
-      case "2d":
       default:
         return (
           <div className={containerClasses}>
@@ -190,13 +187,8 @@ export function NFTModal({
     }
   }
 
-  const getBidderAvatar = (bidderName: string) => {
-    return bidderAvatars[bidderName] || bidderAvatars["default"]
-  }
-
   return (
     <>
-      {/* Main Modal */}
       <div 
         className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-sm"
         onClick={handleBackdropClick}
@@ -345,26 +337,68 @@ export function NFTModal({
                 )}
               </div>
 
+              {/* Updated Bid History with Avatars + Etherscan Address Link */}
               {isAuction && nft.bidHistory && nft.bidHistory.length > 0 && (
-                <div className="space-y-3 pt-6 pb-12">
-                  <button onClick={() => setShowHistory(!showHistory)} className="w-full flex items-center justify-between p-4 bg-card/50 hover:bg-card rounded-xl transition-all duration-200 border border-border">
+                <div className="space-y-3 pt-6">
+                  <button
+                    onClick={() => setShowHistory(!showHistory)}
+                    className="w-full flex items-center justify-between p-4 bg-card/50 hover:bg-card/70 rounded-xl transition-all duration-200 border border-border"
+                  >
                     <span className="font-semibold text-foreground">Bid History ({nft.bidHistory.length})</span>
                     {showHistory ? <ChevronUp className="w-5 h-5 text-muted-foreground" /> : <ChevronDown className="w-5 h-5 text-muted-foreground" />}
                   </button>
+
                   {showHistory && (
-                    <div className="bg-card/30 rounded-xl p-4 space-y-3 animate-in slide-in-from-top-4 duration-300">
-                      {nft.bidHistory.map((bid: any, index: number) => (
-                        <div key={index} className="flex items-center justify-between p-3 bg-card/50 rounded-lg border border-border">
-                          <Link href={`/profile/${bid.bidderAddress}`} className="flex items-center space-x-3 group">
-                            <img src={getBidderAvatar(bid.bidder)} alt={bid.bidder} className="w-10 h-10 rounded-full object-cover ring-2 ring-border group-hover:ring-primary transition-all" />
-                            <div>
-                              <p className="text-foreground font-medium group-hover:text-primary transition-colors">{bid.bidder}</p>
-                              <p className="text-muted-foreground text-xs mt-1">{bid.timestamp}</p>
+                    <div className="space-y-3">
+                      {nft.bidHistory.map((bid: any, index: number) => {
+                        const bidderAddress = bid.bidderAddress || bid.bidder || ""
+                        const displayName = bid.bidderName || bid.bidder || "Anonymous"
+
+                        return (
+                          <div
+                            key={index}
+                            className="flex items-center justify-between p-4 bg-card/50 rounded-xl border border-border/50"
+                          >
+                            <div className="flex items-center gap-4">
+                              <img
+                                src={getBidderAvatar(displayName)}
+                                alt={displayName}
+                                className="w-12 h-12 rounded-full object-cover ring-2 ring-border"
+                              />
+                              <div className="flex flex-col">
+                                <Link
+                                  href={`/profile/${bidderAddress}`}
+                                  className="font-medium text-foreground hover:text-primary transition-colors"
+                                >
+                                  {displayName}
+                                </Link>
+                                <span className="text-muted-foreground text-xs">
+                                  {formatAddress(bidderAddress)}
+                                </span>
+                                <span className="text-muted-foreground text-xs mt-1">
+                                  {bid.timestamp}
+                                </span>
+                              </div>
                             </div>
-                          </Link>
-                          <Badge className="bg-primary/20 text-primary border-primary/30 font-mono">{bid.amount}</Badge>
-                        </div>
-                      ))}
+
+                            <div className="text-right space-y-2">
+                              <div className="font-semibold text-foreground">
+                                {bid.amount}
+                              </div>
+                              {bidderAddress && (
+                                <a
+                                  href={`https://etherscan.io/address/${bidderAddress}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1 text-xs text-primary/70 hover:text-primary transition-colors"
+                                >
+                                  <ExternalLink className="w-3 h-3" />
+                                </a>
+                              )}
+                            </div>
+                          </div>
+                        )
+                      })}
                     </div>
                   )}
                 </div>
@@ -374,7 +408,7 @@ export function NFTModal({
         </div>
       </div>
 
-      {/* BID SUCCESS POPUP — Beautiful and persistent */}
+      {/* BID SUCCESS POPUP */}
       {bidSuccess && (
         <div className="fixed inset-0 z-[70] flex items-center justify-center bg-background/60 backdrop-blur-md">
           <div className="relative bg-card/95 backdrop-blur-xl rounded-2xl border border-primary/30 shadow-2xl shadow-primary/20 p-8 max-w-md w-full mx-4 animate-in zoom-in-95 duration-400">

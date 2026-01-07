@@ -470,14 +470,14 @@ export default function CreatorsPage() {
                         </div>
 
                         <div className="space-y-2">
-                          <label className="text-foreground font-medium text-sm">Starting Bid Price (ETH) *</label>
+                          <label className="text-foreground font-medium text-sm">Starting Bid Price (TRUST) *</label>
                           <Input
                             type="number"
                             step="0.001"
                             min="0"
                             value={formData.startingBidPrice}
                             onChange={(e) => handleFormChange("startingBidPrice", e.target.value)}
-                            placeholder="e.g., 0.05"
+                            placeholder="input a value"
                             className={`bg-card/50 border-primary/30 text-foreground ${fieldWarnings.startingBidPrice ? 'border-red-500' : ''}`}
                           />
                           {fieldWarnings.startingBidPrice && (

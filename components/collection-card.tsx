@@ -5,48 +5,37 @@ import { useState } from "react"
 import { Star, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { useFavoritesContext } from "@/contexts/FavoritesContext"
 
 interface CollectionCardProps {
   collection: {
-    id: string | number
+    id: number
     slug: string
     name: string
     description: string
     creator: string
     itemCount: number
     biddersCount: number
+    totalBidRewards: string
     image: string
     banner: string
   }
 }
 
 export function CollectionCard({ collection }: CollectionCardProps) {
-  const { addFavorite, removeFavorite, isFavorite } = useFavoritesContext()
+  const [isFavorite, setIsFavorite] = useState(false)
   const [showToast, setShowToast] = useState(false)
   const [toastMessage, setToastMessage] = useState("")
-
-  const collectionId = String(collection.id)
-  const isCollectionFavorite = isFavorite(collectionId)
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
 
-    const favoriteItem = {
-      id: collectionId,
-      type: 'collection' as const,
-      name: collection.name,
-      image: collection.image,
-      collection: collection.slug
-    }
+    setIsFavorite(prev => !prev)
 
-    if (isCollectionFavorite) {
-      removeFavorite(collectionId)
-      setToastMessage("Collection removed from Favorites")
-    } else {
-      addFavorite(favoriteItem)
+    if (!isFavorite) {
       setToastMessage("Collection added to Favorites")
+    } else {
+      setToastMessage("Collection removed from Favorites")
     }
 
     setShowToast(true)
@@ -73,7 +62,7 @@ export function CollectionCard({ collection }: CollectionCardProps) {
             >
               <Star
                 className={`w-4 h-4 transition-all duration-300 ${
-                  isCollectionFavorite
+                  isFavorite
                     ? "text-primary fill-primary drop-shadow-glow-cyan"
                     : "text-muted-foreground"
                 }`}
@@ -112,12 +101,12 @@ export function CollectionCard({ collection }: CollectionCardProps) {
               <div className="flex items-center space-x-4 text-sm">
                 <div className="flex items-center space-x-1 text-muted-foreground">
                   <Users className="w-4 h-4" />
-                  <span>{collection.itemCount}</span>
+                  <span>{collection.biddersCount}</span>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-xs text-muted-foreground">Bidders</p>
-                <p className="text-primary font-bold">{collection.biddersCount}</p>
+                <p className="text-xs text-muted-foreground">Total outbid rewards</p>
+                <p className="text-primary font-bold">{collection.totalBidRewards}</p>
               </div>
             </div>
 
