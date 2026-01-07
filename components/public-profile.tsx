@@ -7,9 +7,19 @@ import { useRouter } from "next/navigation"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Checkbox } from "@/components/ui/checkbox"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Copy, Check, User, Gem, Activity, BarChart3, ArrowLeft, X, ExternalLink, Sparkles, UserCheck } from "lucide-react"
+import { 
+  Copy, 
+  Check, 
+  User, 
+  Gem, 
+  Activity, 
+  BarChart3, 
+  ArrowLeft, 
+  X, 
+  ExternalLink, 
+  UserCheck 
+} from "lucide-react"
 
 // Public-specific content components
 import PublicNFTsContent from "@/app/profile/components/public/public-nfts-content"
@@ -84,51 +94,25 @@ export default function PublicProfile({ address }: PublicProfileProps) {
       setIsCreator(false)
     }
 
-    // Check if already following (from localStorage for demo)
     const followingKey = `following_${lowerAddress}`
     const isAlreadyFollowing = localStorage.getItem(followingKey) === "true"
     setIsFollowing(isAlreadyFollowing)
   }, [address])
 
   const handleCopyAddress = async () => {
-    if (!address) return
-
     try {
       await navigator.clipboard.writeText(address)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch (error) {
       console.error('Failed to copy address:', error)
-      fallbackCopy(address)
-    }
-  }
-
-  const fallbackCopy = (text: string) => {
-    const textArea = document.createElement('textarea')
-    textArea.value = text
-    textArea.style.position = 'fixed'
-    textArea.style.left = '-999999px'
-    document.body.appendChild(textArea)
-    textArea.focus()
-    textArea.select()
-
-    try {
-      document.execCommand('copy')
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    } catch (error) {
-      console.error('Fallback copy failed:', error)
-    } finally {
-      document.body.removeChild(textArea)
     }
   }
 
   const handleFollowClick = () => {
     if (isFollowing) {
-      // Unfollow logic
       handleUnfollow()
     } else {
-      // Open follow modal
       setIsFollowModalOpen(true)
     }
   }
@@ -136,39 +120,28 @@ export default function PublicProfile({ address }: PublicProfileProps) {
   const handleUnfollow = () => {
     const lowerAddress = address.toLowerCase()
     const followingKey = `following_${lowerAddress}`
-    
-    // Remove from localStorage
     localStorage.removeItem(followingKey)
     setIsFollowing(false)
-    
-    console.log(`Unfollowed ${displayName} (${address})`)
-    // PLACEHOLDER: Add your actual unfollow logic here
-    // Example: await unfollowUser(address)
   }
 
   const handleFollowConfirm = async () => {
     setIsFollowingLoading(true)
 
     if (followGallery) {
-      // PLACEHOLDER: Replace with your actual Gallery follow logic
-      console.log(`Following ${displayName} on Overmind Gallery (${address})`)
-      // Example: await followUserOnGallery(address)
+      console.log(`Following ${displayName} on Overmind Gallery`)
     }
 
     if (followIntuition) {
       window.open("https://portal.intuition.systems", "_blank", "noopener,noreferrer")
     }
 
-    // Save follow state to localStorage (for demo)
     const lowerAddress = address.toLowerCase()
-    const followingKey = `following_${lowerAddress}`
-    localStorage.setItem(followingKey, "true")
+    localStorage.setItem(`following_${lowerAddress}`, "true")
     
     setIsFollowing(true)
     setIsFollowingLoading(false)
     setIsFollowModalOpen(false)
 
-    // Reset checkboxes for next open
     setTimeout(() => {
       setFollowGallery(true)
       setFollowIntuition(false)
@@ -227,7 +200,6 @@ export default function PublicProfile({ address }: PublicProfileProps) {
           {/* Profile Header */}
           <div className="bg-card/30 backdrop-blur-md border border-primary/20 rounded-2xl p-6 sm:p-8 mb-6 shadow-2xl shadow-primary/10">
             <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
-              {/* Avatar */}
               <Avatar className="w-24 h-24 sm:w-28 sm:h-28 border-4 border-primary/30 hover:border-primary/50 rune-glow transition-all duration-300 flex-shrink-0">
                 <AvatarImage src={avatarSrc} alt={displayName} className="object-cover" />
                 <AvatarFallback className="bg-primary/20 text-primary">
@@ -235,9 +207,7 @@ export default function PublicProfile({ address }: PublicProfileProps) {
                 </AvatarFallback>
               </Avatar>
 
-              {/* Info + Follow Section */}
               <div className="flex-1 w-full flex flex-col md:flex-row md:justify-between md:items-start gap-8">
-                {/* Name, Badge, Wallet */}
                 <div className="text-center md:text-left">
                   <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-4">
                     <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent">
@@ -264,7 +234,6 @@ export default function PublicProfile({ address }: PublicProfileProps) {
                   </div>
                 </div>
 
-                {/* Follow Button */}
                 {!isOwnProfile && (
                   <div className="flex flex-col items-center">
                     <Button
@@ -325,56 +294,99 @@ export default function PublicProfile({ address }: PublicProfileProps) {
         </div>
       </div>
 
-      {/* Follow Choice Modal */}
+      {/* COMPACT & STYLISH FOLLOW MODAL WITH REAL IMAGES */}
       <Dialog open={isFollowModalOpen} onOpenChange={setIsFollowModalOpen}>
-        <DialogContent className="bg-card/95 backdrop-blur-xl border border-primary/30 shadow-2xl shadow-primary/20 max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent flex items-center gap-3">
-              <Sparkles className="w-7 h-7 text-secondary" />
+        <DialogContent className="bg-card/95 backdrop-blur-xl border border-primary/30 shadow-2xl shadow-primary/20 max-w-sm p-6">
+          <DialogHeader className="pb-3">
+            <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-center">
               Follow {displayName}
             </DialogTitle>
           </DialogHeader>
 
-          <div className="space-y-6 py-4">
-            <p className="text-muted-foreground text-center">
-              Choose where you'd like to follow {displayName}:
+          <div className="space-y-4 py-3">
+            <p className="text-muted-foreground text-center text-sm">
+              Choose where you'd like to follow:
             </p>
 
-            <div className="space-y-5">
+            <div className="space-y-3">
               {/* Overmind Gallery */}
-              <label className="flex items-center justify-between p-4 rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 transition-all cursor-pointer">
-                <div className="flex items-center gap-4">
-                  <Checkbox
-                    checked={followGallery}
-                    onCheckedChange={(checked) => setFollowGallery(checked as boolean)}
-                    className="border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
-                  />
-                  <div>
-                    <p className="font-semibold text-primary">Overmind Gallery</p>
-                    <p className="text-sm text-muted-foreground">See their NFTs, drops, and gallery activity</p>
+              <button
+                onClick={() => setFollowGallery(!followGallery)}
+                className={`
+                  w-full p-4 rounded-xl border-2 transition-all duration-300 group relative overflow-hidden
+                  ${followGallery 
+                    ? "border-primary/70 bg-primary/10 shadow-lg shadow-primary/30" 
+                    : "border-primary/20 bg-card/50 hover:border-primary/40"
+                  }
+                `}
+              >
+                <div className="absolute inset-0 bg-cover bg-center opacity-15" style={{ backgroundImage: "url('/tog.jpg')" }} />
+
+                <div className="relative flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-lg overflow-hidden shadow-md border border-primary/30">
+                      <img src="/tog.jpg" alt="Overmind Gallery" className="w-full h-full object-cover" />
+                    </div>
+                    <div className="text-left">
+                      <p className={`font-semibold ${followGallery ? "text-primary" : "text-foreground"}`}>
+                        Overmind Gallery
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Get alerts for NFTs, Collections & activity
+                      </p>
+                    </div>
                   </div>
+
+                  {followGallery && (
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center shadow-lg">
+                      <Check className="w-5 h-5 text-white" />
+                    </div>
+                  )}
                 </div>
-              </label>
+              </button>
 
               {/* Intuition Portal */}
-              <label className="flex items-center justify-between p-4 rounded-xl border border-secondary/30 bg-secondary/5 hover:bg-secondary/10 transition-all cursor-pointer">
-                <div className="flex items-center gap-4">
-                  <Checkbox
-                    checked={followIntuition}
-                    onCheckedChange={(checked) => setFollowIntuition(checked as boolean)}
-                    className="border-secondary/50 data-[state=checked]:bg-secondary data-[state=checked]:text-secondary-foreground"
-                  />
-                  <div>
-                    <p className="font-semibold text-secondary">Intuition Portal</p>
-                    <p className="text-sm text-muted-foreground">Follow their insights, writings, and wisdom</p>
+              <button
+                onClick={() => setFollowIntuition(!followIntuition)}
+                className={`
+                  w-full p-4 rounded-xl border-2 transition-all duration-300 group relative overflow-hidden
+                  ${followIntuition 
+                    ? "border-secondary/70 bg-secondary/10 shadow-lg shadow-secondary/30" 
+                    : "border-secondary/20 bg-card/50 hover:border-secondary/40"
+                  }
+                `}
+              >
+                <div className="absolute inset-0 bg-cover bg-center opacity-15" style={{ backgroundImage: "url('/intuition.jpg')" }} />
+
+                <div className="relative flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-lg overflow-hidden shadow-md border border-secondary/30">
+                      <img src="/intuition.jpg" alt="Intuition Portal" className="w-full h-full object-cover" />
+                    </div>
+                    <div className="text-left">
+                      <p className={`font-semibold ${followIntuition ? "text-secondary" : "text-foreground"}`}>
+                        Intuition Portal
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Be part of something greater, the knowledge graph
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <ExternalLink className="w-5 h-5 text-secondary/70 group-hover:text-secondary transition-colors" />
+                    {followIntuition && (
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-r from-secondary to-primary flex items-center justify-center shadow-lg">
+                        <Check className="w-5 h-5 text-white" />
+                      </div>
+                    )}
                   </div>
                 </div>
-                <ExternalLink className="w-5 h-5 text-secondary/60" />
-              </label>
+              </button>
             </div>
           </div>
 
-          <div className="flex gap-3 pt-4">
+          <div className="flex gap-3 pt-2">
             <Button
               variant="ghost"
               onClick={() => setIsFollowModalOpen(false)}
