@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, memo } from "react"
+import { useState, useEffect, memo, lazy, Suspense } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
@@ -15,8 +15,9 @@ import {
   ChevronDown,
   ChevronUp,
   Share2,
+  Loader2,
 } from "lucide-react"
-import { NFT3DViewer } from "@/components/nft-3d-viewer"
+const NFT3DViewer = lazy(() => import("@/components/nft-3d-viewer").then(module => ({ default: module.NFT3DViewer })))
 
 // Use only your real images from public folder
 const bidderAvatars: Record<string, string> = {
@@ -123,7 +124,16 @@ export const NFTModal = memo(function NFTModal({
       case "3d":
         return (
           <div className={containerClasses} key={nft.id}>
-            <NFT3DViewer modelUrl={nft.modelUrl} />
+            <Suspense fallback={
+              <div className="flex items-center justify-center h-64 bg-gray-800/50 rounded-lg">
+                <div className="flex flex-col items-center space-y-2">
+                  <Loader2 className="w-8 h-8 animate-spin text-cyan-400" />
+                  <p className="text-sm text-muted-foreground">Loading 3D model...</p>
+                </div>
+              </div>
+            }>
+              <NFT3DViewer modelUrl={nft.modelUrl} />
+            </Suspense>
           </div>
         )
       
