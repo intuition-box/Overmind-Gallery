@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { NFTModal } from "@/components/nft-modal"
 import { NFTCard } from "@/components/nft-card"
 import { Gavel, Timer, Coins, TrendingUp } from "lucide-react"
@@ -308,7 +308,7 @@ export default function ExplorePage() {
   }, [])
 
   // === PRESERVED FILTERING & SORTING ===
-  const getFilteredAndSortedRelics = () => {
+  const filteredRelics = useMemo(() => {
     const filtered = nftRelics.filter((relic) => {
       const matchesCategory = filters.category === "all" || relic.category === filters.category
       const matchesStatus = filters.status === "all" || relic.status === filters.status
@@ -331,9 +331,9 @@ export default function ExplorePage() {
     })
 
     return filtered
-  }
+  }, [filters.category, filters.status, filters.sortBy])
 
-  const getFilteredAuctionRelics = () => {
+  const filteredAuctions = useMemo(() => {
     const filtered = auctionRelics.filter((relic) => {
       const matchesCategory = filters.category === "all" || relic.collection.includes(filters.category)
       const matchesStatus = filters.status === "all" || filters.status === "in-auction"
@@ -352,10 +352,7 @@ export default function ExplorePage() {
     })
 
     return filtered
-  }
-
-  const filteredRelics = getFilteredAndSortedRelics()
-  const filteredAuctions = getFilteredAuctionRelics()
+  }, [filters.category, filters.status, filters.sortBy])
 
   return (
     <div className="min-h-screen page-gradient">
