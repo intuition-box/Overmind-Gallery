@@ -7,8 +7,9 @@
     "build": "cp -r artifacts public/ && next build --webpack",
     "build:vercel": "npx vercel build",
     "start": "next start",
-    "lint": "next lint",
-    "test": "hardhat test",
+     "lint": "next lint",
+     "typecheck": "tsc --noEmit",
+     "test": "hardhat test",
     "test:coverage": "hardhat coverage"
   },
   "dependencies": {

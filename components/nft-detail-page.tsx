@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { BidHistory } from "@/components/web3/BidHistory"
+import { NFTTransferModal } from "@/components/nft-transfer-modal"
 import {
   ArrowLeft,
   Heart,
@@ -58,6 +59,7 @@ export default function NFTDetailPage({ nft }: NFTDetailPageProps) {
   const router = useRouter()
   const [isLiked, setIsLiked] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [isTransferModalOpen, setIsTransferModalOpen] = useState(false)
 
   const handleShare = () => {
     const shareUrl = window.location.href
@@ -77,8 +79,7 @@ export default function NFTDetailPage({ nft }: NFTDetailPageProps) {
   }
 
   const handleTransfer = () => {
-    // TODO: Implement transfer functionality
-    console.log('Transfer NFT:', nft.id)
+    setIsTransferModalOpen(true)
   }
 
   const handleSell = () => {
@@ -277,6 +278,17 @@ export default function NFTDetailPage({ nft }: NFTDetailPageProps) {
           </div>
         </div>
       </div>
+
+      {/* Transfer Modal */}
+      <NFTTransferModal
+        isOpen={isTransferModalOpen}
+        onClose={() => setIsTransferModalOpen(false)}
+        nft={nft}
+        onSuccess={() => {
+          // Refresh the page or navigate away since the NFT is no longer owned
+          router.push('/my-nfts')
+        }}
+      />
 
       {/* Fullscreen Modal */}
       {isFullscreen && (
