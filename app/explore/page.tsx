@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect, useMemo, useCallback } from "react"
 import { NFTModal } from "@/components/nft-modal"
 import { NFTCard } from "@/components/nft-card"
 import { Gavel, Timer, Coins, TrendingUp } from "lucide-react"
@@ -232,25 +232,25 @@ export default function ExplorePage() {
     Record<number, { days: number; hours: number; minutes: number; seconds: number }>
   >({})
 
-  const handleNFTClick = (nft: any) => {
+  const handleNFTClick = useCallback((nft: any) => {
     setSelectedNFT(nft)
     setIsModalOpen(true)
-  }
+  }, [])
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setIsModalOpen(false)
     setTimeout(() => setSelectedNFT(null), 300)
-  }
+  }, [])
 
-  const handleNFTBid = (amount: string) => {
+  const handleNFTBid = useCallback((amount: string) => {
     console.log(`Placing bid of ${amount} TRUST on ${selectedNFT?.title}`)
     handleCloseModal()
-  }
+  }, [selectedNFT?.title])
 
-  const handleBuy = () => {
+  const handleBuy = useCallback(() => {
     console.log(`Purchasing ${selectedNFT?.title}`)
     handleCloseModal()
-  }
+  }, [selectedNFT?.title])
 
   // === PRESERVED COUNTDOWN LOGIC ===
   useEffect(() => {
