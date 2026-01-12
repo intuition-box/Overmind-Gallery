@@ -26,6 +26,7 @@ export function useOvermindNFT() {
   // Write functions
   const { writeContract: mintRelic, isPending: isMinting } = useWriteContract()
   const { writeContract: verifyCreator, isPending: isVerifying } = useWriteContract()
+  const { writeContract: transferNFT, isPending: isTransferring } = useWriteContract()
 
   const mintRelicAsync = async (to: string, uri: string, power: number) => {
     return mintRelic({
@@ -42,6 +43,15 @@ export function useOvermindNFT() {
       abi: OVERMIND_NFT_ABI,
       functionName: 'verifyCreator',
       args: [creator],
+    })
+  }
+
+  const transferNFTAsync = async (from: string, to: string, tokenId: number) => {
+    return transferNFT({
+      address: contracts.OvermindNFT as `0x${string}`,
+      abi: OVERMIND_NFT_ABI,
+      functionName: 'safeTransferFrom',
+      args: [from, to, tokenId],
     })
   }
 
@@ -101,8 +111,10 @@ export function useOvermindNFT() {
     // Write functions
     mintRelicAsync,
     verifyCreatorAsync,
+    transferNFTAsync,
     isMinting,
     isVerifying,
+    isTransferring,
 
     // Helper functions
     getRelicPower,

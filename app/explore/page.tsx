@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo, useCallback } from "react"
 import { NFTModal } from "@/components/nft-modal"
 import { NFTCard } from "@/components/nft-card"
 import { Gavel, Timer, Coins, TrendingUp } from "lucide-react"
@@ -232,25 +232,25 @@ export default function ExplorePage() {
     Record<number, { days: number; hours: number; minutes: number; seconds: number }>
   >({})
 
-  const handleNFTClick = (nft: any) => {
+  const handleNFTClick = useCallback((nft: any) => {
     setSelectedNFT(nft)
     setIsModalOpen(true)
-  }
+  }, [])
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setIsModalOpen(false)
     setTimeout(() => setSelectedNFT(null), 300)
-  }
+  }, [])
 
-  const handleNFTBid = (amount: string) => {
+  const handleNFTBid = useCallback((amount: string) => {
     console.log(`Placing bid of ${amount} TRUST on ${selectedNFT?.title}`)
     handleCloseModal()
-  }
+  }, [selectedNFT?.title])
 
-  const handleBuy = () => {
+  const handleBuy = useCallback(() => {
     console.log(`Purchasing ${selectedNFT?.title}`)
     handleCloseModal()
-  }
+  }, [selectedNFT?.title])
 
   // === PRESERVED COUNTDOWN LOGIC ===
   useEffect(() => {
@@ -308,7 +308,7 @@ export default function ExplorePage() {
   }, [])
 
   // === PRESERVED FILTERING & SORTING ===
-  const getFilteredAndSortedRelics = () => {
+  const filteredRelics = useMemo(() => {
     const filtered = nftRelics.filter((relic) => {
       const matchesCategory = filters.category === "all" || relic.category === filters.category
       const matchesStatus = filters.status === "all" || relic.status === filters.status
@@ -331,9 +331,9 @@ export default function ExplorePage() {
     })
 
     return filtered
-  }
+  }, [filters.category, filters.status, filters.sortBy])
 
-  const getFilteredAuctionRelics = () => {
+  const filteredAuctions = useMemo(() => {
     const filtered = auctionRelics.filter((relic) => {
       const matchesCategory = filters.category === "all" || relic.collection.includes(filters.category)
       const matchesStatus = filters.status === "all" || filters.status === "in-auction"
@@ -352,10 +352,7 @@ export default function ExplorePage() {
     })
 
     return filtered
-  }
-
-  const filteredRelics = getFilteredAndSortedRelics()
-  const filteredAuctions = getFilteredAuctionRelics()
+  }, [filters.category, filters.status, filters.sortBy])
 
   return (
     <div className="min-h-screen page-gradient">
