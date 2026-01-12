@@ -1,13 +1,12 @@
 "use client"
 
-import { useState } from "react"
 import { CollectionCard } from "@/components/collection-card"
 import SiteHeader from "@/components/site-header"
 
-// === PRESERVED COLLECTIONS DATA FROM SECOND FILE ===
+// === PRESERVED COLLECTIONS DATA ===
 const collections = [
   {
-    id: "1",
+    id: 1,
     slug: "ancient-codex",
     name: "Ancient Codex",
     description: "Mystical tomes containing forgotten knowledge and arcane wisdom",
@@ -15,13 +14,12 @@ const collections = [
     creatorAddress: "0x742d35Cc6634C0532925a3b8D4C0532925a3b8D4",
     itemCount: 8,
     biddersCount: 142,
+    totalBidRewards: "4.7K TRUST",
     image: "/dark-mystical-obsidian-codex-ancient-book-glowing-.png",
     banner: "/ancient-library-with-glowing-books-and-mystical-at.png",
-    floorPrice: "2.5 TRUST",
-    verified: true,
   },
   {
-    id: "2",
+    id: 2,
     slug: "void-walkers",
     name: "Void Walkers",
     description: "Ethereal beings that traverse the boundaries between dimensions",
@@ -29,80 +27,65 @@ const collections = [
     creatorAddress: "0x742d35Cc6634C0532925a3b8D4C0532925a3b8D4",
     itemCount: 8,
     biddersCount: 89,
+    totalBidRewards: "3.9K TRUST",
     image: "/ethereal-void-walker-dark-figure-glowing-eyes-myst.png",
     banner: "/dark-void-with-ethereal-figures-and-glowing-portal.png",
-    floorPrice: "1.8 TRUST",
-    verified: true,
   },
   {
-    id: "3",
+    id: 3,
     slug: "neon-sigils",
     name: "Neon Sigils",
     description: "Digital runes pulsing with cybernetic energy and ancient power",
     creator: "Wolfgang",
     creatorAddress: "0x742d35Cc6634C0532925a3b8D4C0532925a3b8D4",
     itemCount: 8,
-    biddersCount: 67,
+    biddersCount: 217,
+    totalBidRewards: "6.1K TRUST",
     image: "/neon-sigil-glowing-cyan-violet-runes-mystical-symb.png",
-    banner: "/neon-sigil-glowing-cyan-violet-runes-mystical-symb.png",
-    floorPrice: "3.2 TRUST",
-    verified: true,
+    banner: "/cyberpunk-temple-with-glowing-neon-runes-and-mysti.png",
   },
   {
-    id: "4",
+    id: 4,
     slug: "shadow-crystals",
     name: "Shadow Crystals",
-    description: "Crystalline formations that harness the power of shadow magic",
+    description: "Crystalline formations infused with dark energy and forbidden magic",
     creator: "Wolfgang",
     creatorAddress: "0x742d35Cc6634C0532925a3b8D4C0532925a3b8D4",
     itemCount: 8,
-    biddersCount: 134,
+    biddersCount: 104,
+    totalBidRewards: "4.2K TRUST",
     image: "/shadow-crystal-dark-mystical-glowing-purple-energy.png",
-    banner: "/shadow-crystal-dark-mystical-glowing-purple-energy.png",
-    floorPrice: "4.1 TRUST",
-    verified: true,
+    banner: "/dark-crystal-cave-with-purple-glowing-crystals-and.png",
   },
   {
-    id: "5",
+    id: 5,
     slug: "cyber-oracles",
     name: "Cyber Oracles",
-    description: "AI-enhanced masks that predict the future through data streams",
+    description: "Prophetic masks that reveal glimpses of digital futures",
     creator: "Wolfgang",
     creatorAddress: "0x742d35Cc6634C0532925a3b8D4C0532925a3b8D4",
     itemCount: 8,
-    biddersCount: 203,
+    biddersCount: 156,
+    totalBidRewards: "5.3K TRUST",
     image: "/cyber-oracle-mask-futuristic-mystical-glowing-eyes.png",
     banner: "/futuristic-temple-with-glowing-oracle-masks-and-di.png",
-    floorPrice: "2.9 TRUST",
-    verified: true,
   },
   {
-    id: "6",
+    id: 6,
     slug: "phoenix-feathers",
     name: "Phoenix Feathers",
     description: "Remnants of digital phoenixes, burning with eternal cyber-flame",
     creator: "Wolfgang",
     creatorAddress: "0x742d35Cc6634C0532925a3b8D4C0532925a3b8D4",
     itemCount: 8,
-    biddersCount: 156,
+    biddersCount: 203,
+    totalBidRewards: "5.8K TRUST",
     image: "/digital-phoenix-feather-glowing-cyan-fire-mystical.png",
     banner: "/digital-phoenix-nest-with-glowing-cyan-flames-and-.png",
-    floorPrice: "5.7 TRUST",
-    verified: true,
   },
 ]
 
 export default function CollectionsPage() {
-  const [searchQuery, setSearchQuery] = useState("")
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
-
-  const filteredCollections = collections.filter(
-    (collection) =>
-      collection.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      collection.creator.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      collection.description.toLowerCase().includes(searchQuery.toLowerCase()),
-  )
-
   return (
     <div className="min-h-screen page-gradient">
       {/* Theme-aware decorative orbs */}
@@ -128,7 +111,7 @@ export default function CollectionsPage() {
 
         {/* Collections Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredCollections.map((collection) => (
+          {collections.map((collection) => (
             <CollectionCard key={collection.id} collection={collection} />
           ))}
         </div>

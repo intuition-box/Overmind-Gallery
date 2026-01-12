@@ -247,6 +247,7 @@ export default function ExplorePage() {
     handleCloseModal()
   }, [selectedNFT?.title])
 
+
   const handleBuy = useCallback(() => {
     console.log(`Purchasing ${selectedNFT?.title}`)
     handleCloseModal()

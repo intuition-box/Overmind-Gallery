@@ -528,7 +528,6 @@ export default function CollectionDetail({ slug }: CollectionDetailProps) {
 
   const handleNFTBid = (amount: string) => {
     console.log(`Placing bid of ${amount} TRUST on ${selectedNFT?.title}`)
-    handleCloseModal()
   }
 
   const handleBuy = () => {

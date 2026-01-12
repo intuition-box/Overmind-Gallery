@@ -185,13 +185,7 @@ export default function MyNFTsContent({ isCreator }: MyNFTsContentProps) {
                       <p className="text-xs text-muted-foreground truncate">{nft.collectionName}</p>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-xs text-muted-foreground">
-                        Power: {userNFTs.find(u => u.tokenId === nft.id)?.power || 0}
-                      </span>
-                      <svg className="w-3 h-3 text-muted-foreground group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </div>
+                      </div>
                   </div>
                 </Card>
               </Link>
