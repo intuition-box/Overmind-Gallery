@@ -1,12 +1,13 @@
 // components/nft-detail-page.tsx
 "use client"
 
-import { useState } from "react"
+import { useState, lazy, Suspense } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { BidHistory } from "@/components/web3/BidHistory"
+const NFTTransferModal = lazy(() => import("@/components/nft-transfer-modal").then(module => ({ default: module.NFTTransferModal })))
 import {
   ArrowLeft,
   Share2,
@@ -14,6 +15,11 @@ import {
   TrendingUp,
   Zap,
   ArrowRightLeft,
+
+  ChevronRight,
+  Star,
+  Loader2
+
 } from "lucide-react"
 import SiteHeader from "@/components/site-header"
 import UserLink from "@/components/UserLink"
@@ -40,6 +46,7 @@ interface NFTDetailPageProps {
 export default function NFTDetailPage({ nft }: NFTDetailPageProps) {
   const router = useRouter()
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [isTransferModalOpen, setIsTransferModalOpen] = useState(false)
 
   const handleShare = () => {
     const shareUrl = window.location.href
@@ -59,7 +66,9 @@ export default function NFTDetailPage({ nft }: NFTDetailPageProps) {
   }
 
   const handleTransfer = () => {
-    console.log('Transfer NFT:', nft.id)
+
+    setIsTransferModalOpen(true)
+
   }
 
   const handleImageClick = () => {
@@ -202,6 +211,19 @@ export default function NFTDetailPage({ nft }: NFTDetailPageProps) {
           </div>
         </div>
       </div>
+
+      {/* Transfer Modal */}
+      <Suspense fallback={null}>
+        <NFTTransferModal
+          isOpen={isTransferModalOpen}
+          onClose={() => setIsTransferModalOpen(false)}
+          nft={nft}
+          onSuccess={() => {
+            // Refresh the page or navigate away since the NFT is no longer owned
+            router.push('/my-nfts')
+          }}
+        />
+      </Suspense>
 
       {/* Fullscreen Modal */}
       {isFullscreen && (

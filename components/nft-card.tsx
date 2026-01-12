@@ -1,5 +1,5 @@
 // components/nft-card.tsx
-import { useState } from "react"
+import { useState, memo } from "react"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -71,7 +71,7 @@ interface NFTCardProps {
   showAuctionBadge?: boolean
 }
 
-export function NFTCard({
+export const NFTCard = memo(function NFTCard({
   nft,
   onClick,
   countdown,
@@ -289,4 +289,4 @@ export function NFTCard({
       )}
     </>
   )
-}
+})

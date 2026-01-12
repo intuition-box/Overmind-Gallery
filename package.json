@@ -7,11 +7,13 @@
     "build": "cp -r artifacts public/ && next build --webpack",
     "build:vercel": "npx vercel build",
     "start": "next start",
-    "lint": "next lint",
-    "typecheck": "tsc --noEmit",
-    "build:analyze": "ANALYZE=true next build --webpack",
-    "test": "hardhat test",
-    "test:coverage": "hardhat coverage"
+
+     "lint": "next lint",
+     "typecheck": "tsc --noEmit",
+     "build:analyze": "ANALYZE=true next build",
+     "test": "hardhat test",
+     "test:coverage": "hardhat coverage"
+
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -88,9 +90,10 @@
     "@types/three": "^0.182.0",
     "chai": "^6.2.1",
     "ethers": "^6.15.0",
-    "hardhat": "^3.0.3",
-    "null-loader": "^4.0.1",
-    "postcss": "^8.5",
+     "hardhat": "^3.0.3",
+     "@next/bundle-analyzer": "^14.0.0",
+     "null-loader": "^4.0.1",
+     "postcss": "^8.5",
     "tailwindcss": "^4.1.9",
     "tsx": "^4.21.0",
     "tw-animate-css": "1.3.3",

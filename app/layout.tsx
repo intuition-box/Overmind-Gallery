@@ -6,6 +6,7 @@ import { Web3Wrapper } from "@/components/Web3Wrapper"
 import { Footer } from "@/components/footer"
 import { ThemeProvider } from "@/components/theme-provider"
 import { FavoritesProvider } from "@/contexts/FavoritesContext"
+import { Toaster } from "sonner"
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -38,12 +39,13 @@ export default function RootLayout({
         <ThemeProvider>
           <Web3Wrapper>
             <FavoritesProvider>
-              <div className="min-h-screen flex flex-col bg-background text-foreground">
-                <main className="flex-1">
-                  {children}
-                </main>
-                <Footer />
-              </div>
+               <div className="min-h-screen flex flex-col bg-background text-foreground">
+                 <main className="flex-1">
+                   {children}
+                 </main>
+                 <Footer />
+                 <Toaster />
+               </div>
             </FavoritesProvider>
           </Web3Wrapper>
         </ThemeProvider>

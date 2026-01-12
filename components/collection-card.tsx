@@ -1,7 +1,7 @@
 // components/collection-card.tsx
 "use client"
 
-import { useState } from "react"
+import { useState, memo } from "react"
 import { Star, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
@@ -21,8 +21,9 @@ interface CollectionCardProps {
   }
 }
 
-export function CollectionCard({ collection }: CollectionCardProps) {
-  const [isFavorite, setIsFavorite] = useState(false)
+export const CollectionCard = memo(function CollectionCard({ collection }: CollectionCardProps) {
+  const { addFavorite, removeFavorite, isFavorite } = useFavoritesContext()
+
   const [showToast, setShowToast] = useState(false)
   const [toastMessage, setToastMessage] = useState("")
 
@@ -134,4 +135,4 @@ export function CollectionCard({ collection }: CollectionCardProps) {
       )}
     </div>
   )
-}
+})
