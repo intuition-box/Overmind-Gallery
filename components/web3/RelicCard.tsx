@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Address } from "./Address"
-import { useOvermindNFT } from "@/hooks/overmind/useOvermindNFT"
+import { useOvermindNFT, useRelicPower, useRelicCreator } from "@/hooks/overmind/useOvermindNFT"
 
 interface RelicCardProps {
   tokenId: number
@@ -28,11 +28,9 @@ export function RelicCard({
   onAcquire,
   className = ""
 }: RelicCardProps) {
-  const { getRelicPower, getRelicCreator } = useOvermindNFT()
-  
   // Get relic power from blockchain (commented out for now as contracts aren't deployed)
-  // const { data: relicPower } = getRelicPower(tokenId)
-  // const { data: relicCreatorAddress } = getRelicCreator(tokenId)
+  // const { data: relicPower } = useRelicPower(tokenId)
+  // const { data: relicCreatorAddress } = useRelicCreator(tokenId)
 
   // Mock data for now - using deterministic value to avoid hydration mismatch
   const relicPower = ((tokenId * 137) % 1000) + 1

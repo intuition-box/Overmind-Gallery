@@ -1,4 +1,4 @@
-import { useAccount } from 'wagmi'
+import { useAccount, usePublicClient } from 'wagmi'
 import { useOvermindNFT } from './useOvermindNFT'
 import { useQuery } from '@tanstack/react-query'
 
@@ -11,7 +11,8 @@ export interface UserNFT {
 
 export function useUserNFTs() {
   const { address, isConnected } = useAccount()
-  const { getBalanceOf, getTokenOfOwnerByIndex, getTokenURI, getRelicCreator, getRelicPower } = useOvermindNFT()
+  const publicClient = usePublicClient()
+  const { contractConfig } = useOvermindNFT()
 
   const { data: userNFTs, isLoading, error } = useQuery({
     queryKey: ['user-nfts', address],
@@ -21,46 +22,62 @@ export function useUserNFTs() {
       }
 
       try {
-        // Get balance of NFTs owned by user
-        const balanceResult = getBalanceOf(address)
-        if (!balanceResult.data) {
-          // If no balance data, return mock NFTs for development
-          console.log('No contract data available, using mock NFTs for development')
+        if (!publicClient) {
+          console.log('No public client available, using mock NFTs for development')
           return getMockNFTs()
         }
 
-        const balance = Number(balanceResult.data)
-        if (balance === 0) {
+        // Get balance of NFTs owned by user
+        const balance = await publicClient.readContract({
+          ...contractConfig,
+          functionName: 'balanceOf',
+          args: [address],
+        }) as bigint
+
+        const balanceNumber = Number(balance)
+        if (balanceNumber === 0) {
           return []
         }
 
         const nfts: UserNFT[] = []
 
         // Get each token ID owned by the user
-        for (let i = 0; i < balance; i++) {
+        for (let i = 0; i < balanceNumber; i++) {
           try {
-            const tokenIdResult = getTokenOfOwnerByIndex(address, i)
-            if (!tokenIdResult.data) continue
+            const tokenId = await publicClient.readContract({
+              ...contractConfig,
+              functionName: 'tokenOfOwnerByIndex',
+              args: [address, i],
+            }) as bigint
 
-            const tokenId = Number(tokenIdResult.data)
+            const tokenIdNumber = Number(tokenId)
 
             // Get token URI
-            const tokenURIResult = getTokenURI(tokenId)
-            const tokenURI = tokenURIResult.data as string || ''
+            const tokenURI = await publicClient.readContract({
+              ...contractConfig,
+              functionName: 'tokenURI',
+              args: [tokenIdNumber],
+            }) as string
 
             // Get creator
-            const creatorResult = getRelicCreator(tokenId)
-            const creator = creatorResult.data as string || ''
+            const creator = await publicClient.readContract({
+              ...contractConfig,
+              functionName: 'getCreator',
+              args: [tokenIdNumber],
+            }) as string
 
             // Get power
-            const powerResult = getRelicPower(tokenId)
-            const power = Number(powerResult.data) || 0
+            const power = await publicClient.readContract({
+              ...contractConfig,
+              functionName: 'getPower',
+              args: [tokenIdNumber],
+            }) as bigint
 
             nfts.push({
-              tokenId,
-              tokenURI,
-              creator,
-              power,
+              tokenId: tokenIdNumber,
+              tokenURI: tokenURI || '',
+              creator: creator || '',
+              power: Number(power) || 0,
             })
           } catch (error) {
             console.error(`Error fetching NFT at index ${i}:`, error)

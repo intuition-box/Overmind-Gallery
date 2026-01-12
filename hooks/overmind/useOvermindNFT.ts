@@ -55,49 +55,10 @@ export function useOvermindNFT() {
     })
   }
 
-  const getRelicPower = (tokenId: number) => {
-    return useReadContract({
-      address: contracts.OvermindNFT as `0x${string}`,
-      abi: OVERMIND_NFT_ABI,
-      functionName: 'getPower',
-      args: [tokenId],
-    })
-  }
-
-  const getRelicCreator = (tokenId: number) => {
-    return useReadContract({
-      address: contracts.OvermindNFT as `0x${string}`,
-      abi: OVERMIND_NFT_ABI,
-      functionName: 'getCreator',
-      args: [tokenId],
-    })
-  }
-
-  const getBalanceOf = (ownerAddress: string) => {
-    return useReadContract({
-      address: contracts.OvermindNFT as `0x${string}`,
-      abi: OVERMIND_NFT_ABI,
-      functionName: 'balanceOf',
-      args: [ownerAddress],
-    })
-  }
-
-  const getTokenOfOwnerByIndex = (ownerAddress: string, index: number) => {
-    return useReadContract({
-      address: contracts.OvermindNFT as `0x${string}`,
-      abi: OVERMIND_NFT_ABI,
-      functionName: 'tokenOfOwnerByIndex',
-      args: [ownerAddress, index],
-    })
-  }
-
-  const getTokenURI = (tokenId: number) => {
-    return useReadContract({
-      address: contracts.OvermindNFT as `0x${string}`,
-      abi: OVERMIND_NFT_ABI,
-      functionName: 'tokenURI',
-      args: [tokenId],
-    })
+  // Contract config for external use
+  const contractConfig = {
+    address: contracts.OvermindNFT as `0x${string}`,
+    abi: OVERMIND_NFT_ABI,
   }
 
   return {
@@ -116,11 +77,58 @@ export function useOvermindNFT() {
     isVerifying,
     isTransferring,
 
-    // Helper functions
-    getRelicPower,
-    getRelicCreator,
-    getBalanceOf,
-    getTokenOfOwnerByIndex,
-    getTokenURI,
+    // Contract config for external hooks
+    contractConfig,
   }
+}
+
+// Separate hooks for dynamic contract calls
+export function useRelicPower(tokenId: number) {
+  const { contracts } = useDeployedContracts()
+  return useReadContract({
+    address: contracts.OvermindNFT as `0x${string}`,
+    abi: OVERMIND_NFT_ABI,
+    functionName: 'getPower',
+    args: [tokenId],
+  })
+}
+
+export function useRelicCreator(tokenId: number) {
+  const { contracts } = useDeployedContracts()
+  return useReadContract({
+    address: contracts.OvermindNFT as `0x${string}`,
+    abi: OVERMIND_NFT_ABI,
+    functionName: 'getCreator',
+    args: [tokenId],
+  })
+}
+
+export function useBalanceOf(ownerAddress: string) {
+  const { contracts } = useDeployedContracts()
+  return useReadContract({
+    address: contracts.OvermindNFT as `0x${string}`,
+    abi: OVERMIND_NFT_ABI,
+    functionName: 'balanceOf',
+    args: [ownerAddress],
+  })
+}
+
+export function useTokenOfOwnerByIndex(ownerAddress: string, index: number) {
+  const { contracts } = useDeployedContracts()
+  return useReadContract({
+    address: contracts.OvermindNFT as `0x${string}`,
+    abi: OVERMIND_NFT_ABI,
+    functionName: 'tokenOfOwnerByIndex',
+    args: [ownerAddress, index],
+  })
+}
+
+export function useTokenURI(tokenId: number) {
+  const { contracts } = useDeployedContracts()
+  return useReadContract({
+    address: contracts.OvermindNFT as `0x${string}`,
+    abi: OVERMIND_NFT_ABI,
+    functionName: 'tokenURI',
+    args: [tokenId],
+  })
 }
